@@ -4,7 +4,7 @@
 
 The high-level architecture creates the secure path from user request to grounded AI response:
 
-User -> Quatta App -> Auth/RBAC -> AI Gateway -> Connector Layer -> Retrieval Layer -> AI/Agent Layer -> Response -> Audit Log.
+User -> Quatta App -> Auth/RBAC -> AI Gateway -> Connector/Retrieval Tools -> Context Builder -> AI/Agent Layer -> AI Gateway Validation -> Response -> Audit Log.
 
 ## Services To Set Up
 
@@ -15,6 +15,7 @@ User -> Quatta App -> Auth/RBAC -> AI Gateway -> Connector Layer -> Retrieval La
 | AI Gateway | FastAPI service module | Central control point for model routing, prompt policy, guardrails, and tool permissions |
 | Connector Layer | Python connector modules, optionally exposed as MCP tools | Keeps data access standardized and auditable |
 | Retrieval Layer | PostgreSQL, SQLAlchemy, pgvector | One store for metadata, audit, cache, vector indexes |
+| Context Builder | FastAPI retrieval module | Packages facts, passages, citations, freshness, conflicts and missing evidence |
 | AI/Agent Layer | LangGraph | State, branching, retries, human checkpoints |
 | Response | FastAPI response contract | Structured answer, citations, confidence, recommended actions |
 | Audit Log | PostgreSQL append-only tables | Evidence-grade traceability |
@@ -44,6 +45,7 @@ User -> Quatta App -> Auth/RBAC -> AI Gateway -> Connector Layer -> Retrieval La
    - group claims or app roles mapped to Quatta RBAC
 6. Deploy to Cloud Run with service account permissions limited by least privilege.
 7. Add OpenTelemetry instrumentation to FastAPI, HTTP clients, database calls, and model calls.
+8. Add an evaluation harness for known inventory and claims cases before enabling agent workflows.
 
 ## AI Gateway Responsibilities
 
@@ -54,6 +56,7 @@ User -> Quatta App -> Auth/RBAC -> AI Gateway -> Connector Layer -> Retrieval La
 - Require structured JSON output for agent decisions.
 - Attach provenance and audit correlation IDs to every response.
 - Escalate low-confidence or high-risk outputs to human review.
+- Validate final answers after model generation, including citations, schema, tool outputs, confidence and policy version.
 
 ## Security Controls
 
@@ -62,6 +65,7 @@ User -> Quatta App -> Auth/RBAC -> AI Gateway -> Connector Layer -> Retrieval La
 - Secrets stored in Secret Manager, never in connector config rows.
 - No source writeback credentials in the default connector set.
 - Separate service accounts for app runtime, ingestion jobs, and export jobs.
+- Agents may only call approved tools through AI Gateway policy and connector/retrieval contracts.
 
 ## Acceptance Criteria
 

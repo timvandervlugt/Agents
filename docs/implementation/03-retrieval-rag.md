@@ -2,7 +2,7 @@
 
 ## What This Flowchart Implements
 
-Retrieval combines structured operational facts with unstructured document evidence. Structured retrieval uses SQL/API connectors. Unstructured retrieval uses Document AI OCR, chunking, embeddings, pgvector, metadata filters, and RAG. Both paths meet in the Context Builder.
+Retrieval combines structured operational facts with unstructured document evidence. Structured retrieval uses SQL/API connectors. Unstructured retrieval remains live and deterministic. Unstructured retrieval stages documents in tenant-scoped Google Cloud Storage when files are uploaded, dropped by SFTP, exported locally, or copied from SharePoint/API sources, then uses Document AI OCR, chunking, embeddings, pgvector, metadata filters, and RAG. Both paths meet in the Context Builder.
 
 ## Structured Retrieval Path
 
@@ -39,9 +39,17 @@ Use RAG for:
 - emails exported as documents
 - customer-specific policies
 
+Supported document entry paths:
+
+- SharePoint or Microsoft Graph source documents
+- customer upload through Quatta App
+- SFTP or watched local folder drop
+- API-delivered document payload
+- exported email, attachment or scanned proof package
+
 Setup:
 
-1. Ingest documents from SharePoint, upload, SFTP, or API.
+1. Ingest documents from SharePoint, upload, SFTP, local/exported folder, or API.
 2. Preserve document metadata:
    - tenant
    - source system
@@ -50,12 +58,17 @@ Setup:
    - owner
    - ACL / permission groups
    - modified timestamp
-3. Use Vertex AI Document AI for OCR when the document is scanned, image-heavy, handwritten, or layout-sensitive.
-4. Chunk text by semantic section, not only fixed length.
-5. Create embeddings for each chunk.
-6. Store embeddings in pgvector with tenant and ACL metadata.
-7. On deletion or permission changes, remove or hide chunks accordingly.
-8. Re-index changed documents based on version or modified timestamp.
+   - storage bucket/object ID
+   - malware scanning status
+   - retention/lifecycle class
+3. Stage raw files and extracted artifacts in Google Cloud Storage with tenant isolation, bucket IAM, KMS encryption, lifecycle policy and object versioning where required.
+4. Keep a local file-drop connector only as an ingestion source; do not let local storage become an ungoverned retrieval index.
+5. Use Vertex AI Document AI for OCR when the document is scanned, image-heavy, handwritten, or layout-sensitive.
+6. Chunk text by semantic section, not only fixed length.
+7. Create embeddings for each chunk.
+8. Store embeddings in pgvector with tenant and ACL metadata.
+9. On deletion or permission changes, remove or hide chunks accordingly.
+10. Re-index changed documents based on version or modified timestamp.
 
 ## Context Builder
 
@@ -82,6 +95,7 @@ It should not simply paste raw documents into the prompt. It should select, comp
 
 - Apply metadata filters before vector similarity search.
 - Never retrieve chunks from another tenant or from documents the user cannot access.
+- Treat Google Cloud Storage as governed staging/object storage, not as an authorization bypass.
 - Detect prompt injection inside documents and mark risky chunks.
 - Prefer direct structured facts over vague document language when they conflict.
 - Escalate when contract rules are missing or ambiguous.
@@ -91,5 +105,6 @@ It should not simply paste raw documents into the prompt. It should select, comp
 - Structured and RAG retrieval can be tested independently.
 - Every answer cites source system, record/document ID, chunk ID, source timestamp, and retrieval timestamp.
 - Deleted or permission-revoked SharePoint content is no longer retrievable.
+- Deleted, quarantined or retention-expired GCS/local-ingested documents are no longer retrievable.
 - RAG retrieval returns no cross-tenant chunks in automated tests.
 - Context Builder flags stale, missing, or conflicting evidence.

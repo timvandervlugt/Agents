@@ -25,10 +25,13 @@
 
 - structured retrieval router
 - semantic mapping layer
+- tenant-scoped Cloud Storage document staging
+- local/SFTP/API document ingestion path with quarantine status
 - Document AI OCR ingestion job
 - chunking and embeddings pipeline
 - pgvector schema and indexes
 - Context Builder v1
+- retrieval evaluation fixtures
 
 ### Sprint 4 - AI Gateway
 
@@ -61,8 +64,12 @@
 
 - automated security tests
 - agent evaluation dataset
+- connector idempotency, retry, and dead-letter handling
+- private connectivity pattern
 - dashboards and alerts
+- SLOs, cost budgets, and provider quota alerts
 - backup and retention policy
+- backup restore test
 - runbooks
 - customer onboarding checklist
 
@@ -75,6 +82,7 @@
 - Identify first use case: inventory variance or claims.
 - Collect sample documents, contracts, SOPs, tickets, and transactions.
 - Define success metrics and escalation owners.
+- Complete data classification, DPA/DPIA, private connectivity, UAT, and support handover gates.
 
 ## Definition Of Done For A Customer Pilot
 

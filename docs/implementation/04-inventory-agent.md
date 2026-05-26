@@ -33,6 +33,7 @@ Recommended nodes:
    - customer
    - time window
    - optional batch/lot/location
+   - optional serial number, owner, reservation/allocation, ASN/receipt, return, or cycle-count reference
 2. Implement permission checks:
    - user can access tenant
    - user can access site
@@ -40,7 +41,9 @@ Recommended nodes:
    - user can access financial impact if requested
 3. Retrieve evidence:
    - ERP stock transactions
+   - inventory snapshots and balances
    - WMS movements and adjustments
+   - reservations, allocations, holds, ASN/receipts, returns, cycle counts, and lot/batch/serial history when available
    - ticket/claim/incidence records
    - SOPs, contracts, and warehouse process rules
 4. Reconcile evidence:
@@ -59,6 +62,9 @@ Recommended nodes:
    - counting correction
    - damaged or returned stock
    - master-data unit mismatch
+   - reservation/allocation timing mismatch
+   - lot/batch or serial traceability gap
+   - stock ownership or consignment mismatch
 6. Calculate financial impact:
    - quantity difference
    - unit cost or sales value

@@ -33,6 +33,7 @@ Recommended nodes:
    - shortage
    - SLA penalty
    - carrier charge dispute
+   - invoice/chargeback dispute
 2. Define required evidence per claim type:
    - ticket ID
    - order/delivery ID
@@ -41,6 +42,8 @@ Recommended nodes:
    - POD or delivery proof
    - photos or scan evidence
    - relevant contract/SLA rule
+   - limitation period or filing deadline
+   - duplicate claim check result
 3. Retrieve ticket and order data through read-only connectors.
 4. Retrieve contract rules through RAG with metadata filters.
 5. Calculate eligibility:
@@ -49,18 +52,21 @@ Recommended nodes:
    - evidence complete
    - claim value above threshold
    - liability party identifiable
+   - no duplicate active claim exists
 6. Calculate liability:
    - penalty formula
    - cap
    - exclusions
    - currency
    - supporting records
+   - Incoterms, carrier SLA, or customer-specific terms where applicable
 7. Draft communication:
    - concise claim email
    - evidence table
    - attachments list
    - requested compensation
    - deadline for response
+   - outbound channel and destination policy
 8. Route to human review:
    - approve
    - edit

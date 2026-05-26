@@ -235,6 +235,7 @@
       <a href="quatta-architecture-visuals.html">Flowcharts</a>
       <a href="quatta-implementation-guide.html">Build Guide</a>
       <a href="quatta-node-implementation-catalog.html">Node Catalog</a>
+      <a href="quatta-architecture-review.html">Critical Review</a>
     </nav>
   </header>
 
@@ -250,6 +251,7 @@
         <div class="doc-links">
           <a href="docs/implementation/00-implementation-overview.md">Markdown overview</a>
           <a href="docs/implementation/08-node-implementation-catalog.md">Markdown node catalog</a>
+          <a href="docs/architecture-critical-review.md">Markdown critical review</a>
         </div>
       </div>
       <aside class="quick-grid" aria-label="Implementation sections">
@@ -298,11 +300,11 @@
     <article class="doc" id="retrieval">
       <div class="kicker">03 Context</div>
       <h2>Retrieval + RAG</h2>
-      <p>Structured facts and document evidence use different retrieval paths. SQL/API retrieval remains structured for exact facts. Document evidence flows through Document AI, chunking, embeddings, pgvector and metadata filters before joining facts in the Context Builder.</p>
+      <p>Structured facts and document evidence use different retrieval paths. SQL/API retrieval remains structured for exact facts. Document evidence from SharePoint, API payloads, local uploads or SFTP drops is staged in tenant-scoped Google Cloud Storage before Document AI, chunking, embeddings, pgvector and metadata filters join facts in the Context Builder.</p>
       <div class="grid">
         <div class="card"><h3>Structured Retrieval</h3><ul><li>Use for orders, stock, deliveries, tickets, claims and master data.</li><li>Return records with source, event time and retrieval time.</li><li>Use deterministic calculations for totals, liability and impact.</li></ul></div>
-        <div class="card"><h3>Document RAG</h3><ul><li>Use Document AI for PDFs, scans, contracts, PODs and SOPs.</li><li>Chunk by semantic sections and page ranges.</li><li>Create Vertex AI embeddings and store in pgvector.</li></ul></div>
-        <div class="card"><h3>Context Builder</h3><ul><li>Merge facts, passages, citations and warnings.</li><li>Flag missing, stale or conflicting evidence.</li><li>Return a compact JSON context package for LangGraph.</li></ul></div>
+        <div class="card"><h3>Document RAG</h3><ul><li>Stage raw documents in GCS with tenant IAM, KMS, lifecycle and quarantine status.</li><li>Use Document AI for PDFs, scans, contracts, PODs and SOPs.</li><li>Chunk by semantic sections and page ranges.</li><li>Create Vertex AI embeddings and store in pgvector.</li></ul></div>
+        <div class="card"><h3>Context Builder</h3><ul><li>Merge facts, passages, citations and warnings.</li><li>Include storage object references for document evidence.</li><li>Flag missing, stale or conflicting evidence.</li><li>Return a compact JSON context package for LangGraph.</li></ul></div>
       </div>
     </article>
 
@@ -312,8 +314,8 @@
       <p>Security controls are cross-cutting. They are applied before and during data access, retrieval, model calls and human approval. They are not downstream dataflow steps.</p>
       <div class="grid">
         <div class="card"><h3>Identity</h3><ul><li>Validate Entra ID tokens.</li><li>Map groups to Quatta roles.</li><li>Scope by tenant, site, customer, item, order, claim and document ACL.</li></ul></div>
-        <div class="card"><h3>Audit</h3><ul><li>Trace ID, user, role, source, row counts, document chunks, model, prompt version and policy result.</li><li>Denied checks and failed validations are logged.</li><li>Human approvals store reviewer and final version.</li></ul></div>
-        <div class="card"><h3>Fail Mode</h3><ul><li>High-risk flows fail closed if audit or permission checks fail.</li><li>Low-risk read-only flows may degrade only with explicit warning.</li><li>Cross-tenant retrieval must have automated tests.</li></ul></div>
+        <div class="card"><h3>Audit</h3><ul><li>Trace ID, user, role, source, row counts, document chunks, model, prompt version and policy result.</li><li>Denied checks and failed validations are logged.</li><li>Human approvals store reviewer and final version.</li><li>High-risk customers can export immutable audit evidence.</li></ul></div>
+        <div class="card"><h3>Fail Mode</h3><ul><li>High-risk flows fail closed if audit or permission checks fail.</li><li>Low-risk read-only flows may degrade only with explicit warning.</li><li>Cross-tenant retrieval must have automated tests.</li><li>KMS, DLP/classification, retention and data residency policies are tenant-aware.</li></ul></div>
       </div>
     </article>
 
@@ -323,8 +325,8 @@
       <p>Separate the runtime API, ingestion workers and outbound/export jobs. Give each service the minimum service account permissions it needs.</p>
       <div class="grid">
         <div class="card"><h3>Services</h3><ul><li>Cloud Run API for app and gateway.</li><li>Cloud Run worker/job for document ingestion.</li><li>Cloud SQL PostgreSQL with pgvector.</li><li>Secret Manager for source credentials.</li></ul></div>
-        <div class="card"><h3>CI/CD</h3><ul><li>Build container images.</li><li>Run unit, connector contract and tenant-isolation tests.</li><li>Deploy with environment-specific config and service accounts.</li></ul></div>
-        <div class="card"><h3>Operations</h3><ul><li>Dashboards for latency, connector health, retrieval quality and model cost.</li><li>Alerts for ingestion backlog, failed connectors and audit failures.</li><li>Runbooks for revocation, stale data and provider outage.</li></ul></div>
+        <div class="card"><h3>CI/CD</h3><ul><li>Build container images.</li><li>Run unit, connector contract and tenant-isolation tests.</li><li>Include IaC plan, security scan, migration checks and deploy approval.</li><li>Deploy with environment-specific config and service accounts.</li></ul></div>
+        <div class="card"><h3>Operations</h3><ul><li>Dashboards for latency, connector health, retrieval quality and model cost.</li><li>Alerts for ingestion backlog, failed connectors and audit failures.</li><li>Runbooks for revocation, stale data and provider outage.</li><li>Backup restore, SLO, quota and DR tests before scale.</li></ul></div>
       </div>
     </article>
 

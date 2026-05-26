@@ -36,6 +36,8 @@ Use RAG for unstructured or semi-structured knowledge:
 
 Setup checklist:
 - Discover documents with source permissions.
+- Accept customer uploads, local/SFTP drops and API-delivered documents only through governed ingestion.
+- Stage raw files and extracted artifacts in tenant-scoped Google Cloud Storage with bucket IAM, KMS, lifecycle rules, object versioning where needed and malware/quarantine status.
 - Extract text using Vertex AI Document AI.
 - Chunk by document structure, headings, clauses, pages, or tables.
 - Generate embeddings.
@@ -43,7 +45,7 @@ Setup checklist:
 - Re-index when documents change.
 - Remove or disable vectors when source documents are deleted or access is revoked.
 
-Done criteria: Retrieval returns passages with document ID, chunk ID, version, timestamp, and permission proof.
+Done criteria: Retrieval returns passages with document ID, chunk ID, version, storage object reference, timestamp, and permission proof.
 
 ## Context Builder
 

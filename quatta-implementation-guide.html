@@ -371,6 +371,7 @@
       <a href="#flow-docs">Flow Docs</a>
       <a href="quatta-implementation-docs.html">Readable Docs</a>
       <a href="quatta-node-implementation-catalog.html">Node Catalog</a>
+      <a href="quatta-architecture-review.html">Critical Review</a>
       <a href="#roadmap">Roadmap</a>
     </nav>
   </header>
@@ -387,6 +388,7 @@
         <div class="doc-links">
           <a href="quatta-implementation-docs.html">Readable implementation docs</a>
           <a href="quatta-node-implementation-catalog.html">Node-by-node catalog</a>
+          <a href="quatta-architecture-review.html">Critical architecture review</a>
           <a href="docs/implementation/00-implementation-overview.md">Markdown overview</a>
           <a href="docs/implementation/08-node-implementation-catalog.md">Markdown node catalog</a>
         </div>
@@ -409,7 +411,7 @@
       <div class="steps">
         <div class="step"><div><strong>Platform skeleton</strong><span>FastAPI on Cloud Run, PostgreSQL, health endpoints, Entra token validation and OpenTelemetry.</span></div><div class="tag">Foundation</div></div>
         <div class="step"><div><strong>Read-only connectors</strong><span>ERP, WMS, SQL, files, SharePoint, APIs and documents through normalized connector contracts.</span></div><div class="tag">Data access</div></div>
-        <div class="step"><div><strong>Retrieval and RAG</strong><span>Structured SQL/API retrieval plus Document AI OCR, chunking, embeddings, pgvector and Context Builder.</span></div><div class="tag">Context</div></div>
+        <div class="step"><div><strong>Retrieval and RAG</strong><span>Structured SQL/API retrieval plus GCS document staging, local/SFTP ingestion, Document AI OCR, chunking, embeddings, pgvector and Context Builder.</span></div><div class="tag">Context</div></div>
         <div class="step"><div><strong>AI gateway</strong><span>Model routing, prompt policy, data minimization, safety checks, validation and provider abstraction.</span></div><div class="tag">Control plane</div></div>
         <div class="step"><div><strong>Inventory Agent MVP</strong><span>LangGraph workflow for stock variance analysis, reconciliation, confidence, citations and recommended actions.</span></div><div class="tag">Use case 1</div></div>
         <div class="step"><div><strong>Claims Agent MVP</strong><span>Eligibility, liability, evidence collection, draft claim email, human review and status tracking.</span></div><div class="tag">Use case 2</div></div>
@@ -450,7 +452,7 @@
       <div class="flow-grid">
         <a class="card platform" href="quatta-implementation-docs.html#platform"><h3>01 High-Level Platform</h3><p>Cloud Run, FastAPI, Entra ID, AI Gateway, PostgreSQL audit, OpenTelemetry and tenant isolation.</p></a>
         <a class="card customer" href="quatta-implementation-docs.html#connectors"><h3>02 Connector Layer</h3><p>Read-only adapters, source credentials, caching, normalized output, connector health and MCP tool shape.</p></a>
-        <a class="card platform" href="quatta-implementation-docs.html#retrieval"><h3>03 Retrieval + RAG</h3><p>Structured retrieval, Document AI, chunking, embeddings, pgvector, metadata filters and context building.</p></a>
+        <a class="card platform" href="quatta-implementation-docs.html#retrieval"><h3>03 Retrieval + RAG</h3><p>Structured retrieval, GCS/local document staging, Document AI, chunking, embeddings, pgvector, metadata filters and context building.</p></a>
         <a class="card security" href="quatta-implementation-docs.html#security"><h3>04 Security + Governance</h3><p>Tenant filters, RBAC, audit fields, policy versioning, fail-closed behavior and monitoring controls.</p></a>
         <a class="card platform" href="quatta-implementation-docs.html#deployment"><h3>05 Deployment + Operations</h3><p>Cloud Run services, workers, CI/CD, dashboards, alerts, runbooks and service account boundaries.</p></a>
         <a class="card customer" href="quatta-implementation-docs.html#roadmap"><h3>06 Customer Onboarding</h3><p>Source discovery, permission design, connector rollout, evaluation cases and pilot readiness.</p></a>

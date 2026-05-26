@@ -1,6 +1,6 @@
 # Quatta AI Architecture Implementation Guide
 
-This guide turns the five architecture flowcharts into an executable implementation plan for Quatta: an AI layer above customer ERP, WMS, SQL, Excel, SharePoint, documents, and APIs. Customer data remains in customer systems unless an explicit, tenant-scoped cache or index is configured.
+This guide turns the Quatta architecture flowcharts into an executable implementation plan for Quatta: an AI layer above customer ERP, WMS, SQL, Excel, SharePoint, documents, local/SFTP drops, and APIs. Customer data remains in customer systems unless an explicit, tenant-scoped cache, storage bucket, or index is configured.
 
 ## Audience
 
@@ -22,6 +22,7 @@ Build the platform as a Python-first backend with a small web UI:
 - Hosting: Google Cloud Run
 - Identity: Microsoft Entra ID using OIDC / OAuth2
 - Document OCR: Vertex AI Document AI
+- Document staging: tenant-scoped Google Cloud Storage for uploads, local/SFTP drops, extracted artifacts, and governed exports
 - Observability: OpenTelemetry traces, metrics, and logs
 
 ## When To Use Which Capability

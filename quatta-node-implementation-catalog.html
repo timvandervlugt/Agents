@@ -239,6 +239,7 @@
     <nav class="nav" aria-label="Catalog navigation">
       <a href="quatta-architecture-visuals.html">Flowcharts</a>
       <a href="quatta-implementation-guide.html">Implementation Guide</a>
+      <a href="quatta-architecture-review.html">Critical Review</a>
       <a href="docs/implementation/08-node-implementation-catalog.md">Markdown Source</a>
     </nav>
   </header>
@@ -274,11 +275,11 @@
 
     <section class="catalog-grid">
       <article class="panel node customer" id="source-systems">
-        <h2>Customer Systems: ERP, WMS, SQL, Excel, SharePoint, APIs and Documents</h2>
+        <h2>Customer Systems: ERP, WMS, SQL, Excel, SharePoint, APIs, Local Drops and Documents</h2>
         <div class="meta"><span>Customer Systems</span><span>Read-only by default</span><span>System of record remains external</span></div>
         <div class="columns">
           <div class="block"><h4>What It Is</h4><p>The operational source landscape Quatta reads from. Quatta does not replace these systems and does not make them secondary databases.</p></div>
-          <div class="block"><h4>What To Implement</h4><ul><li>Inventory source inventory per tenant.</li><li>Read-only connection method per system.</li><li>Source owner, SLA, freshness and permission model.</li><li>Sample fixtures for each source type.</li></ul></div>
+          <div class="block"><h4>What To Implement</h4><ul><li>Inventory source inventory per tenant.</li><li>Read-only connection method per system.</li><li>Governed upload/SFTP/local-drop path for files.</li><li>Source owner, SLA, freshness and permission model.</li><li>Sample fixtures for each source type.</li></ul></div>
           <div class="block"><h4>Done Criteria</h4><ul><li>Every source has an owner and access method.</li><li>No write credentials are used by default.</li><li>Queries return source IDs and timestamps.</li><li>Unavailable sources are visible in responses.</li></ul></div>
         </div>
       </article>
@@ -338,7 +339,7 @@
         <div class="meta"><span>Vertex AI Document AI</span><span>Cloud Run worker</span><span>Document metadata</span></div>
         <div class="columns">
           <div class="block"><h4>What It Is</h4><p>OCR and layout extraction for PDFs, scans, contracts, PODs, SOPs, photos and claims evidence before indexing.</p></div>
-          <div class="block"><h4>What To Implement</h4><ul><li>Create the right Document AI processor per document class.</li><li>Store extracted text, tables, page numbers and confidence.</li><li>Preserve document ID, version, modified timestamp and ACL.</li><li>Send failed or low-confidence OCR to review.</li></ul></div>
+          <div class="block"><h4>What To Implement</h4><ul><li>Stage raw files in tenant-scoped Google Cloud Storage before OCR.</li><li>Create the right Document AI processor per document class.</li><li>Store extracted text, tables, page numbers and confidence.</li><li>Preserve document ID, version, modified timestamp, storage object ID and ACL.</li><li>Send failed or low-confidence OCR to review.</li></ul></div>
           <div class="block"><h4>Acceptance Criteria</h4><ul><li>Every extracted passage points to page and document version.</li><li>Deleted or permission-revoked documents stop being retrievable.</li><li>OCR failures are visible in ingestion metrics.</li></ul></div>
         </div>
       </article>

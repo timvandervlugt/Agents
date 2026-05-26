@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quatta Architecture Critical Review</title>
+  <style>
+    :root {
+      --ink: #14213d;
+      --muted: #5c6c82;
+      --line: #cbd6e6;
+      --paper: #f6f8fb;
+      --platform: #188b82;
+      --ai: #c77700;
+      --security: #3267d6;
+      --customer: #7856d9;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 16px 32px;
+      background: rgba(255,255,255,.94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(10px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 900;
+    }
+
+    .mark {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      color: white;
+      background: var(--platform);
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .nav a,
+    .links a {
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 850;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 9px 12px;
+      background: white;
+    }
+
+    main {
+      width: min(1180px, calc(100vw - 40px));
+      margin: 32px auto 72px;
+    }
+
+    .hero,
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: white;
+      box-shadow: 0 18px 50px rgba(38, 54, 88, .08);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 24px;
+      padding: 30px;
+      margin-bottom: 22px;
+    }
+
+    .kicker {
+      color: var(--platform);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: 38px;
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 24px;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0 0 9px;
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    li { margin-bottom: 6px; }
+
+    code {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1px 5px;
+      background: #f6f8fb;
+      color: #1d3557;
+    }
+
+    .verdict {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .callout {
+      border: 1px solid var(--line);
+      border-left: 6px solid var(--platform);
+      border-radius: 8px;
+      padding: 14px;
+      background: #f8fcfb;
+    }
+
+    .callout.warning { border-left-color: var(--ai); background: #fffaf1; }
+    .callout.security { border-left-color: var(--security); background: #f6f8ff; }
+
+    .links {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .review-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .panel {
+      padding: 22px;
+      scroll-margin-top: 92px;
+      border-top: 7px solid var(--platform);
+    }
+
+    .panel.ai { border-top-color: var(--ai); }
+    .panel.security { border-top-color: var(--security); }
+    .panel.customer { border-top-color: var(--customer); }
+
+    .columns {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .block {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      background: #fbfcff;
+    }
+
+    .relationship {
+      margin-top: 14px;
+      border: 1px solid #d6e1ef;
+      border-radius: 8px;
+      padding: 12px 14px;
+      background: #ffffff;
+      color: #34455f;
+      font-size: 13px;
+      font-weight: 750;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .hero,
+      .columns,
+      .links { grid-template-columns: 1fr; }
+      h1 { font-size: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><div class="mark">Q</div><div>Quatta Critical Review</div></div>
+    <nav class="nav" aria-label="Review navigation">
+      <a href="quatta-architecture-visuals.html">Flowcharts</a>
+      <a href="quatta-implementation-guide.html">Implementation Guide</a>
+      <a href="quatta-implementation-docs.html">Readable Docs</a>
+      <a href="quatta-node-implementation-catalog.html">Node Catalog</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <div class="kicker">Enterprise AI architecture review</div>
+        <h1>Critical review of Quatta AI architecture</h1>
+        <p>
+          This assessment reviews component placement, arrows, flow logic, missing controls, RAG design,
+          connector design and agentic AI readiness for logistics, warehousing and retail customers.
+        </p>
+        <div class="links">
+          <a href="docs/architecture-critical-review.md">Markdown review</a>
+          <a href="docs/architecture-map.md">Stable architecture map</a>
+        </div>
+      </div>
+      <aside class="verdict">
+        <div class="callout">
+          <h3>Truthful Verdict</h3>
+          <p>The architecture is strong as a customer-facing blueprint. It is not yet a full production implementation spec without connector lifecycle, queueing, private connectivity, eval operations, data classification and DR details.</p>
+        </div>
+        <div class="callout warning">
+          <h3>Robustness</h3>
+          <p>It is not too robust conceptually. The needed simplification is clearer separation between request flow, data flow, control flow and outbound action flow.</p>
+        </div>
+        <div class="callout security">
+          <h3>Keep Unchanged</h3>
+          <p>Keep read-only connectors, structured retrieval for operational truth, Context Builder, human approval gates and auditability.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="review-grid">
+      <article class="panel" id="high-level">
+        <div class="kicker">01 Core platform</div>
+        <h2>High-Level Quatta Architecture</h2>
+        <div class="columns">
+          <div class="block"><h3>Correct</h3><ul><li>Good platform, AI, customer and control separation.</li><li>Customer systems remain authoritative.</li><li>Context Builder belongs before agent reasoning.</li></ul></div>
+          <div class="block"><h3>Incorrect / Misleading</h3><ul><li>AI Gateway must wrap tool calls and response validation, not just pre-retrieval routing.</li><li>Security band must not read as passive monitoring.</li></ul></div>
+          <div class="block"><h3>Add / Improve</h3><ul><li>Flowchart drilldowns from high-level nodes.</li><li>Tool registry/MCP boundary.</li><li>Evaluation harness in implementation docs.</li></ul></div>
+        </div>
+        <div class="relationship">Updated relationship: User -> App -> Auth/RBAC -> AI Gateway policy -> Connector/Retrieval tools -> Context Builder -> Agent -> AI Gateway validation -> Grounded Response -> Audit.</div>
+      </article>
+
+      <article class="panel customer" id="connectors">
+        <div class="kicker">02 Data access</div>
+        <h2>Connector Layer Flow</h2>
+        <div class="columns">
+          <div class="block"><h3>Correct</h3><ul><li>Read-only source posture.</li><li>Authentication, normalization, freshness and audit are present.</li><li>Canonical output before AI use.</li></ul></div>
+          <div class="block"><h3>Incorrect / Misleading</h3><ul><li>Live query, sync, file drop and document ingestion patterns need separation.</li><li>Connector Modules must route to Data Access, not Core Platform.</li></ul></div>
+          <div class="block"><h3>Add / Improve</h3><ul><li>Connector registry, schema registry, retries, DLQ, idempotency and rate limits.</li><li>Credential rotation and source-owner escalation.</li></ul></div>
+        </div>
+        <div class="relationship">Updated relationship: Source -> Authenticate -> Connector Module -> Normalize -> Validate -> Cache or Normalized Data -> Context Builder -> Approved Agent Tool.</div>
+      </article>
+
+      <article class="panel" id="rag">
+        <div class="kicker">03 Retrieval</div>
+        <h2>Retrieval + RAG Flow</h2>
+        <div class="columns">
+          <div class="block"><h3>Correct</h3><ul><li>Structured facts stay separate from document RAG.</li><li>Document AI, chunking, embeddings, pgvector, ACLs and citations are right.</li><li>RAG is not used as transaction truth.</li></ul></div>
+          <div class="block"><h3>Incorrect / Misleading</h3><ul><li>GCP/local storage staging was missing.</li><li>pgvector can appear to be the full retrieval layer.</li></ul></div>
+          <div class="block"><h3>Add / Improve</h3><ul><li>GCS staging, local/SFTP/API document entry paths.</li><li>Hybrid search, reranking, citation validation and retrieval evaluation.</li><li>No-answer behavior when evidence is insufficient.</li></ul></div>
+        </div>
+        <div class="relationship">Updated relationship: Question -> Retrieval Planner -> Structured Retrieval + Document Retrieval -> GCS Staging -> Document AI -> Chunking -> Embeddings -> pgvector -> Context Builder -> RAG Prompt -> Answer Validator.</div>
+      </article>
+
+      <article class="panel security" id="security">
+        <div class="kicker">04 Controls</div>
+        <h2>Security, Governance And Audit</h2>
+        <div class="columns">
+          <div class="block"><h3>Correct</h3><ul><li>Identity, role mapping, tenant scope, permission decisions and human gates are present.</li><li>Policy version and audit event are correct controls.</li></ul></div>
+          <div class="block"><h3>Incorrect / Misleading</h3><ul><li>Filtered retrieval belongs inside Quatta, not in customer systems.</li><li>Revocation must cover cache, vectors, extracted text and answers.</li></ul></div>
+          <div class="block"><h3>Add / Improve</h3><ul><li>KMS, DLP/classification, immutable audit, break-glass admin and data residency.</li><li>Denied-path and cross-tenant tests in CI.</li></ul></div>
+        </div>
+        <div class="relationship">Updated relationship: Identity -> Token Validation -> Role Mapping -> Tenant Scope -> Permission Decision -> Retrieval Filter / AI Gateway Policy -> Human Gate -> Immutable Audit + Telemetry.</div>
+      </article>
+
+      <article class="panel" id="deployment">
+        <div class="kicker">05 Run</div>
+        <h2>Deployment And Operations Flow</h2>
+        <div class="columns">
+          <div class="block"><h3>Correct</h3><ul><li>Cloud Run, workers, Secret Manager, Cloud SQL, Cloud Storage, Vertex AI and Document AI are appropriate.</li><li>Dashboards, alerts, runbooks and rollback are necessary.</li></ul></div>
+          <div class="block"><h3>Incorrect / Misleading</h3><ul><li>The diagram is too optimistic if it stops at managed services.</li><li>CI/CD needs IaC, migrations, security scans and environment promotion.</li></ul></div>
+          <div class="block"><h3>Add / Improve</h3><ul><li>VPC/private connectivity, Cloud Tasks/Pub/Sub, HA/PITR, backup restore tests and SLOs.</li><li>Quota, cost and provider outage handling.</li></ul></div>
+        </div>
+        <div class="relationship">Updated relationship: GitHub -> CI Checks -> IaC Plan/Security Scan -> Build -> Deploy Approval -> Runtime Services -> Observability/SLO -> Rollback/DR.</div>
+      </article>
+
+      <article class="panel customer" id="onboarding">
+        <div class="kicker">06 Rollout</div>
+        <h2>Customer Onboarding Lifecycle</h2>
+        <div class="columns">
+          <div class="block"><h3>Correct</h3><ul><li>Discovery, access design, source inventory, platform setup and evaluation are in the right order.</li><li>Agents come after connectors and retrieval.</li></ul></div>
+          <div class="block"><h3>Incorrect / Misleading</h3><ul><li>Enterprise legal, security and change-management gates need more weight.</li><li>Agent MVP should wait for golden-case acceptance.</li></ul></div>
+          <div class="block"><h3>Add / Improve</h3><ul><li>DPA/DPIA, data classification, private connectivity signoff, UAT and support handover.</li><li>SLA/SLO agreement before scale.</li></ul></div>
+        </div>
+        <div class="relationship">Updated relationship: Discovery -> Legal/Security/Data Classification -> Connectivity/RBAC -> Connector Build -> Retrieval + Eval Harness -> Agent MVP -> UAT -> Pilot -> Scale.</div>
+      </article>
+
+      <article class="panel ai" id="inventory">
+        <div class="kicker">Example agent</div>
+        <h2>Inventory Agent Flow</h2>
+        <div class="columns">
+          <div class="block"><h3>Correct</h3><ul><li>Deterministic reconciliation before model explanation.</li><li>No writeback by default.</li><li>Confidence and citations are included.</li></ul></div>
+          <div class="block"><h3>Incorrect / Misleading</h3><ul><li>Pattern Tool must be deterministic, not open-ended agent reasoning.</li><li>Financial impact must be role-gated.</li></ul></div>
+          <div class="block"><h3>Add / Improve</h3><ul><li>Snapshots, cycle counts, reservations, ASN/receipts, returns, lot/batch/serial, bins, ownership and ATP impact.</li><li>UOM conversion and transaction matching.</li></ul></div>
+        </div>
+        <div class="relationship">Updated relationship: Question -> Intent -> Permission -> Evidence Fetch -> Reconcile -> Deterministic Pattern + Financial Tools -> LLM Explanation -> Recommended Actions -> Manager Gate.</div>
+      </article>
+
+      <article class="panel ai" id="claims">
+        <div class="kicker">Example agent</div>
+        <h2>Claims Agent Flow</h2>
+        <div class="columns">
+          <div class="block"><h3>Correct</h3><ul><li>Eligibility, liability, drafting, human review and approved send are separated.</li><li>Human approval is required before outbound action.</li></ul></div>
+          <div class="block"><h3>Incorrect / Misleading</h3><ul><li>Drafting must not imply sending.</li><li>Evidence pack and evidence summary are different components.</li></ul></div>
+          <div class="block"><h3>Add / Improve</h3><ul><li>Claim taxonomy, limitation periods, Incoterms/carrier SLA, duplicate check and deadline calculator.</li><li>Attachment security and outbound channel policy.</li></ul></div>
+        </div>
+        <div class="relationship">Updated relationship: Claim Intake -> Permission -> Ticket/Order/Contract/Evidence Retrieval -> Claim Case Context -> Eligibility Tool -> Liability Tool -> Evidence Summary -> Draft -> Human Review -> Approved Send/Export.</div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

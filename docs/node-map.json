@@ -1,93 +1,60 @@
 {
-  "HL-02": {
-    "label": "Quatta App",
-    "diagram": "01 Core Platform",
-    "doc": "docs/flows/01-core-platform.md#hl-01-user-request",
-    "stack": ["Python", "FastAPI", "Cloud Run", "OpenTelemetry"],
-    "status": "Designed"
-  },
-  "HL-03": {
-    "label": "Auth / RBAC",
-    "diagram": "01 Core Platform",
-    "doc": "docs/flows/01-core-platform.md#hl-03-auth--rbac",
-    "stack": ["Microsoft Entra ID", "FastAPI", "PostgreSQL"],
-    "status": "Designed"
-  },
-  "HL-04": {
-    "label": "AI Gateway",
-    "diagram": "01 Core Platform",
-    "doc": "docs/flows/01-core-platform.md#hl-04-ai-gateway",
-    "stack": ["FastAPI", "Vertex AI Gemini", "OpenAI optional", "Azure OpenAI optional"],
-    "status": "Designed"
-  },
-  "HL-05": {
-    "label": "Connector Modules",
-    "diagram": "02 Data Access",
-    "doc": "docs/flows/02-data-access.md#connector-pattern",
-    "stack": ["Python", "Secret Manager", "PostgreSQL", "OpenTelemetry"],
-    "status": "Designed"
-  },
-  "CON-04": {
-    "label": "Optional TTL Cache",
-    "diagram": "02 Data Access",
-    "doc": "docs/flows/02-data-access.md#con-04-optional-ttl-cache",
-    "stack": ["PostgreSQL", "FastAPI"],
-    "status": "Designed"
-  },
-  "CON-06": {
-    "label": "Freshness + Health",
-    "diagram": "02 Data Access",
-    "doc": "docs/flows/02-data-access.md#con-06-freshness--health",
-    "stack": ["OpenTelemetry", "PostgreSQL", "Cloud Monitoring"],
-    "status": "Designed"
-  },
-  "RAG-04": {
-    "label": "Document AI",
-    "diagram": "03 Retrieval + RAG",
-    "doc": "docs/flows/03-retrieval-rag.md#document-rag",
-    "stack": ["Vertex AI Document AI", "Cloud Run worker", "PostgreSQL"],
-    "status": "Designed"
-  },
-  "RAG-07": {
-    "label": "pgvector",
-    "diagram": "03 Retrieval + RAG",
-    "doc": "docs/flows/03-retrieval-rag.md#document-rag",
-    "stack": ["PostgreSQL", "pgvector", "Vertex AI embeddings"],
-    "status": "Designed"
-  },
-  "RAG-08": {
-    "label": "Context Builder",
-    "diagram": "03 Retrieval + RAG",
-    "doc": "docs/flows/03-retrieval-rag.md#context-builder",
-    "stack": ["FastAPI", "PostgreSQL", "pgvector"],
-    "status": "Designed"
-  },
-  "INV-07": {
-    "label": "Reconcile + Context",
-    "diagram": "04 Inventory Agent",
-    "doc": "docs/flows/04-inventory-agent.md#reconciliation-rules",
-    "stack": ["Python", "PostgreSQL", "Context Builder"],
-    "status": "Designed"
-  },
-  "INV-10": {
-    "label": "Root Cause Summary",
-    "diagram": "04 Inventory Agent",
-    "doc": "docs/flows/04-inventory-agent.md#output-contract",
-    "stack": ["LangGraph", "Vertex AI Gemini", "AI Gateway"],
-    "status": "Designed"
-  },
-  "CLM-12": {
-    "label": "Human Review",
-    "diagram": "05 Claims Agent",
-    "doc": "docs/flows/05-claims-agent.md#ai-boundary",
-    "stack": ["Quatta App", "FastAPI", "PostgreSQL audit"],
-    "status": "Designed"
-  },
-  "CLM-13": {
-    "label": "Approved Send",
-    "diagram": "05 Claims Agent",
-    "doc": "docs/flows/05-claims-agent.md#workflow",
-    "stack": ["FastAPI", "Email/API connector", "PostgreSQL"],
-    "status": "Designed"
-  }
+  "HL-01": { "label": "User", "diagram": "01 Core Platform", "doc": "docs/flows/01-core-platform.md", "status": "Designed" },
+  "HL-02": { "label": "Quatta App", "diagram": "01 Core Platform", "doc": "docs/flows/01-core-platform.md", "status": "Designed" },
+  "HL-03": { "label": "Auth / RBAC", "diagram": "01 Core Platform", "doc": "docs/flows/01-core-platform.md#hl-03-auth--rbac", "status": "Designed" },
+  "HL-04": { "label": "AI Gateway", "diagram": "01 Core Platform", "doc": "docs/flows/01-core-platform.md#hl-04-ai-gateway", "status": "Designed" },
+  "HL-05": { "label": "Connector Layer", "diagram": "01 Core Platform", "doc": "docs/flows/02-data-access.md#connector-pattern", "status": "Designed" },
+  "HL-06": { "label": "Retrieval Layer", "diagram": "01 Core Platform", "doc": "docs/flows/03-retrieval-rag.md", "status": "Designed" },
+  "HL-07": { "label": "Context Builder", "diagram": "01 Core Platform", "doc": "docs/flows/03-retrieval-rag.md#context-builder", "status": "Designed" },
+  "HL-08": { "label": "AI / Agent Layer", "diagram": "01 Core Platform", "doc": "docs/flows/01-core-platform.md#hl-08-langgraph", "status": "Designed" },
+  "HL-09": { "label": "Grounded Response", "diagram": "01 Core Platform", "doc": "docs/flows/01-core-platform.md", "status": "Designed" },
+  "HL-10": { "label": "Customer Systems", "diagram": "01 Core Platform", "doc": "docs/flows/02-data-access.md", "status": "Designed" },
+  "SEC-00": { "label": "Security / Monitoring Controls", "diagram": "Core Controls", "doc": "docs/implementation/06-governance-security-monitoring.md", "status": "Designed" },
+  "CON-01": { "label": "Customer Source", "diagram": "02 Data Access", "doc": "docs/flows/02-data-access.md", "status": "Designed" },
+  "CON-02": { "label": "Authenticate", "diagram": "02 Data Access", "doc": "docs/flows/02-data-access.md", "status": "Designed" },
+  "CON-03": { "label": "Connector Modules", "diagram": "02 Data Access", "doc": "docs/flows/02-data-access.md#connector-pattern", "status": "Designed" },
+  "CON-04": { "label": "Optional TTL Cache", "diagram": "02 Data Access", "doc": "docs/flows/02-data-access.md#con-04-optional-ttl-cache", "status": "Designed" },
+  "CON-05": { "label": "Normalize / Validate / Normalized Data", "diagram": "02 Data Access", "doc": "docs/flows/02-data-access.md", "status": "Designed" },
+  "CON-06": { "label": "Freshness + Health", "diagram": "02 Data Access", "doc": "docs/flows/02-data-access.md#con-06-freshness--health", "status": "Designed" },
+  "CON-07": { "label": "Agent Consumers", "diagram": "02 Data Access", "doc": "docs/flows/02-data-access.md#mcp-guidance", "status": "Designed" },
+  "CON-08": { "label": "Context Builder Input", "diagram": "02 Data Access", "doc": "docs/flows/03-retrieval-rag.md#context-builder", "status": "Designed" },
+  "CON-09": { "label": "Connector Controls", "diagram": "02 Data Access", "doc": "docs/implementation/06-governance-security-monitoring.md", "status": "Designed" },
+  "RAG-01": { "label": "Structured Retrieval", "diagram": "03 Retrieval + RAG", "doc": "docs/flows/03-retrieval-rag.md#structured-retrieval", "status": "Designed" },
+  "RAG-02": { "label": "Fact Results", "diagram": "03 Retrieval + RAG", "doc": "docs/flows/03-retrieval-rag.md#structured-retrieval", "status": "Designed" },
+  "RAG-03": { "label": "Retrieval Sources", "diagram": "03 Retrieval + RAG", "doc": "docs/flows/03-retrieval-rag.md", "status": "Designed" },
+  "RAG-04": { "label": "Document AI", "diagram": "03 Retrieval + RAG", "doc": "docs/flows/03-retrieval-rag.md#document-rag", "status": "Designed" },
+  "RAG-05": { "label": "Chunking", "diagram": "03 Retrieval + RAG", "doc": "docs/flows/03-retrieval-rag.md#document-rag", "status": "Designed" },
+  "RAG-06": { "label": "Embeddings", "diagram": "03 Retrieval + RAG", "doc": "docs/flows/03-retrieval-rag.md#document-rag", "status": "Designed" },
+  "RAG-07": { "label": "pgvector", "diagram": "03 Retrieval + RAG", "doc": "docs/flows/03-retrieval-rag.md#document-rag", "status": "Designed" },
+  "RAG-08": { "label": "Context Builder", "diagram": "03 Retrieval + RAG", "doc": "docs/flows/03-retrieval-rag.md#context-builder", "status": "Designed" },
+  "RAG-09": { "label": "RAG Prompt", "diagram": "03 Retrieval + RAG", "doc": "docs/flows/03-retrieval-rag.md#context-builder", "status": "Designed" },
+  "RAG-10": { "label": "Answer", "diagram": "03 Retrieval + RAG", "doc": "docs/flows/03-retrieval-rag.md#context-builder", "status": "Designed" },
+  "RAG-11": { "label": "RAG Controls", "diagram": "03 Retrieval + RAG", "doc": "docs/implementation/06-governance-security-monitoring.md", "status": "Designed" },
+  "RAG-12": { "label": "Cloud Storage Staging", "diagram": "03 Retrieval + RAG", "doc": "docs/implementation/03-retrieval-rag.md", "status": "Designed" },
+  "INV-01": { "label": "User Question", "diagram": "04 Inventory Agent", "doc": "docs/flows/04-inventory-agent.md#workflow", "status": "Designed" },
+  "INV-02": { "label": "Intent Detection", "diagram": "04 Inventory Agent", "doc": "docs/flows/04-inventory-agent.md#workflow", "status": "Designed" },
+  "INV-03": { "label": "Permission Check", "diagram": "04 Inventory Agent", "doc": "docs/flows/04-inventory-agent.md#workflow", "status": "Designed" },
+  "INV-04": { "label": "ERP Transactions", "diagram": "04 Inventory Agent", "doc": "docs/flows/04-inventory-agent.md#workflow", "status": "Designed" },
+  "INV-05": { "label": "WMS Transactions", "diagram": "04 Inventory Agent", "doc": "docs/flows/04-inventory-agent.md#workflow", "status": "Designed" },
+  "INV-06": { "label": "Tickets, SOPs and Contract Rules", "diagram": "04 Inventory Agent", "doc": "docs/flows/04-inventory-agent.md#workflow", "status": "Designed" },
+  "INV-07": { "label": "Reconcile + Context", "diagram": "04 Inventory Agent", "doc": "docs/flows/04-inventory-agent.md#workflow", "status": "Designed" },
+  "INV-08": { "label": "Pattern Tool", "diagram": "04 Inventory Agent", "doc": "docs/flows/04-inventory-agent.md#workflow", "status": "Designed" },
+  "INV-09": { "label": "Financial Impact", "diagram": "04 Inventory Agent", "doc": "docs/flows/04-inventory-agent.md#workflow", "status": "Designed" },
+  "INV-10": { "label": "Root Cause Summary", "diagram": "04 Inventory Agent", "doc": "docs/flows/04-inventory-agent.md#workflow", "status": "Designed" },
+  "INV-11": { "label": "Recommended Actions", "diagram": "04 Inventory Agent", "doc": "docs/flows/04-inventory-agent.md#workflow", "status": "Designed" },
+  "INV-12": { "label": "Inventory Workflow Controls", "diagram": "04 Inventory Agent", "doc": "docs/implementation/06-governance-security-monitoring.md", "status": "Designed" },
+  "CLM-01": { "label": "Claim Request", "diagram": "05 Claims Agent", "doc": "docs/flows/05-claims-agent.md#workflow", "status": "Designed" },
+  "CLM-02": { "label": "Permission", "diagram": "05 Claims Agent", "doc": "docs/flows/05-claims-agent.md#workflow", "status": "Designed" },
+  "CLM-03": { "label": "Ticket Data", "diagram": "05 Claims Agent", "doc": "docs/flows/05-claims-agent.md#workflow", "status": "Designed" },
+  "CLM-04": { "label": "Delivery / Order Data", "diagram": "05 Claims Agent", "doc": "docs/flows/05-claims-agent.md#workflow", "status": "Designed" },
+  "CLM-05": { "label": "Contract Rules", "diagram": "05 Claims Agent", "doc": "docs/flows/05-claims-agent.md#workflow", "status": "Designed" },
+  "CLM-06": { "label": "Evidence Collection", "diagram": "05 Claims Agent", "doc": "docs/flows/05-claims-agent.md#workflow", "status": "Designed" },
+  "CLM-07": { "label": "Claim Case Context", "diagram": "05 Claims Agent", "doc": "docs/flows/05-claims-agent.md#workflow", "status": "Designed" },
+  "CLM-08": { "label": "Eligibility", "diagram": "05 Claims Agent", "doc": "docs/flows/05-claims-agent.md#workflow", "status": "Designed" },
+  "CLM-09": { "label": "Liability", "diagram": "05 Claims Agent", "doc": "docs/flows/05-claims-agent.md#workflow", "status": "Designed" },
+  "CLM-10": { "label": "Evidence Summary", "diagram": "05 Claims Agent", "doc": "docs/flows/05-claims-agent.md#workflow", "status": "Designed" },
+  "CLM-11": { "label": "Draft Claim Email", "diagram": "05 Claims Agent", "doc": "docs/flows/05-claims-agent.md#workflow", "status": "Designed" },
+  "CLM-12": { "label": "Human Review", "diagram": "05 Claims Agent", "doc": "docs/flows/05-claims-agent.md#workflow", "status": "Designed" },
+  "CLM-13": { "label": "Approved Send", "diagram": "05 Claims Agent", "doc": "docs/flows/05-claims-agent.md#workflow", "status": "Designed" },
+  "CLM-14": { "label": "Claims Workflow Controls", "diagram": "05 Claims Agent", "doc": "docs/implementation/06-governance-security-monitoring.md", "status": "Designed" }
 }

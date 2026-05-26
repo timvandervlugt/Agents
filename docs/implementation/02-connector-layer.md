@@ -34,6 +34,9 @@ The connector layer retrieves read-only data from ERP, WMS, SQL databases, Excel
    - cache TTL
    - last successful call
    - health status
+   - connector owner and escalation contact
+   - schema/data-contract version
+   - rate-limit and retry policy
 3. Create source-specific adapters for ERP, WMS, SQL, files, SharePoint, API, and documents.
 4. Implement read-only safeguards:
    - allowlisted endpoints and queries
@@ -59,6 +62,13 @@ The connector layer retrieves read-only data from ERP, WMS, SQL databases, Excel
    - latency
    - retry count
    - partial-result eligibility
+8. Add production ingestion controls:
+   - idempotency key per source request or file
+   - queue or job ID for scheduled sync/document ingestion
+   - dead-letter queue for unrecoverable connector jobs
+   - backpressure and rate-limit handling
+   - credential rotation workflow
+   - private connectivity option for customer networks
 
 ## MCP Guidance
 
@@ -83,6 +93,8 @@ Keep the underlying Python connector logic independent from MCP so it can also b
 ## Failure Handling
 
 - Retry transient errors with backoff.
+- Use idempotency keys so retries do not duplicate cached records, indexed documents, or outbound status updates.
+- Send unrecoverable async jobs to a dead-letter queue with tenant, source, job ID, error class, and owner.
 - Return partial results when at least one source is unavailable.
 - Mark missing sources in the response.
 - Escalate repeated failures to an integration owner.

@@ -18,6 +18,7 @@ Quatta is not a replacement for ERP, WMS, SQL, SharePoint, Excel, documents, or 
 
 - [Implementation Plan](implementation-plan.md): build phases, services, and done criteria.
 - [Architecture Map](architecture-map.md): stable step IDs that connect flowchart nodes to implementation sections.
+- [Architecture Critical Review](architecture-critical-review.md): production architecture critique, gaps, and updated relationships.
 - [01 Core Platform](flows/01-core-platform.md): app, auth, gateway, retrieval, agents, audit.
 - [02 Data Access](flows/02-data-access.md): connector patterns, cache, freshness, failure handling.
 - [03 Retrieval + RAG](flows/03-retrieval-rag.md): structured retrieval and document RAG.
