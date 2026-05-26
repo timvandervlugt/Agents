@@ -369,6 +369,8 @@
       <a href="#build-plan">Build Plan</a>
       <a href="#services">Services</a>
       <a href="#flow-docs">Flow Docs</a>
+      <a href="quatta-implementation-docs.html">Readable Docs</a>
+      <a href="quatta-node-implementation-catalog.html">Node Catalog</a>
       <a href="#roadmap">Roadmap</a>
     </nav>
   </header>
@@ -383,9 +385,10 @@
           production-ready customer pilot must prove.
         </p>
         <div class="doc-links">
-          <a href="docs/implementation/00-implementation-overview.md">Full overview doc</a>
-          <a href="docs/implementation/06-governance-security-monitoring.md">Governance doc</a>
-          <a href="docs/implementation/07-delivery-roadmap.md">Roadmap doc</a>
+          <a href="quatta-implementation-docs.html">Readable implementation docs</a>
+          <a href="quatta-node-implementation-catalog.html">Node-by-node catalog</a>
+          <a href="docs/implementation/00-implementation-overview.md">Markdown overview</a>
+          <a href="docs/implementation/08-node-implementation-catalog.md">Markdown node catalog</a>
         </div>
       </div>
       <aside class="panel decision-box" aria-label="Key implementation decisions">
@@ -445,11 +448,14 @@
         </div>
       </div>
       <div class="flow-grid">
-        <a class="card platform" href="docs/implementation/01-high-level-platform.md"><h3>01 High-Level Platform</h3><p>Cloud Run, FastAPI, Entra ID, AI Gateway, PostgreSQL audit, OpenTelemetry and tenant isolation.</p></a>
-        <a class="card customer" href="docs/implementation/02-connector-layer.md"><h3>02 Connector Layer</h3><p>Read-only adapters, source credentials, caching, normalized output, connector health and MCP tool shape.</p></a>
-        <a class="card platform" href="docs/implementation/03-retrieval-rag.md"><h3>03 Retrieval + RAG</h3><p>Structured retrieval, Document AI, chunking, embeddings, pgvector, metadata filters and context building.</p></a>
-        <a class="card ai" href="docs/implementation/04-inventory-agent.md"><h3>04 Inventory Agent</h3><p>Stock variance workflow, ERP/WMS reconciliation, pattern analysis, financial impact and recommendations.</p></a>
-        <a class="card ai" href="docs/implementation/05-claims-agent.md"><h3>05 Claims Agent</h3><p>Claim eligibility, liability calculation, evidence summary, draft email, human review and approved send.</p></a>
+        <a class="card platform" href="quatta-implementation-docs.html#platform"><h3>01 High-Level Platform</h3><p>Cloud Run, FastAPI, Entra ID, AI Gateway, PostgreSQL audit, OpenTelemetry and tenant isolation.</p></a>
+        <a class="card customer" href="quatta-implementation-docs.html#connectors"><h3>02 Connector Layer</h3><p>Read-only adapters, source credentials, caching, normalized output, connector health and MCP tool shape.</p></a>
+        <a class="card platform" href="quatta-implementation-docs.html#retrieval"><h3>03 Retrieval + RAG</h3><p>Structured retrieval, Document AI, chunking, embeddings, pgvector, metadata filters and context building.</p></a>
+        <a class="card security" href="quatta-implementation-docs.html#security"><h3>04 Security + Governance</h3><p>Tenant filters, RBAC, audit fields, policy versioning, fail-closed behavior and monitoring controls.</p></a>
+        <a class="card platform" href="quatta-implementation-docs.html#deployment"><h3>05 Deployment + Operations</h3><p>Cloud Run services, workers, CI/CD, dashboards, alerts, runbooks and service account boundaries.</p></a>
+        <a class="card customer" href="quatta-implementation-docs.html#roadmap"><h3>06 Customer Onboarding</h3><p>Source discovery, permission design, connector rollout, evaluation cases and pilot readiness.</p></a>
+        <a class="card ai" href="quatta-implementation-docs.html#inventory"><h3>Example: Inventory Agent</h3><p>Stock variance workflow, ERP/WMS reconciliation, pattern analysis, financial impact and recommendations.</p></a>
+        <a class="card ai" href="quatta-implementation-docs.html#claims"><h3>Example: Claims Agent</h3><p>Claim eligibility, liability calculation, evidence summary, draft email, human review and approved send.</p></a>
       </div>
     </section>
 

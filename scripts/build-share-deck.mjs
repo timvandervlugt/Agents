@@ -11,8 +11,11 @@ const slides = [
   ["01-high-level-quatta-architecture.png", "High-Level Quatta Architecture"],
   ["02-connector-layer-flow.png", "Connector Layer Flow"],
   ["03-retrieval-rag-flow.png", "Retrieval + RAG Flow"],
-  ["04-inventory-agent-flow.png", "Inventory Agent Flow"],
-  ["05-claims-agent-flow.png", "Claims Agent Flow"]
+  ["04-security-governance-flow.png", "Security, Governance and Audit Flow"],
+  ["05-deployment-operations-flow.png", "Deployment and Operations Flow"],
+  ["06-customer-onboarding-flow.png", "Customer Onboarding and Implementation Lifecycle"],
+  ["07-inventory-agent-example-flow.png", "Example: Inventory Agent Flow"],
+  ["08-claims-agent-example-flow.png", "Example: Claims Agent Flow"]
 ];
 
 const pptx = new pptxgenModule();

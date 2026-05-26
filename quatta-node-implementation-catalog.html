@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quatta Node Implementation Catalog</title>
+  <style>
+    :root {
+      --ink: #14213d;
+      --muted: #5c6c82;
+      --line: #cbd6e6;
+      --paper: #fbfcff;
+      --platform: #188b82;
+      --ai: #c77700;
+      --security: #3267d6;
+      --customer: #7856d9;
+      --soft-platform: #edf8f6;
+      --soft-ai: #fff5e8;
+      --soft-security: #eef3fb;
+      --soft-customer: #f5f1ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      min-height: 72px;
+      padding: 16px 32px;
+      background: rgba(255,255,255,.94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(10px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 900;
+    }
+
+    .mark {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      color: white;
+      background: var(--platform);
+      font-weight: 900;
+    }
+
+    .nav {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav a,
+    .doc-link {
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 800;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 9px 12px;
+      background: white;
+    }
+
+    main {
+      width: min(1180px, calc(100vw - 40px));
+      margin: 32px auto 64px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 24px;
+      align-items: stretch;
+      margin-bottom: 24px;
+    }
+
+    .panel {
+      background: rgba(255,255,255,.92);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 18px 50px rgba(38, 54, 88, .08);
+    }
+
+    .hero-copy,
+    .quick-nav {
+      padding: 28px;
+    }
+
+    .kicker {
+      margin-bottom: 8px;
+      color: var(--platform);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: 38px;
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 24px;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .quick-nav {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .quick-nav a {
+      text-decoration: none;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-left: 6px solid var(--platform);
+      border-radius: 8px;
+      padding: 12px 14px;
+      background: white;
+      font-weight: 850;
+    }
+
+    .catalog-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .node {
+      padding: 22px;
+      border-top: 7px solid var(--platform);
+      scroll-margin-top: 92px;
+    }
+
+    .node.ai { border-top-color: var(--ai); }
+    .node.security { border-top-color: var(--security); }
+    .node.customer { border-top-color: var(--customer); }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 14px;
+    }
+
+    .meta span {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: #fff;
+      color: #34455f;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .columns {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .block {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      background: #fff;
+      min-width: 0;
+    }
+
+    .block h4 {
+      margin: 0 0 8px;
+      font-size: 14px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    li { margin: 0 0 6px; }
+
+    code {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1px 5px;
+      background: #f6f8fb;
+      color: #1d3557;
+    }
+
+    @media (max-width: 900px) {
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .hero,
+      .columns { grid-template-columns: 1fr; }
+      h1 { font-size: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><div class="mark">Q</div><div>Quatta Node Implementation Catalog</div></div>
+    <nav class="nav" aria-label="Catalog navigation">
+      <a href="quatta-architecture-visuals.html">Flowcharts</a>
+      <a href="quatta-implementation-guide.html">Implementation Guide</a>
+      <a href="docs/implementation/08-node-implementation-catalog.md">Markdown Source</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="panel hero-copy">
+        <div class="kicker">Tile-by-tile implementation</div>
+        <h1>What every flowchart node means and how to build it</h1>
+        <p>
+          This catalog turns every important tile in the Quatta architecture map into an implementation guide.
+          It is intentionally practical: what to install, what to configure at a customer, what data contract to
+          preserve, and how to prove it is production-ready.
+        </p>
+        <p>
+          Security items such as tenant filters, RBAC, document versions and citations are controls applied across
+          the retrieval and agent flows. They are not downstream dataflow steps. That is why the flowcharts show them
+          as a control band rather than arrows from individual processing nodes.
+        </p>
+      </div>
+      <aside class="panel quick-nav">
+        <a href="#source-systems">Customer Systems</a>
+        <a href="#auth-rbac">Auth, RBAC and Tenant Filters</a>
+        <a href="#connectors">Connector Modules</a>
+        <a href="#document-ai">Document AI</a>
+        <a href="#embeddings">Embeddings / Vertex AI</a>
+        <a href="#pgvector">pgvector</a>
+        <a href="#context-builder">Context Builder</a>
+        <a href="#inventory-analysis">Inventory Analysis</a>
+        <a href="#claims-workflow">Claims Workflow</a>
+      </aside>
+    </section>
+
+    <section class="catalog-grid">
+      <article class="panel node customer" id="source-systems">
+        <h2>Customer Systems: ERP, WMS, SQL, Excel, SharePoint, APIs and Documents</h2>
+        <div class="meta"><span>Customer Systems</span><span>Read-only by default</span><span>System of record remains external</span></div>
+        <div class="columns">
+          <div class="block"><h4>What It Is</h4><p>The operational source landscape Quatta reads from. Quatta does not replace these systems and does not make them secondary databases.</p></div>
+          <div class="block"><h4>What To Implement</h4><ul><li>Inventory source inventory per tenant.</li><li>Read-only connection method per system.</li><li>Source owner, SLA, freshness and permission model.</li><li>Sample fixtures for each source type.</li></ul></div>
+          <div class="block"><h4>Done Criteria</h4><ul><li>Every source has an owner and access method.</li><li>No write credentials are used by default.</li><li>Queries return source IDs and timestamps.</li><li>Unavailable sources are visible in responses.</li></ul></div>
+        </div>
+      </article>
+
+      <article class="panel node" id="quatta-app">
+        <h2>Quatta App / FastAPI on Cloud Run</h2>
+        <div class="meta"><span>Python FastAPI</span><span>Cloud Run</span><span>OpenTelemetry</span></div>
+        <div class="columns">
+          <div class="block"><h4>What It Is</h4><p>The user-facing backend and workflow API for questions, reviews, approvals and responses.</p></div>
+          <div class="block"><h4>What To Implement</h4><ul><li>Typed request and response models.</li><li>Trace ID middleware.</li><li>Health endpoints.</li><li>Session context with tenant, user and role.</li></ul></div>
+          <div class="block"><h4>Acceptance Criteria</h4><ul><li>Every request has a trace ID.</li><li>Auth context is available before connector calls.</li><li>Errors use structured response contracts.</li></ul></div>
+        </div>
+      </article>
+
+      <article class="panel node security" id="auth-rbac">
+        <h2>Auth / RBAC / Tenant and Role Filters</h2>
+        <div class="meta"><span>Microsoft Entra ID</span><span>FastAPI middleware</span><span>PostgreSQL role map</span></div>
+        <div class="columns">
+          <div class="block"><h4>What It Is</h4><p>Authentication proves who the user is. RBAC and tenant filters decide which sites, customers, articles, orders, claims and documents they can use.</p></div>
+          <div class="block"><h4>What To Implement</h4><ul><li>Register an Entra application.</li><li>Validate OIDC tokens in FastAPI.</li><li>Map Entra groups to Quatta roles.</li><li>Store tenant, site, customer and document ACL rules.</li><li>Apply filters before SQL, API and vector retrieval.</li></ul></div>
+          <div class="block"><h4>Controls</h4><ul><li>Denied permission checks are audited.</li><li>Vector retrieval never runs without tenant and ACL metadata filters.</li><li>Document ACL changes trigger hide or re-index behavior.</li></ul></div>
+        </div>
+      </article>
+
+      <article class="panel node security" id="ai-gateway">
+        <h2>AI Gateway / Model Policy</h2>
+        <div class="meta"><span>FastAPI</span><span>Vertex AI Gemini</span><span>OpenAI optional</span><span>Azure OpenAI optional</span></div>
+        <div class="columns">
+          <div class="block"><h4>What It Is</h4><p>The single control point for model calls, prompt policy, tool permissions, response schemas and safety checks.</p></div>
+          <div class="block"><h4>What To Implement</h4><ul><li>Provider interface for Gemini, OpenAI and Azure OpenAI.</li><li>Prompt templates with version IDs.</li><li>Tool allowlists per workflow.</li><li>Response validation with citations and confidence.</li></ul></div>
+          <div class="block"><h4>Monitoring</h4><ul><li>Provider, model, latency, tokens and estimated cost.</li><li>Safety outcome and validation errors.</li><li>Prompt version and policy version.</li></ul></div>
+        </div>
+      </article>
+
+      <article class="panel node" id="connectors">
+        <h2>Connector Modules</h2>
+        <div class="meta"><span>Python</span><span>Secret Manager</span><span>PostgreSQL registry</span><span>MCP-ready tools</span></div>
+        <div class="columns">
+          <div class="block"><h4>Contract</h4><ul><li><code>authenticate()</code></li><li><code>fetch(params)</code></li><li><code>normalize(records)</code></li><li><code>health_check()</code></li><li><code>emit_audit_event()</code></li></ul></div>
+          <div class="block"><h4>What To Implement</h4><ul><li>Read-only ERP, WMS, SQL, SharePoint, API and file adapters.</li><li>Canonical models for inventory, orders, tickets, contracts and evidence.</li><li>Optional TTL cache with freshness warnings.</li><li>MCP wrappers only for approved agent-callable tools.</li></ul></div>
+          <div class="block"><h4>Done Criteria</h4><ul><li>No connector silently fails.</li><li>Every result has source, record ID and retrieval timestamp.</li><li>Secrets are referenced, not stored in config tables.</li></ul></div>
+        </div>
+      </article>
+
+      <article class="panel node" id="structured-retrieval">
+        <h2>Structured Retrieval / Semantic Map</h2>
+        <div class="meta"><span>SQL/API retrieval</span><span>Canonical schema</span><span>Query allowlist</span></div>
+        <div class="columns">
+          <div class="block"><h4>What It Is</h4><p>Live retrieval of operational facts such as stock, movements, orders, deliveries, tickets and claim status.</p></div>
+          <div class="block"><h4>What To Implement</h4><ul><li>Map source fields to canonical entities.</li><li>Define allowlisted query templates.</li><li>Parameterize item, site, customer, order and date filters.</li><li>Return row counts, source timestamps and provenance.</li></ul></div>
+          <div class="block"><h4>When To Use</h4><ul><li>Use structured retrieval for exact facts and calculations.</li><li>Use RAG only for policy, contract and narrative evidence.</li></ul></div>
+        </div>
+      </article>
+
+      <article class="panel node" id="document-ai">
+        <h2>Document AI / OCR Extraction</h2>
+        <div class="meta"><span>Vertex AI Document AI</span><span>Cloud Run worker</span><span>Document metadata</span></div>
+        <div class="columns">
+          <div class="block"><h4>What It Is</h4><p>OCR and layout extraction for PDFs, scans, contracts, PODs, SOPs, photos and claims evidence before indexing.</p></div>
+          <div class="block"><h4>What To Implement</h4><ul><li>Create the right Document AI processor per document class.</li><li>Store extracted text, tables, page numbers and confidence.</li><li>Preserve document ID, version, modified timestamp and ACL.</li><li>Send failed or low-confidence OCR to review.</li></ul></div>
+          <div class="block"><h4>Acceptance Criteria</h4><ul><li>Every extracted passage points to page and document version.</li><li>Deleted or permission-revoked documents stop being retrievable.</li><li>OCR failures are visible in ingestion metrics.</li></ul></div>
+        </div>
+      </article>
+
+      <article class="panel node" id="chunking">
+        <h2>Chunking</h2>
+        <div class="meta"><span>Document ingestion</span><span>Semantic sections</span><span>Citation quality</span></div>
+        <div class="columns">
+          <div class="block"><h4>What It Is</h4><p>Splitting extracted documents into retrieval units that preserve meaning, section title, page range and permission metadata.</p></div>
+          <div class="block"><h4>What To Implement</h4><ul><li>Chunk by headings, clauses, tables and page ranges.</li><li>Store parent document, section, page range and version.</li><li>Keep enough overlap for context, but avoid huge chunks.</li><li>Flag tables and contract clauses explicitly.</li></ul></div>
+          <div class="block"><h4>Controls</h4><ul><li>Chunking does not grant permissions.</li><li>ACL and tenant metadata travel with every chunk.</li><li>Re-chunk when document version changes.</li></ul></div>
+        </div>
+      </article>
+
+      <article class="panel node" id="embeddings">
+        <h2>Embeddings / Vertex AI</h2>
+        <div class="meta"><span>Vertex AI embeddings</span><span>Cloud Run ingestion</span><span>pgvector input</span></div>
+        <div class="columns">
+          <div class="block"><h4>What It Is</h4><p>An embedding is a vector representation of a chunk, used to find semantically similar SOP, contract and evidence passages.</p></div>
+          <div class="block"><h4>What To Implement At A Customer</h4><ul><li>Choose and version the embedding model.</li><li>Embed only permission-scoped, approved document chunks.</li><li>Store vector plus tenant, ACL, document, chunk and version metadata.</li><li>Re-embed changed chunks and retire old versions.</li></ul></div>
+          <div class="block"><h4>Operations</h4><ul><li>Monitor embedding job failures and backlog.</li><li>Track model version per vector row.</li><li>Test retrieval against known SOP and contract questions.</li></ul></div>
+        </div>
+      </article>
+
+      <article class="panel node" id="pgvector">
+        <h2>pgvector</h2>
+        <div class="meta"><span>PostgreSQL</span><span>Vector index</span><span>Metadata filters first</span></div>
+        <div class="columns">
+          <div class="block"><h4>What It Is</h4><p>The vector store inside PostgreSQL. It keeps semantic search close to audit, tenant metadata and operational schemas.</p></div>
+          <div class="block"><h4>What To Implement</h4><ul><li>Enable the <code>vector</code> extension.</li><li>Create <code>document_chunks</code> and <code>document_embeddings</code> tables.</li><li>Index tenant, ACL, document version and source timestamp.</li><li>Apply metadata filters before similarity ranking.</li></ul></div>
+          <div class="block"><h4>Done Criteria</h4><ul><li>Cross-tenant retrieval tests return zero rows.</li><li>Revoked documents disappear from search.</li><li>Top-k results include scores and citations.</li></ul></div>
+        </div>
+      </article>
+
+      <article class="panel node" id="context-builder">
+        <h2>Context Builder</h2>
+        <div class="meta"><span>FastAPI service</span><span>SQL/API facts</span><span>RAG passages</span><span>Citations</span></div>
+        <div class="columns">
+          <div class="block"><h4>What It Is</h4><p>The merge layer that turns structured facts and document passages into a compact, grounded context package for agents.</p></div>
+          <div class="block"><h4>What To Implement</h4><ul><li>Merge facts, passages, citations, warnings and freshness metadata.</li><li>Deduplicate evidence and flag contradictions.</li><li>Limit prompt size without dropping required citations.</li><li>Return a stable JSON schema to LangGraph.</li></ul></div>
+          <div class="block"><h4>Acceptance Criteria</h4><ul><li>Every answer can be reconstructed from the context package.</li><li>Missing, stale or conflicting evidence is visible.</li><li>Context contains no unauthorized source records.</li></ul></div>
+        </div>
+      </article>
+
+      <article class="panel node ai" id="langgraph">
+        <h2>LangGraph Agent Workflows</h2>
+        <div class="meta"><span>LangGraph</span><span>Deterministic tools</span><span>Human gates</span></div>
+        <div class="columns">
+          <div class="block"><h4>What It Is</h4><p>Workflow orchestration for multi-step reasoning, tool calls, retries, branching and human checkpoints.</p></div>
+          <div class="block"><h4>What To Implement</h4><ul><li>State schema per workflow.</li><li>Approved tool nodes for retrieval and calculations.</li><li>Model nodes only behind the AI Gateway.</li><li>Human review nodes for high-risk actions.</li></ul></div>
+          <div class="block"><h4>Controls</h4><ul><li>Agents do not bypass connectors.</li><li>Financial and liability calculations are deterministic tools.</li><li>Every node execution is audited.</li></ul></div>
+        </div>
+      </article>
+
+      <article class="panel node security" id="audit-monitoring">
+        <h2>Audit Log / OpenTelemetry / Governance</h2>
+        <div class="meta"><span>PostgreSQL audit</span><span>OpenTelemetry</span><span>Cloud Monitoring</span></div>
+        <div class="columns">
+          <div class="block"><h4>What It Is</h4><p>The ability to reconstruct who asked what, which data was retrieved, which model/tool was used, and why the response was allowed.</p></div>
+          <div class="block"><h4>What To Capture</h4><ul><li>Trace ID, tenant, user, role and request.</li><li>Sources queried, row counts, document/chunk IDs and timestamps.</li><li>Model, prompt version, token/cost estimate and safety result.</li><li>Permission denials, validation failures and human approvals.</li></ul></div>
+          <div class="block"><h4>Failure Mode</h4><ul><li>If audit write fails for high-risk flows, fail closed.</li><li>For low-risk read-only flows, degrade only with explicit warning and retry queue.</li></ul></div>
+        </div>
+      </article>
+
+      <article class="panel node" id="inventory-retrieval">
+        <h2>Inventory Evidence Retrieval</h2>
+        <div class="meta"><span>ERP transactions</span><span>WMS movements</span><span>Tickets</span><span>SOP/contract retrieval</span></div>
+        <div class="columns">
+          <div class="block"><h4>What It Is</h4><p>The data collection phase for the question: why does article X have stock differences?</p></div>
+          <div class="block"><h4>What To Implement</h4><ul><li>Fetch ERP receipts, shipments, adjustments and reversals.</li><li>Fetch WMS picks, moves, counts and location changes.</li><li>Fetch tickets, claims and operational notes.</li><li>Retrieve SOP and contract clauses for tolerances and rules.</li></ul></div>
+          <div class="block"><h4>Done Criteria</h4><ul><li>Evidence is aligned by item, site, unit and time zone.</li><li>Missing source systems are explicit.</li><li>All evidence has source IDs and timestamps.</li></ul></div>
+        </div>
+      </article>
+
+      <article class="panel node ai" id="inventory-analysis">
+        <h2>Inventory Pattern Analysis, Financial Impact and Root Cause</h2>
+        <div class="meta"><span>Python deterministic tools</span><span>LangGraph</span><span>Gemini summary</span></div>
+        <div class="columns">
+          <div class="block"><h4>What It Is</h4><p>Deterministic analysis finds variance patterns and exposure. The model explains the result in business language with citations.</p></div>
+          <div class="block"><h4>What To Implement</h4><ul><li>Reconcile ERP and WMS event timelines.</li><li>Detect common variance signals: delayed receipt, unit conversion, manual adjustment, misplaced stock, count timing.</li><li>Calculate financial exposure with controlled formulas.</li><li>Generate root cause summary and recommended actions.</li></ul></div>
+          <div class="block"><h4>Controls</h4><ul><li>Low confidence escalates to human review.</li><li>AI does not invent missing transactions.</li><li>Recommendations are no-writeback unless approved separately.</li></ul></div>
+        </div>
+      </article>
+
+      <article class="panel node ai" id="claims-workflow">
+        <h2>Claims Workflow: Eligibility, Liability and Evidence</h2>
+        <div class="meta"><span>Contract rules</span><span>Deterministic liability</span><span>Evidence pack</span><span>Draft email</span></div>
+        <div class="columns">
+          <div class="block"><h4>What It Is</h4><p>The workflow that decides whether a claim is likely eligible, calculates liability and drafts a claim package.</p></div>
+          <div class="block"><h4>What To Implement</h4><ul><li>Retrieve ticket, delivery, order and proof data.</li><li>Retrieve contract terms, caps and SLA clauses.</li><li>Run deterministic eligibility and liability tools.</li><li>Collect evidence and draft an email with attachments and proof gaps.</li></ul></div>
+          <div class="block"><h4>Acceptance Criteria</h4><ul><li>AI cannot approve or send claims by itself.</li><li>Liability formula and contract clause are visible.</li><li>Evidence package is complete or explicitly marked incomplete.</li></ul></div>
+        </div>
+      </article>
+
+      <article class="panel node security" id="human-review">
+        <h2>Human Review</h2>
+        <div class="meta"><span>Approval UI</span><span>Audit trail</span><span>Versioned draft</span></div>
+        <div class="columns">
+          <div class="block"><h4>What It Is</h4><p>The approval gate for claim sending, operational corrections and high-risk recommendations.</p></div>
+          <div class="block"><h4>What To Implement</h4><ul><li>Review screen with evidence, rules, liability and draft text.</li><li>Approve, edit, reject and request-more-info actions.</li><li>Immutable final approved version.</li></ul></div>
+          <div class="block"><h4>Controls</h4><ul><li>No outbound claim without approval.</li><li>Reviewer identity and timestamp are audited.</li><li>Edits are stored as final human-authored content.</li></ul></div>
+        </div>
+      </article>
+
+      <article class="panel node" id="approved-send">
+        <h2>Approved Send / Export</h2>
+        <div class="meta"><span>Email/API connector</span><span>Outbound control</span><span>Status tracking</span></div>
+        <div class="columns">
+          <div class="block"><h4>What It Is</h4><p>The controlled outbound step after human approval, either by email, ticket update, API handoff or export.</p></div>
+          <div class="block"><h4>What To Implement</h4><ul><li>Approved payload export or email send.</li><li>Status tracking with external ID.</li><li>Retry and failure handling.</li><li>Audit of final payload and destination.</li></ul></div>
+          <div class="block"><h4>Acceptance Criteria</h4><ul><li>Only approved versions are sent.</li><li>Failures are visible and recoverable.</li><li>Final payload can be reconstructed from audit.</li></ul></div>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quatta Implementation Docs</title>
+  <style>
+    :root {
+      --ink: #14213d;
+      --muted: #5c6c82;
+      --line: #cbd6e6;
+      --platform: #188b82;
+      --ai: #c77700;
+      --security: #3267d6;
+      --customer: #7856d9;
+      --paper: #f6f8fb;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 16px 32px;
+      background: rgba(255,255,255,.94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(10px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 900;
+    }
+
+    .mark {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      color: white;
+      background: var(--platform);
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .nav a,
+    .doc-links a {
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 850;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 9px 12px;
+      background: white;
+    }
+
+    main {
+      width: min(1180px, calc(100vw - 40px));
+      margin: 32px auto 72px;
+    }
+
+    .hero,
+    .doc {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: white;
+      box-shadow: 0 18px 50px rgba(38, 54, 88, .08);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 22px;
+      padding: 30px;
+      margin-bottom: 22px;
+    }
+
+    .kicker {
+      color: var(--platform);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      margin: 0 0 14px;
+      font-size: 38px;
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 25px;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0 0 9px;
+      font-size: 17px;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .doc-links,
+    .quick-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .doc-links {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-content: start;
+    }
+
+    .quick-grid a {
+      text-decoration: none;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-left: 6px solid var(--platform);
+      border-radius: 8px;
+      padding: 12px 14px;
+      background: #fff;
+      font-weight: 850;
+    }
+
+    .doc {
+      padding: 24px;
+      margin-top: 18px;
+      scroll-margin-top: 92px;
+      border-top: 7px solid var(--platform);
+    }
+
+    .doc.ai { border-top-color: var(--ai); }
+    .doc.security { border-top-color: var(--security); }
+    .doc.customer { border-top-color: var(--customer); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      background: #fbfcff;
+      min-width: 0;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    li { margin-bottom: 6px; }
+
+    code {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1px 5px;
+      background: #fff;
+      color: #1d3557;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    th {
+      color: var(--ink);
+      background: #eef7f6;
+    }
+
+    @media (max-width: 900px) {
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .hero,
+      .doc-links,
+      .grid { grid-template-columns: 1fr; }
+      h1 { font-size: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><div class="mark">Q</div><div>Quatta Implementation Docs</div></div>
+    <nav class="nav">
+      <a href="quatta-architecture-visuals.html">Flowcharts</a>
+      <a href="quatta-implementation-guide.html">Build Guide</a>
+      <a href="quatta-node-implementation-catalog.html">Node Catalog</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <div class="kicker">Readable implementation docs</div>
+        <h1>How to implement the Quatta AI layer at a customer</h1>
+        <p>
+          These docs are the polished browser version of the linked Markdown files. They focus on setup,
+          operating model, security controls and acceptance criteria.
+        </p>
+        <div class="doc-links">
+          <a href="docs/implementation/00-implementation-overview.md">Markdown overview</a>
+          <a href="docs/implementation/08-node-implementation-catalog.md">Markdown node catalog</a>
+        </div>
+      </div>
+      <aside class="quick-grid" aria-label="Implementation sections">
+        <a href="#platform">01 High-Level Platform</a>
+        <a href="#connectors">02 Connector Layer</a>
+        <a href="#retrieval">03 Retrieval + RAG</a>
+        <a href="#security">04 Security + Governance</a>
+        <a href="#deployment">05 Deployment + Operations</a>
+        <a href="#roadmap">06 Customer Onboarding</a>
+        <a href="#inventory">Example: Inventory Agent</a>
+        <a href="#claims">Example: Claims Agent</a>
+      </aside>
+    </section>
+
+    <article class="doc" id="platform">
+      <div class="kicker">01 Core</div>
+      <h2>High-Level Platform</h2>
+      <p>Build a Python FastAPI platform on Cloud Run. Every request starts with Entra-authenticated identity, becomes a scoped Quatta request, passes through AI Gateway policy, retrieves only permitted context and returns a grounded response with audit metadata.</p>
+      <div class="grid">
+        <div class="card"><h3>Build</h3><ul><li>FastAPI API service.</li><li>AI Gateway service boundary.</li><li>PostgreSQL schemas for tenants, roles, source config, audit, cache and workflow state.</li><li>OpenTelemetry tracing across request, connector, retrieval and model calls.</li></ul></div>
+        <div class="card"><h3>Stack</h3><ul><li>Python, FastAPI, SQLAlchemy.</li><li>Google Cloud Run, Cloud SQL for PostgreSQL.</li><li>Vertex AI Gemini as default model provider.</li><li>Microsoft Entra ID for identity.</li></ul></div>
+        <div class="card"><h3>Acceptance</h3><ul><li>No connector call without auth context.</li><li>Every answer can be reconstructed from audit.</li><li>Missing or stale context is shown to the user.</li><li>Provider routing can switch to OpenAI/Azure OpenAI if needed.</li></ul></div>
+      </div>
+    </article>
+
+    <article class="doc customer" id="connectors">
+      <div class="kicker">02 Data access</div>
+      <h2>Connector Layer</h2>
+      <p>Connectors are read-only adapters. They fetch operational evidence from ERP, WMS, SQL, Excel/CSV, SharePoint, APIs and documents, normalize it and emit audit events. They do not make Quatta the new system of record.</p>
+      <table>
+        <thead><tr><th>Source</th><th>Default method</th><th>Key control</th></tr></thead>
+        <tbody>
+          <tr><td>ERP / WMS</td><td>Read-only API, replica view or export table.</td><td>Allowlisted endpoints, source timestamps and no write credentials.</td></tr>
+          <tr><td>SQL</td><td>Parameterized allowlisted queries.</td><td>Tenant and role filters included in every query path.</td></tr>
+          <tr><td>Excel / CSV</td><td>SharePoint, SFTP or upload ingestion.</td><td>Column validation, freshness warning and source file version.</td></tr>
+          <tr><td>SharePoint / Documents</td><td>Microsoft Graph plus document ingestion.</td><td>Document ACL, version, deletion and permission-change handling.</td></tr>
+        </tbody>
+      </table>
+      <div class="grid">
+        <div class="card"><h3>Contract</h3><ul><li><code>authenticate()</code></li><li><code>fetch(params)</code></li><li><code>normalize(records)</code></li><li><code>health_check()</code></li><li><code>emit_audit_event()</code></li></ul></div>
+        <div class="card"><h3>MCP Use</h3><ul><li>Use MCP for approved agent-callable tools.</li><li>Keep connector logic reusable outside MCP.</li><li>Expose clear schemas and read-only policies.</li></ul></div>
+        <div class="card"><h3>Acceptance</h3><ul><li>Every result has source ID, record ID and retrieval timestamp.</li><li>Failures are visible, never silently ignored.</li><li>Cache includes TTL and permission scope.</li></ul></div>
+      </div>
+    </article>
+
+    <article class="doc" id="retrieval">
+      <div class="kicker">03 Context</div>
+      <h2>Retrieval + RAG</h2>
+      <p>Structured facts and document evidence use different retrieval paths. SQL/API retrieval remains structured for exact facts. Document evidence flows through Document AI, chunking, embeddings, pgvector and metadata filters before joining facts in the Context Builder.</p>
+      <div class="grid">
+        <div class="card"><h3>Structured Retrieval</h3><ul><li>Use for orders, stock, deliveries, tickets, claims and master data.</li><li>Return records with source, event time and retrieval time.</li><li>Use deterministic calculations for totals, liability and impact.</li></ul></div>
+        <div class="card"><h3>Document RAG</h3><ul><li>Use Document AI for PDFs, scans, contracts, PODs and SOPs.</li><li>Chunk by semantic sections and page ranges.</li><li>Create Vertex AI embeddings and store in pgvector.</li></ul></div>
+        <div class="card"><h3>Context Builder</h3><ul><li>Merge facts, passages, citations and warnings.</li><li>Flag missing, stale or conflicting evidence.</li><li>Return a compact JSON context package for LangGraph.</li></ul></div>
+      </div>
+    </article>
+
+    <article class="doc security" id="security">
+      <div class="kicker">04 Controls</div>
+      <h2>Security, Governance and Audit</h2>
+      <p>Security controls are cross-cutting. They are applied before and during data access, retrieval, model calls and human approval. They are not downstream dataflow steps.</p>
+      <div class="grid">
+        <div class="card"><h3>Identity</h3><ul><li>Validate Entra ID tokens.</li><li>Map groups to Quatta roles.</li><li>Scope by tenant, site, customer, item, order, claim and document ACL.</li></ul></div>
+        <div class="card"><h3>Audit</h3><ul><li>Trace ID, user, role, source, row counts, document chunks, model, prompt version and policy result.</li><li>Denied checks and failed validations are logged.</li><li>Human approvals store reviewer and final version.</li></ul></div>
+        <div class="card"><h3>Fail Mode</h3><ul><li>High-risk flows fail closed if audit or permission checks fail.</li><li>Low-risk read-only flows may degrade only with explicit warning.</li><li>Cross-tenant retrieval must have automated tests.</li></ul></div>
+      </div>
+    </article>
+
+    <article class="doc" id="deployment">
+      <div class="kicker">05 Run</div>
+      <h2>Deployment and Operations</h2>
+      <p>Separate the runtime API, ingestion workers and outbound/export jobs. Give each service the minimum service account permissions it needs.</p>
+      <div class="grid">
+        <div class="card"><h3>Services</h3><ul><li>Cloud Run API for app and gateway.</li><li>Cloud Run worker/job for document ingestion.</li><li>Cloud SQL PostgreSQL with pgvector.</li><li>Secret Manager for source credentials.</li></ul></div>
+        <div class="card"><h3>CI/CD</h3><ul><li>Build container images.</li><li>Run unit, connector contract and tenant-isolation tests.</li><li>Deploy with environment-specific config and service accounts.</li></ul></div>
+        <div class="card"><h3>Operations</h3><ul><li>Dashboards for latency, connector health, retrieval quality and model cost.</li><li>Alerts for ingestion backlog, failed connectors and audit failures.</li><li>Runbooks for revocation, stale data and provider outage.</li></ul></div>
+      </div>
+    </article>
+
+    <article class="doc" id="roadmap">
+      <div class="kicker">06 Customer rollout</div>
+      <h2>Customer Onboarding and Implementation Lifecycle</h2>
+      <p>A Quatta rollout should start with source discovery and governance, not with an agent. Once the platform, permissions and retrieval are reliable, agents become much safer to deliver.</p>
+      <div class="grid">
+        <div class="card"><h3>Phase 1</h3><ul><li>Source inventory and owner map.</li><li>Data access decisions.</li><li>Tenant/RBAC model.</li><li>Sample data fixtures and known cases.</li></ul></div>
+        <div class="card"><h3>Phase 2</h3><ul><li>Connector build.</li><li>Document ingestion and RAG index.</li><li>Context Builder and audit.</li><li>Evaluation cases.</li></ul></div>
+        <div class="card"><h3>Phase 3</h3><ul><li>Agent MVPs.</li><li>Human review gates.</li><li>Operational dashboards.</li><li>Pilot readiness review.</li></ul></div>
+      </div>
+    </article>
+
+    <article class="doc ai" id="inventory">
+      <div class="kicker">Example agent</div>
+      <h2>Inventory Agent</h2>
+      <p>The inventory agent is an example workflow. It proves that Quatta can combine ERP transactions, WMS movements, tickets and SOP/contract rules to explain stock differences with citations and confidence.</p>
+    </article>
+
+    <article class="doc ai" id="claims">
+      <div class="kicker">Example agent</div>
+      <h2>Claims Agent</h2>
+      <p>The claims agent is an example workflow. It retrieves case evidence, checks contract rules, calculates liability deterministically, drafts a claim email and requires human review before outbound send.</p>
+    </article>
+  </main>
+</body>
+</html>

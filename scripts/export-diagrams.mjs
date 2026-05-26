@@ -11,8 +11,11 @@ const slides = [
   ["high-level", "01-high-level-quatta-architecture.png"],
   ["connectors", "02-connector-layer-flow.png"],
   ["rag", "03-retrieval-rag-flow.png"],
-  ["inventory", "04-inventory-agent-flow.png"],
-  ["claims", "05-claims-agent-flow.png"]
+  ["security-governance", "04-security-governance-flow.png"],
+  ["deployment-ops", "05-deployment-operations-flow.png"],
+  ["onboarding", "06-customer-onboarding-flow.png"],
+  ["inventory", "07-inventory-agent-example-flow.png"],
+  ["claims", "08-claims-agent-example-flow.png"]
 ];
 
 await mkdir(outDir, { recursive: true });

@@ -323,6 +323,7 @@
       stroke-dasharray: 8 6;
       opacity: 0.55;
       marker-end: url(#arrowSec);
+      display: none;
     }
 
     .arrowSec {
@@ -331,6 +332,7 @@
       stroke-width: 1.35;
       stroke-dasharray: 8 6;
       opacity: 0.55;
+      display: none;
     }
 
     .badge {
@@ -583,9 +585,12 @@
       <a href="#high-level">High-Level</a>
       <a href="#connectors">Connectors</a>
       <a href="#rag">Retrieval + RAG</a>
-      <a href="#inventory">Inventory Agent</a>
-      <a href="#claims">Claims Agent</a>
+      <a href="#security-governance">Security</a>
+      <a href="#deployment-ops">Deployment</a>
+      <a href="#onboarding">Onboarding</a>
+      <a href="#inventory">Examples</a>
       <a href="quatta-implementation-guide.html">Implementation Guide</a>
+      <a href="quatta-node-implementation-catalog.html">Node Catalog</a>
     </nav>
   </header>
 
@@ -599,8 +604,8 @@
           orchestration, reasoning, monitoring and auditability.
         </p>
         <p style="margin-top: 12px">
-          Each diagram now links to the implementation guide with concrete setup steps,
-          service choices, acceptance criteria and pilot-readiness checks.
+          The first six diagrams are the core IT implementation charts. Inventory and Claims
+          are example agent workflows that build on the core platform.
         </p>
       </div>
       <div class="legend" aria-label="Legend">
@@ -614,6 +619,7 @@
     <section class="implementation-note">
       <strong>Implementation mode:</strong> click the highlighted boxes in the diagrams to open setup guidance.
       The full written guide lives in the <a href="quatta-implementation-guide.html">Implementation Guide</a>.
+      Use the <a href="quatta-node-implementation-catalog.html">Node Catalog</a> for tile-by-tile setup details.
     </section>
 
     <section class="deck">
@@ -623,7 +629,7 @@
             <div class="slide-kicker">01 / Core platform</div>
             <h2>High-Level Quatta Architecture</h2>
           </div>
-          <a class="guide-link" href="quatta-implementation-guide.html#flow-docs">Implementation steps</a>
+          <a class="guide-link" href="quatta-implementation-docs.html#platform">Platform docs</a>
         </div>
         <div class="canvas">
           <svg viewBox="0 0 1600 900" role="img" aria-label="High-Level Quatta Architecture diagram">
@@ -732,7 +738,7 @@
             <div class="slide-kicker">02 / Data access</div>
             <h2>Connector Layer Flow</h2>
           </div>
-          <a class="guide-link" href="docs/implementation/02-connector-layer.md">Connector setup doc</a>
+          <a class="guide-link" href="quatta-implementation-docs.html#connectors">Connector setup doc</a>
         </div>
         <div class="canvas">
           <svg viewBox="0 0 1600 900" role="img" aria-label="Connector Layer Flow diagram">
@@ -832,7 +838,7 @@
             <div class="slide-kicker">03 / Retrieval</div>
             <h2>Retrieval + RAG Flow</h2>
           </div>
-          <a class="guide-link" href="docs/implementation/03-retrieval-rag.md">Retrieval setup doc</a>
+          <a class="guide-link" href="quatta-implementation-docs.html#retrieval">Retrieval setup doc</a>
         </div>
         <div class="canvas">
           <svg viewBox="0 0 1600 900" role="img" aria-label="Retrieval and RAG Flow diagram">
@@ -934,13 +940,52 @@
         </div>
       </article>
 
+      <article class="slide" id="security-governance">
+        <div class="slide-head">
+          <div>
+            <div class="slide-kicker">04 / Core IT implementation</div>
+            <h2>Security, Governance and Audit Flow</h2>
+          </div>
+          <a class="guide-link" href="quatta-implementation-docs.html#security">Security docs</a>
+        </div>
+        <div class="canvas">
+          <svg viewBox="0 0 1600 900" role="img" aria-label="Security, Governance and Audit Flow diagram"></svg>
+        </div>
+      </article>
+
+      <article class="slide" id="deployment-ops">
+        <div class="slide-head">
+          <div>
+            <div class="slide-kicker">05 / Core IT implementation</div>
+            <h2>Deployment and Operations Flow</h2>
+          </div>
+          <a class="guide-link" href="quatta-implementation-docs.html#deployment">Deployment docs</a>
+        </div>
+        <div class="canvas">
+          <svg viewBox="0 0 1600 900" role="img" aria-label="Deployment and Operations Flow diagram"></svg>
+        </div>
+      </article>
+
+      <article class="slide" id="onboarding">
+        <div class="slide-head">
+          <div>
+            <div class="slide-kicker">06 / Core IT implementation</div>
+            <h2>Customer Onboarding and Implementation Lifecycle</h2>
+          </div>
+          <a class="guide-link" href="quatta-implementation-docs.html#roadmap">Onboarding docs</a>
+        </div>
+        <div class="canvas">
+          <svg viewBox="0 0 1600 900" role="img" aria-label="Customer Onboarding and Implementation Lifecycle diagram"></svg>
+        </div>
+      </article>
+
       <article class="slide" id="inventory">
         <div class="slide-head">
           <div>
-            <div class="slide-kicker">04 / Agent workflow</div>
+            <div class="slide-kicker">Example / Agent workflow</div>
             <h2>Inventory Agent Flow</h2>
           </div>
-          <a class="guide-link" href="docs/implementation/04-inventory-agent.md">Inventory agent doc</a>
+          <a class="guide-link" href="quatta-implementation-docs.html#inventory">Inventory agent doc</a>
         </div>
         <div class="canvas">
           <svg viewBox="0 0 1600 900" role="img" aria-label="Inventory Agent Flow diagram">
@@ -1058,10 +1103,10 @@
       <article class="slide" id="claims">
         <div class="slide-head">
           <div>
-            <div class="slide-kicker">05 / Agent workflow</div>
+            <div class="slide-kicker">Example / Agent workflow</div>
             <h2>Claims Agent Flow</h2>
           </div>
-          <a class="guide-link" href="docs/implementation/05-claims-agent.md">Claims agent doc</a>
+          <a class="guide-link" href="quatta-implementation-docs.html#claims">Claims agent doc</a>
         </div>
         <div class="canvas">
           <svg viewBox="0 0 1600 900" role="img" aria-label="Claims Agent Flow diagram">
@@ -1250,8 +1295,8 @@
           ${defs()}
           ${zone(44, 88, 235, 538, "Users", "Questions, review, decisions", "#f7fbff")}
           ${zone(318, 88, 676, 538, "Quatta Platform", "FastAPI, policy, connectors, retrieval", "#eef7f6")}
-          ${zone(1034, 88, 258, 538, "AI Layer", "LangGraph and model providers", "#fff5e8")}
-          ${zone(1332, 88, 224, 538, "Customer Systems", "No source-system replacement", "#f4f0ff")}
+          ${zone(1034, 88, 522, 236, "AI Layer", "LangGraph and model providers", "#fff5e8")}
+          ${zone(1034, 356, 522, 270, "Customer Systems", "No source-system replacement", "#f4f0ff")}
           ${zone(318, 672, 1238, 154, "Security / Monitoring", "Entra ID, RBAC, audit trail, OpenTelemetry", "#eef3fb")}
 
           ${box(82, 284, 158, 86, "User", ["Ops, finance, planner"], { strong: true, tone: "user" })}
@@ -1261,10 +1306,10 @@
           ${box(376, 420, 172, 86, "Connector Layer", ["read-only access"], { strong: true })}
           ${box(586, 420, 174, 86, "Retrieval Layer", ["SQL, API, pgvector"], { strong: true })}
           ${box(804, 420, 152, 86, "Context Builder", ["facts + citations"], { strong: true })}
-          ${box(1066, 214, 188, 90, "AI / Agent Layer", ["LangGraph workflows"], { strong: true })}
-          ${box(1066, 420, 188, 86, "Grounded Response", ["answer + sources + actions"], { strong: true })}
-          ${box(1364, 222, 160, 82, "ERP / WMS", ["SQL, APIs, files"], { strong: true, tone: "customer" })}
-          ${box(1364, 420, 160, 86, "Documents", ["SOPs, contracts, POD"], { tone: "customer" })}
+          ${box(1066, 178, 188, 90, "AI / Agent Layer", ["LangGraph workflows"], { strong: true })}
+          ${box(1306, 178, 188, 90, "Grounded Response", ["answer + sources + actions"], { strong: true })}
+          ${box(1066, 454, 188, 82, "ERP / WMS", ["SQL, APIs, files"], { strong: true, tone: "customer" })}
+          ${box(1306, 454, 188, 86, "Documents", ["SOPs, contracts, POD"], { tone: "customer" })}
 
           ${pill(558, 730, 170, "Microsoft Entra ID")}
           ${pill(766, 730, 170, "PostgreSQL Audit")}
@@ -1278,11 +1323,12 @@
           ${p("arrowData", "M859 304 V372 H462 V420", "arrowData")}
           ${p("arrowData", "M548 463 H586", "arrowData")}
           ${p("arrowData", "M760 463 H804", "arrowData")}
-          ${p("arrowAi", "M956 463 H1010 V259 H1066", "arrowAi")}
-          ${p("arrowAi", "M1160 304 V420", "arrowAi")}
-          ${p("arrow-soft", "M1066 463 H1018 V166 H155 V284", "arrowSoft")}
-          ${p("arrowData", "M548 463 H1318 V263 H1364", "arrowData")}
-          ${p("arrowData", "M1364 462 H986 V463 H956", "arrowData")}
+          ${p("arrowAi", "M956 463 H1010 V223 H1066", "arrowAi")}
+          ${p("arrowAi", "M1254 223 H1306", "arrowAi")}
+          ${p("arrow-soft", "M1306 223 C1020 100 610 120 442 214", "arrowSoft")}
+          ${p("arrowData", "M548 463 V640 H1000 V571 H1066", "arrowData")}
+          ${p("arrowData", "M1066 536 V602 H674 V506", "arrowData")}
+          ${p("arrowData", "M1306 540 V620 H674 V506", "arrowData")}
           ${p("arrowSec", "M643 304 V730", "arrowSec")}
           ${p("arrowSec", "M851 304 V730", "arrowSec")}
           ${p("arrowSec", "M1059 506 V730", "arrowSec")}
@@ -1318,17 +1364,18 @@
           ${pill(1120, 790, 188, "Freshness + Health")}
           ${pill(1340, 790, 170, "Audit records")}
 
-          ${p("arrowData", "M384 213 H498", "arrowData")}
-          ${p("arrowData", "M384 313 H460 V251 H498", "arrowData")}
-          ${p("arrowData", "M384 413 H460 V251 H498", "arrowData")}
-          ${p("arrowData", "M302 513 H460 V251 H498", "arrowData")}
           ${p("arrow", "M670 251 H720", "arrow")}
+          ${p("arrow-soft", "M720 251 C590 210 500 213 384 213", "arrowSoft")}
+          ${p("arrowData", "M384 313 C530 300 640 280 720 280", "arrowData")}
+          ${p("arrowData", "M384 413 C540 455 640 356 720 340", "arrowData")}
+          ${p("arrowData", "M302 513 C520 560 650 400 720 360", "arrowData")}
           ${p("arrowData", "M940 251 H990", "arrowData")}
           ${p("arrowData", "M1079 292 V360", "arrowData")}
           ${p("arrowData", "M1079 442 V506", "arrowData")}
+          ${p("arrow-soft", "M990 401 H940 V539", "arrowSoft")}
           ${p("arrowData", "M940 539 H990", "arrowData")}
           ${p("arrowData", "M1168 545 H1198", "arrowData")}
-          ${p("arrowAi", "M1348 545 H1384 V425 H1418", "arrowAi")}
+          ${p("arrowData", "M1348 545 H1384 V425 H1418", "arrowData")}
           ${p("arrowSec", "M584 292 V790", "arrowSec")}
           ${p("arrowSec", "M830 390 V790", "arrowSec")}
           ${p("arrowSec", "M1080 584 V790", "arrowSec")}
@@ -1356,18 +1403,20 @@
           ${box(1318, 250, 196, 92, "RAG Prompt", ["grounded context only"], { strong: true })}
           ${box(1318, 456, 196, 92, "Answer", ["sources + warnings"], { strong: true })}
 
-          ${pill(680, 778, 150, "Tenant ACL")}
+          ${pill(668, 778, 178, "Tenant/role filters")}
           ${pill(868, 778, 170, "Document version")}
           ${pill(1076, 778, 158, "Citation trace")}
           ${pill(1272, 778, 180, "Retrieval metrics")}
 
           ${p("arrowData", "M318 245 H430", "arrowData")}
+          ${p("arrow-soft", "M978 260 H620", "arrowSoft")}
           ${p("arrowData", "M620 237 H680", "arrowData")}
           ${p("arrowData", "M850 237 H978", "arrowData")}
           ${p("arrowData", "M318 497 H430", "arrowData")}
           ${p("arrowData", "M598 485 H646", "arrowData")}
           ${p("arrowData", "M786 485 H834", "arrowData")}
           ${p("arrowData", "M984 485 H1032", "arrowData")}
+          ${p("arrow-soft", "M1032 336 C986 376 998 424 1032 462", "arrowSoft")}
           ${p("arrowData", "M1106 444 V336", "arrowData")}
           ${p("arrowAi", "M1172 284 H1318", "arrowAi")}
           ${p("arrowAi", "M1416 342 V456", "arrowAi")}
@@ -1375,6 +1424,162 @@
           ${p("arrowSec", "M1155 526 V778", "arrowSec")}
           ${p("arrowSec", "M1155 336 V778", "arrowSec")}
           ${caption(430, 644, "Structured retrieval stays live; document retrieval is indexed, permission-filtered and cited.")}
+        `,
+
+        "security-governance": `
+          ${defs()}
+          ${zone(44, 88, 240, 650, "Users / Identity", "Entra ID, groups, reviewers", "#f7fbff")}
+          ${zone(324, 88, 518, 650, "Quatta Platform", "Policy, scopes, audit and validation", "#eef7f6")}
+          ${zone(882, 88, 314, 650, "AI Layer", "Model and tool governance", "#fff5e8")}
+          ${zone(1236, 88, 320, 650, "Customer Systems", "Source ACLs and records", "#f4f0ff")}
+          ${zone(324, 766, 1232, 82, "Security / Monitoring", "Traceability, alerts, retention and incident response", "#eef3fb")}
+
+          ${box(82, 194, 166, 82, "User Sign-in", ["Microsoft Entra ID"], { strong: true, tone: "user" })}
+          ${box(82, 358, 166, 82, "Reviewer", ["approval identity"], { strong: true, tone: "user" })}
+
+          ${box(368, 174, 172, 82, "Token Validation", ["OIDC + claims"], { strong: true })}
+          ${box(596, 174, 174, 82, "Role Mapping", ["groups to roles"], { strong: true })}
+          ${box(368, 340, 172, 82, "Tenant Scope", ["tenant, site, customer"], { strong: true })}
+          ${box(596, 340, 174, 82, "Permission Decision", ["allow / deny / warn"], { strong: true })}
+          ${box(368, 520, 172, 82, "Audit Event", ["who, what, why"], { strong: true })}
+          ${box(596, 520, 174, 82, "Policy Version", ["prompt, tool, RBAC"], { strong: true })}
+
+          ${box(922, 210, 224, 84, "AI Gateway Controls", ["tool allowlist, safety"], { strong: true })}
+          ${box(922, 398, 224, 84, "Response Validation", ["citations, schema, confidence"], { strong: true })}
+          ${box(922, 562, 224, 78, "Human Gate", ["approve high-risk actions"], { strong: true })}
+
+          ${box(1278, 182, 226, 76, "Source ACLs", ["SharePoint, ERP, WMS"], { strong: true, tone: "customer" })}
+          ${box(1278, 340, 226, 76, "Filtered Retrieval", ["SQL, API, pgvector"], { strong: true, tone: "customer" })}
+          ${box(1278, 520, 226, 76, "Revocation Handling", ["hide, delete, re-index"], { strong: true, tone: "customer" })}
+
+          ${pill(510, 790, 150, "OpenTelemetry")}
+          ${pill(700, 790, 174, "PostgreSQL audit")}
+          ${pill(914, 790, 160, "Cloud Logging")}
+          ${pill(1114, 790, 170, "Alerting")}
+          ${pill(1324, 790, 164, "Retention")}
+
+          ${p("arrow", "M248 235 H368", "arrow")}
+          ${p("arrow", "M540 215 H596", "arrow")}
+          ${p("arrow", "M683 256 V340", "arrow")}
+          ${p("arrow", "M540 381 H596", "arrow")}
+          ${p("arrowData", "M770 381 H1278", "arrowData")}
+          ${p("arrow-soft", "M1391 258 V340", "arrowSoft")}
+          ${p("arrowData", "M1278 378 H1146 V252", "arrowData")}
+          ${p("arrowAi", "M1034 294 V398", "arrowAi")}
+          ${p("arrowAi", "M1034 482 V562", "arrowAi")}
+          ${p("arrow", "M922 601 H292 V399 H248", "arrow")}
+          ${p("arrowData", "M596 562 H540", "arrowData")}
+          ${p("arrowData", "M540 562 H368", "arrowData")}
+          ${p("arrowData", "M1391 416 V520", "arrowData")}
+          ${caption(382, 688, "Permissions are checked before retrieval; audit and policy records allow every answer to be reconstructed.")}
+        `,
+
+        "deployment-ops": `
+          ${defs()}
+          ${zone(44, 88, 310, 650, "Delivery Pipeline", "Source, tests, containers", "#f7fbff")}
+          ${zone(394, 88, 528, 650, "Google Cloud Runtime", "Cloud Run, workers and managed services", "#eef7f6")}
+          ${zone(962, 88, 296, 650, "AI / Data Services", "Vertex AI, Document AI, PostgreSQL", "#fff5e8")}
+          ${zone(1298, 88, 258, 650, "Operations", "Dashboards, alerts, runbooks", "#eef3fb")}
+          ${zone(394, 766, 1162, 82, "Security / Monitoring", "Service accounts, secrets, traces and release audit", "#eef3fb")}
+
+          ${box(86, 178, 220, 78, "GitHub Repository", ["HTML, API, infra code"], { strong: true, tone: "user" })}
+          ${box(86, 326, 220, 78, "CI Checks", ["unit, contracts, ACL tests"], { strong: true, tone: "user" })}
+          ${box(86, 474, 220, 78, "Container Build", ["Artifact Registry"], { strong: true, tone: "user" })}
+          ${box(86, 608, 220, 78, "Deploy Approval", ["environment promotion"], { strong: true, tone: "user" })}
+
+          ${box(438, 168, 198, 82, "Cloud Run API", ["FastAPI + AI Gateway"], { strong: true })}
+          ${box(438, 330, 198, 82, "Cloud Run Workers", ["ingestion + exports"], { strong: true })}
+          ${box(438, 492, 198, 82, "Cloud Scheduler", ["health + sync jobs"], { strong: true })}
+          ${box(692, 168, 186, 82, "Secret Manager", ["source credentials"], { strong: true })}
+          ${box(692, 330, 186, 82, "Cloud SQL", ["PostgreSQL + pgvector"], { strong: true })}
+          ${box(692, 492, 186, 82, "Cloud Storage", ["raw docs + exports"], { strong: true })}
+
+          ${box(1002, 188, 214, 82, "Vertex AI", ["Gemini + embeddings"], { strong: true })}
+          ${box(1002, 374, 214, 82, "Document AI", ["OCR processors"], { strong: true })}
+          ${box(1002, 560, 214, 82, "Provider Adapter", ["OpenAI/Azure optional"], { strong: true })}
+
+          ${box(1338, 176, 174, 76, "Dashboards", ["latency, cost, quality"], { strong: true })}
+          ${box(1338, 324, 174, 76, "Alerts", ["failures, stale data"], { strong: true })}
+          ${box(1338, 472, 174, 76, "Runbooks", ["restore, revoke, retry"], { strong: true })}
+          ${box(1338, 620, 174, 76, "Release Audit", ["who deployed what"], { strong: true })}
+
+          ${pill(536, 790, 180, "Service accounts")}
+          ${pill(754, 790, 160, "Least privilege")}
+          ${pill(952, 790, 170, "Trace IDs")}
+          ${pill(1160, 790, 178, "Config versions")}
+          ${pill(1376, 790, 140, "Rollback")}
+
+          ${p("arrow", "M196 256 V326", "arrow")}
+          ${p("arrow", "M196 404 V474", "arrow")}
+          ${p("arrow", "M196 552 V608", "arrow")}
+          ${p("arrow", "M306 647 H438 V209", "arrow")}
+          ${p("arrow", "M306 647 H390 V371 H438", "arrow")}
+          ${p("arrow", "M636 209 H692", "arrow")}
+          ${p("arrowData", "M636 371 H692", "arrowData")}
+          ${p("arrowData", "M636 533 H692", "arrowData")}
+          ${p("arrowAi", "M636 209 C760 130 910 190 1002 229", "arrowAi")}
+          ${p("arrowAi", "M636 371 C790 390 890 415 1002 415", "arrowAi")}
+          ${p("arrowAi", "M636 209 C800 300 930 560 1002 601", "arrowAi")}
+          ${p("arrowData", "M1216 229 H1294 V214 H1338", "arrowData")}
+          ${p("arrowData", "M1216 415 H1294 V362 H1338", "arrowData")}
+          ${p("arrowData", "M878 371 H1294 V510 H1338", "arrowData")}
+          ${p("arrow", "M1512 362 V472", "arrow")}
+          ${p("arrow", "M1512 548 V620", "arrow")}
+          ${caption(436, 690, "Production readiness means repeatable deploys, isolated service accounts, observable flows and tested rollback.")}
+        `,
+
+        "onboarding": `
+          ${defs()}
+          ${zone(44, 88, 292, 650, "Customer Discovery", "Systems, owners, permissions", "#f4f0ff")}
+          ${zone(376, 88, 452, 650, "Quatta Platform", "Config, connectors, retrieval", "#eef7f6")}
+          ${zone(868, 88, 330, 650, "AI Layer", "Evaluation and controlled agents", "#fff5e8")}
+          ${zone(1238, 88, 318, 650, "Go-Live Readiness", "Pilot, handover, operations", "#eef3fb")}
+          ${zone(376, 766, 1180, 82, "Security / Monitoring", "Sign-off gates and acceptance evidence", "#eef3fb")}
+
+          ${box(82, 170, 216, 78, "Source Inventory", ["ERP, WMS, SQL, docs"], { strong: true, tone: "customer" })}
+          ${box(82, 322, 216, 78, "Access Design", ["tenant, roles, ACLs"], { strong: true, tone: "customer" })}
+          ${box(82, 474, 216, 78, "Sample Cases", ["known questions + answers"], { strong: true, tone: "customer" })}
+          ${box(82, 610, 216, 78, "Pilot Scope", ["sites, users, sources"], { strong: true, tone: "customer" })}
+
+          ${box(416, 170, 178, 78, "Tenant Setup", ["config + roles"], { strong: true })}
+          ${box(632, 170, 160, 78, "Secrets", ["source creds"], { strong: true })}
+          ${box(416, 322, 178, 78, "Connector Build", ["read-only adapters"], { strong: true })}
+          ${box(632, 322, 160, 78, "Document Index", ["OCR + vectors"], { strong: true })}
+          ${box(416, 474, 178, 78, "Context Builder", ["facts + citations"], { strong: true })}
+          ${box(632, 474, 160, 78, "Audit Setup", ["trace + evidence"], { strong: true })}
+
+          ${box(908, 204, 236, 82, "Evaluation Harness", ["golden cases + metrics"], { strong: true })}
+          ${box(908, 374, 236, 82, "Agent MVP", ["LangGraph workflow"], { strong: true })}
+          ${box(908, 544, 236, 82, "Human Review", ["approve, reject, edit"], { strong: true })}
+
+          ${box(1278, 164, 230, 76, "Security Review", ["tenant isolation tests"], { strong: true })}
+          ${box(1278, 310, 230, 76, "Operational Review", ["dashboards + runbooks"], { strong: true })}
+          ${box(1278, 456, 230, 76, "Pilot Go-Live", ["limited users + monitoring"], { strong: true })}
+          ${box(1278, 602, 230, 76, "Scale Plan", ["sources, use cases, SLAs"], { strong: true })}
+
+          ${pill(536, 790, 170, "Discovery sign-off")}
+          ${pill(746, 790, 170, "RBAC sign-off")}
+          ${pill(956, 790, 170, "Eval sign-off")}
+          ${pill(1166, 790, 190, "Operations sign-off")}
+          ${pill(1396, 790, 116, "Go-live")}
+
+          ${p("arrow", "M298 209 H416", "arrow")}
+          ${p("arrow", "M298 361 H416", "arrow")}
+          ${p("arrow", "M594 209 H632", "arrow")}
+          ${p("arrowData", "M594 361 H632", "arrowData")}
+          ${p("arrowData", "M594 513 H632", "arrowData")}
+          ${p("arrowData", "M792 361 H852 V245 H908", "arrowData")}
+          ${p("arrowData", "M792 513 H852 V415 H908", "arrowData")}
+          ${p("arrowAi", "M1026 286 V374", "arrowAi")}
+          ${p("arrowAi", "M1026 456 V544", "arrowAi")}
+          ${p("arrow", "M1144 245 H1278", "arrow")}
+          ${p("arrow", "M1144 415 H1210 V348 H1278", "arrow")}
+          ${p("arrow", "M1144 585 H1210 V494 H1278", "arrow")}
+          ${p("arrow", "M1393 532 V602", "arrow")}
+          ${p("arrow", "M190 248 V322", "arrow")}
+          ${p("arrow", "M190 400 V474", "arrow")}
+          ${p("arrow", "M190 552 V610", "arrow")}
+          ${caption(410, 694, "Implement core controls first, then prove quality with known cases before scaling agents and sources.")}
         `,
 
         "inventory": `
@@ -1511,7 +1716,7 @@
         security: "Require Entra-authenticated user context before any AI or connector call.",
         monitoring: "Trace request latency, errors, user action, and route selected.",
         checklist: ["Create FastAPI skeleton", "Add request/response schemas", "Add trace ID middleware", "Deploy to Cloud Run"],
-        doc: "docs/implementation/01-high-level-platform.md"
+        doc: "quatta-implementation-docs.html#platform"
       },
       {
         id: "HL-03",
@@ -1527,7 +1732,7 @@
         security: "Apply least privilege and block connector/retrieval calls before data access.",
         monitoring: "Audit allowed and denied permission checks.",
         checklist: ["Register Entra app", "Map groups to roles", "Add tenant ID to context", "Test denied access paths"],
-        doc: "docs/implementation/01-high-level-platform.md"
+        doc: "quatta-node-implementation-catalog.html#auth-rbac"
       },
       {
         id: "HL-04",
@@ -1543,7 +1748,7 @@
         security: "Prompt-injection checks, PII filtering, data minimization, tool allowlist, low-confidence escalation.",
         monitoring: "Model latency, provider, token/cost estimate, safety outcome, response validation failures.",
         checklist: ["Define model provider interface", "Add policy middleware", "Add response schemas", "Audit every model/tool call"],
-        doc: "docs/implementation/01-high-level-platform.md"
+        doc: "quatta-node-implementation-catalog.html#ai-gateway"
       },
       {
         id: "HL-05",
@@ -1559,7 +1764,7 @@
         security: "Read-only credentials, tenant isolation, no writeback by default.",
         monitoring: "Connector health, last successful read, retry count, partial-result warnings.",
         checklist: ["Define connector interface", "Store credentials", "Normalize outputs", "Add retry/backoff", "Emit audit events"],
-        doc: "docs/implementation/02-connector-layer.md"
+        doc: "quatta-node-implementation-catalog.html#connectors"
       },
       {
         id: "CON-04",
@@ -1575,7 +1780,7 @@
         security: "Cache never bypasses RBAC and should exclude or encrypt sensitive fields.",
         monitoring: "Cache hits, staleness, source timestamp, retrieval timestamp.",
         checklist: ["Define TTL per source", "Store permission scope", "Add stale warnings", "Test cache invalidation"],
-        doc: "docs/implementation/02-connector-layer.md"
+        doc: "quatta-implementation-docs.html#connectors"
       },
       {
         id: "CON-06",
@@ -1591,7 +1796,7 @@
         security: "Do not hide missing evidence; audit partial responses.",
         monitoring: "Connector availability, latency, errors, retry count, last successful read.",
         checklist: ["Add health endpoint", "Add retry policy", "Add partial-result warning", "Create alert rules"],
-        doc: "docs/implementation/02-connector-layer.md"
+        doc: "quatta-implementation-docs.html#connectors"
       },
       {
         id: "RAG-04",
@@ -1607,7 +1812,7 @@
         security: "Preserve tenant, source ACL, document version and retention metadata.",
         monitoring: "Extraction latency, processor errors, document version processed.",
         checklist: ["Create processor", "Store extraction metadata", "Handle OCR failures", "Trigger re-index on change"],
-        doc: "docs/implementation/03-retrieval-rag.md"
+        doc: "quatta-node-implementation-catalog.html#document-ai"
       },
       {
         id: "RAG-07",
@@ -1623,7 +1828,7 @@
         security: "Apply tenant and ACL filters before similarity search.",
         monitoring: "Retrieval latency, top-k scores, empty-result rate, stale index warnings.",
         checklist: ["Enable extension", "Create embeddings table", "Add metadata indexes", "Test tenant isolation"],
-        doc: "docs/implementation/03-retrieval-rag.md"
+        doc: "quatta-node-implementation-catalog.html#pgvector"
       },
       {
         id: "RAG-08",
@@ -1639,7 +1844,7 @@
         security: "Only include evidence allowed by tenant, role and source permissions.",
         monitoring: "Context size, retrieval quality, citation completeness, missing evidence.",
         checklist: ["Define context schema", "Add citation model", "Add conflict warnings", "Validate max context size"],
-        doc: "docs/implementation/03-retrieval-rag.md"
+        doc: "quatta-node-implementation-catalog.html#context-builder"
       },
       {
         id: "INV-07",
@@ -1655,7 +1860,7 @@
         security: "Preserve source provenance and tenant scope.",
         monitoring: "Conflicting evidence count, missing source warnings, reconciliation errors.",
         checklist: ["Map units and statuses", "Align time zones", "Detect reversals", "Add conflict flags"],
-        doc: "docs/implementation/04-inventory-agent.md"
+        doc: "quatta-implementation-docs.html#inventory"
       },
       {
         id: "INV-10",
@@ -1671,7 +1876,7 @@
         security: "Low confidence or conflicting evidence escalates to human review.",
         monitoring: "Confidence level, citation count, escalation rate.",
         checklist: ["Define output schema", "Add confidence thresholds", "Require citations", "Test conflicting evidence"],
-        doc: "docs/implementation/04-inventory-agent.md"
+        doc: "quatta-implementation-docs.html#inventory"
       },
       {
         id: "CLM-12",
@@ -1687,7 +1892,7 @@
         security: "No outbound claim communication without approval.",
         monitoring: "Approval time, edits, rejection reason, final approved version.",
         checklist: ["Add review screen", "Store final version", "Block auto-send", "Audit reviewer action"],
-        doc: "docs/implementation/05-claims-agent.md"
+        doc: "quatta-node-implementation-catalog.html#human-review"
       },
       {
         id: "CLM-13",
@@ -1703,9 +1908,78 @@
         security: "Use approved template and immutable audit record.",
         monitoring: "Send status, delivery failures, external claim ID, follow-up SLA.",
         checklist: ["Choose outbound channel", "Add status model", "Handle send failures", "Audit final payload"],
-        doc: "docs/implementation/05-claims-agent.md"
+        doc: "quatta-node-implementation-catalog.html#approved-send"
       }
     ];
+
+    const CORE_STEP_DEFAULTS = {
+      status: "Designed",
+      services: ["FastAPI", "PostgreSQL", "OpenTelemetry"],
+      inputs: "Scoped tenant request, source metadata and policy context.",
+      outputs: "Auditable implementation output for the next platform step.",
+      security: "Apply tenant, role and source permissions before data access or model usage.",
+      monitoring: "Trace latency, errors, source freshness, policy result and audit status.",
+      checklist: ["Define owner and contract", "Configure service and permissions", "Add audit fields", "Add tests and monitoring"]
+    };
+
+    const extraCoreSteps = [
+      ["HL-01", "01 Core Platform", ["high-level|user"], "User", "Business users who ask questions, review evidence and approve high-risk actions.", "Capture user intent with tenant, role and selected business entities before routing.", ["Quatta App", "Microsoft Entra ID"], "quatta-implementation-docs.html#platform"],
+      ["HL-06", "01 Core Platform", ["high-level|retrieval layer"], "Retrieval Layer", "Retrieves exact structured facts and permission-filtered document evidence.", "Implement structured SQL/API retrieval plus pgvector RAG behind the Context Builder.", ["FastAPI", "PostgreSQL", "pgvector"], "quatta-implementation-docs.html#retrieval"],
+      ["HL-07", "01 Core Platform", ["high-level|context builder"], "Context Builder", "Builds a compact evidence package with facts, citations, warnings and trace metadata.", "Merge facts and passages into a stable JSON contract for agents.", ["FastAPI", "PostgreSQL", "pgvector"], "quatta-node-implementation-catalog.html#context-builder"],
+      ["HL-08", "01 Core Platform", ["high-level|ai / agent layer"], "AI / Agent Layer", "Orchestrates multi-step workflows with approved tools and human checkpoints.", "Use LangGraph with model calls routed through the AI Gateway only.", ["LangGraph", "Vertex AI Gemini", "AI Gateway"], "quatta-node-implementation-catalog.html#langgraph"],
+      ["HL-09", "01 Core Platform", ["high-level|grounded response"], "Grounded Response", "Returns answer, sources, warnings, confidence and allowed next actions.", "Validate response schema and citations before showing results to users.", ["AI Gateway", "FastAPI"], "quatta-implementation-docs.html#platform"],
+      ["HL-10", "01 Core Platform", ["high-level|erp / wms", "high-level|documents"], "Customer Systems", "Existing customer systems remain the system of record.", "Configure read-only access and preserve source IDs, versions, timestamps and ACLs.", ["ERP/WMS APIs", "SQL", "Microsoft Graph"], "quatta-node-implementation-catalog.html#source-systems"],
+      ["SEC-00", "Core Controls", ["high-level|microsoft entra id", "high-level|postgresql audit", "high-level|opentelemetry", "high-level|governance + safety", "high-level|tenant scope"], "Security / Monitoring Control", "Cross-cutting controls for identity, audit, traces, safety and tenant isolation.", "Implement controls as policy and audit layers, not as downstream dataflow steps.", ["Microsoft Entra ID", "PostgreSQL audit", "OpenTelemetry"], "quatta-implementation-docs.html#security"],
+
+      ["CON-01", "02 Data Access", ["connectors|erp", "connectors|wms", "connectors|sql dbs", "connectors|excel / csv", "connectors|sharepoint", "connectors|apis", "connectors|documents"], "Customer Source", "A read-only customer data source used by Quatta connectors.", "Document owner, access method, freshness SLA, ACL model and sample fixtures.", ["ERP/WMS", "SQL", "Microsoft Graph", "APIs"], "quatta-node-implementation-catalog.html#source-systems"],
+      ["CON-02", "02 Data Access", ["connectors|authenticate"], "Authenticate", "Creates a trusted connection to source systems with tenant-scoped credentials.", "Use Entra user context plus source credentials stored in Secret Manager.", ["Microsoft Entra ID", "Secret Manager"], "quatta-implementation-docs.html#connectors"],
+      ["CON-05", "02 Data Access", ["connectors|normalize", "connectors|validate", "connectors|normalized data"], "Normalize and Validate", "Turns source-specific records into canonical Quatta objects with provenance.", "Validate schema, units, timestamps, IDs and required source metadata.", ["Python", "Pydantic", "PostgreSQL"], "quatta-implementation-docs.html#connectors"],
+      ["CON-07", "02 Data Access", ["connectors|agents"], "Agent Consumers", "Agents consume context-ready data through approved tools.", "Expose only approved read-only tools with schemas and policy checks.", ["LangGraph", "MCP optional", "AI Gateway"], "quatta-node-implementation-catalog.html#langgraph"],
+      ["CON-09", "02 Data Access", ["connectors|secrets", "connectors|connector logs", "connectors|audit records"], "Connector Controls", "Operational controls for credentials, connector logs and audit records.", "Store secrets outside config, trace every call and log source row counts.", ["Secret Manager", "OpenTelemetry", "PostgreSQL audit"], "quatta-implementation-docs.html#connectors"],
+
+      ["RAG-01", "03 Retrieval + RAG", ["rag|structured retrieval"], "Structured Retrieval", "Retrieves exact operational facts from SQL and APIs.", "Use allowlisted queries and parameterized filters for tenant, role, site and entity.", ["SQL", "APIs", "FastAPI"], "quatta-node-implementation-catalog.html#structured-retrieval"],
+      ["RAG-02", "03 Retrieval + RAG", ["rag|fact results"], "Fact Results", "Structured records with metadata ready for Context Builder.", "Return tables with source IDs, row counts, event time and retrieval time.", ["PostgreSQL", "Pydantic"], "quatta-node-implementation-catalog.html#structured-retrieval"],
+      ["RAG-03", "03 Retrieval + RAG", ["rag|erp / wms / sql", "rag|sharepoint / docs"], "Retrieval Source", "Customer structured or document sources used for retrieval.", "Keep source metadata, permissions and versioning attached to every result.", ["ERP/WMS", "SQL", "SharePoint"], "quatta-node-implementation-catalog.html#source-systems"],
+      ["RAG-05", "03 Retrieval + RAG", ["rag|chunking"], "Chunking", "Splits extracted documents into cited retrieval units.", "Chunk by semantic section, page range, clauses and tables while preserving ACL metadata.", ["Python ingestion worker", "PostgreSQL"], "quatta-node-implementation-catalog.html#chunking"],
+      ["RAG-06", "03 Retrieval + RAG", ["rag|embeddings"], "Embeddings / Vertex AI", "Converts document chunks into vectors for semantic retrieval.", "Use a versioned Vertex AI embedding model and store vector metadata with every chunk.", ["Vertex AI embeddings", "Cloud Run worker"], "quatta-node-implementation-catalog.html#embeddings"],
+      ["RAG-09", "03 Retrieval + RAG", ["rag|rag prompt"], "RAG Prompt", "Grounded model input assembled from allowed context only.", "Build prompts from Context Builder output and include citation requirements and safety policy.", ["AI Gateway", "Vertex AI Gemini"], "quatta-node-implementation-catalog.html#ai-gateway"],
+      ["RAG-10", "03 Retrieval + RAG", ["rag|answer"], "Answer", "Final grounded response with sources, warnings and confidence.", "Validate citations and schema before returning the answer to the Quatta App.", ["AI Gateway", "FastAPI"], "quatta-implementation-docs.html#retrieval"],
+      ["RAG-11", "03 Retrieval + RAG", ["rag|tenant/role filters", "rag|document version", "rag|citation trace", "rag|retrieval metrics"], "RAG Controls", "Controls applied across document retrieval and RAG.", "Track tenant filters, document versions, citations and retrieval quality metrics.", ["PostgreSQL", "OpenTelemetry"], "quatta-implementation-docs.html#security"],
+
+      ["GOV-01", "04 Security", ["security-governance|user sign-in", "security-governance|reviewer"], "Identity Actor", "Authenticated user or reviewer participating in the workflow.", "Use Entra identity for both request access and approval accountability.", ["Microsoft Entra ID"], "quatta-node-implementation-catalog.html#auth-rbac"],
+      ["GOV-02", "04 Security", ["security-governance|token validation", "security-governance|role mapping"], "Identity Validation", "Validates user identity and maps enterprise groups to Quatta roles.", "Validate OIDC tokens and maintain a tenant-specific role map.", ["Microsoft Entra ID", "FastAPI"], "quatta-node-implementation-catalog.html#auth-rbac"],
+      ["GOV-03", "04 Security", ["security-governance|tenant scope", "security-governance|permission decision"], "Permission Decision", "Decides whether the user can access a source, entity or action.", "Evaluate tenant, site, customer, article, order, claim and document ACL rules.", ["FastAPI", "PostgreSQL"], "quatta-node-implementation-catalog.html#auth-rbac"],
+      ["GOV-04", "04 Security", ["security-governance|audit event", "security-governance|policy version"], "Audit and Policy Record", "Records what policy was applied and why the action was allowed or denied.", "Store trace ID, policy version, source access, tool calls, model calls and validation result.", ["PostgreSQL audit", "OpenTelemetry"], "quatta-node-implementation-catalog.html#audit-monitoring"],
+      ["GOV-05", "04 Security", ["security-governance|ai gateway controls", "security-governance|response validation"], "AI Gateway Controls", "Controls model/tool use and validates grounded output.", "Apply prompt policy, tool allowlists, safety checks, schema validation and citation checks.", ["AI Gateway", "Vertex AI Gemini"], "quatta-node-implementation-catalog.html#ai-gateway"],
+      ["GOV-06", "04 Security", ["security-governance|human gate"], "Human Gate", "Requires approval for high-risk actions such as claim sending or writeback.", "Show evidence, confidence, draft output and final approval actions.", ["Quatta App", "PostgreSQL audit"], "quatta-node-implementation-catalog.html#human-review"],
+      ["GOV-07", "04 Security", ["security-governance|source acls", "security-governance|filtered retrieval", "security-governance|revocation handling"], "Source ACL and Revocation", "Keeps source permissions synchronized with retrieval and RAG indexes.", "Sync source ACLs, filter retrieval, and hide/delete/re-index revoked documents.", ["Microsoft Graph", "PostgreSQL", "pgvector"], "quatta-implementation-docs.html#security"],
+      ["GOV-08", "04 Security", ["security-governance|opentelemetry", "security-governance|postgresql audit", "security-governance|cloud logging", "security-governance|alerting", "security-governance|retention"], "Governance Operations", "Operational monitoring and retention controls for the platform.", "Configure traces, logs, alerts, retention rules and incident workflows.", ["OpenTelemetry", "Cloud Logging", "PostgreSQL"], "quatta-implementation-docs.html#security"],
+
+      ["DEP-01", "05 Deployment", ["deployment-ops|github repository", "deployment-ops|ci checks", "deployment-ops|container build", "deployment-ops|deploy approval"], "Delivery Pipeline", "Builds, tests and promotes Quatta services safely.", "Use CI checks for unit, connector contract and tenant-isolation tests before deploy.", ["GitHub Actions", "Artifact Registry"], "quatta-implementation-docs.html#deployment"],
+      ["DEP-02", "05 Deployment", ["deployment-ops|cloud run api", "deployment-ops|cloud run workers", "deployment-ops|cloud scheduler"], "Cloud Run Runtime", "Hosts stateless APIs, workers and scheduled jobs.", "Separate API, ingestion and export jobs with dedicated service accounts.", ["Cloud Run", "Cloud Scheduler"], "quatta-implementation-docs.html#deployment"],
+      ["DEP-03", "05 Deployment", ["deployment-ops|secret manager", "deployment-ops|cloud sql", "deployment-ops|cloud storage"], "Managed Data Services", "Stores secrets, PostgreSQL data and document/export objects.", "Use Secret Manager references, Cloud SQL with pgvector and controlled storage buckets.", ["Secret Manager", "Cloud SQL", "Cloud Storage"], "quatta-implementation-docs.html#deployment"],
+      ["DEP-04", "05 Deployment", ["deployment-ops|vertex ai", "deployment-ops|document ai", "deployment-ops|provider adapter"], "AI/Data Provider Services", "Provides model inference, embeddings, OCR and optional provider routing.", "Route Gemini, embeddings, Document AI and optional OpenAI/Azure providers through controlled adapters.", ["Vertex AI", "Document AI", "OpenAI/Azure optional"], "quatta-implementation-docs.html#deployment"],
+      ["DEP-05", "05 Deployment", ["deployment-ops|dashboards", "deployment-ops|alerts", "deployment-ops|runbooks", "deployment-ops|release audit"], "Operations", "Keeps the deployed platform observable and recoverable.", "Implement dashboards, alerts, runbooks, release audit and rollback procedures.", ["Cloud Monitoring", "OpenTelemetry"], "quatta-implementation-docs.html#deployment"],
+      ["DEP-06", "05 Deployment", ["deployment-ops|service accounts", "deployment-ops|least privilege", "deployment-ops|trace ids", "deployment-ops|config versions", "deployment-ops|rollback"], "Deployment Controls", "Controls used to run production safely.", "Enforce least privilege, trace propagation, config versioning and tested rollback.", ["IAM", "OpenTelemetry", "CI/CD"], "quatta-implementation-docs.html#deployment"],
+
+      ["ONB-01", "06 Onboarding", ["onboarding|source inventory", "onboarding|access design", "onboarding|sample cases", "onboarding|pilot scope"], "Customer Discovery", "Defines the customer systems, permissions, known cases and pilot scope.", "Run a structured discovery workshop and capture source owners, ACLs and evaluation cases.", ["Workshop", "Data inventory"], "quatta-implementation-docs.html#roadmap"],
+      ["ONB-02", "06 Onboarding", ["onboarding|tenant setup", "onboarding|secrets", "onboarding|connector build", "onboarding|document index", "onboarding|context builder", "onboarding|audit setup"], "Platform Implementation", "Configures tenant, secrets, connectors, index, context and audit.", "Build the core platform before enabling agent workflows.", ["FastAPI", "Cloud Run", "PostgreSQL", "Secret Manager"], "quatta-implementation-docs.html#roadmap"],
+      ["ONB-03", "06 Onboarding", ["onboarding|evaluation harness", "onboarding|agent mvp", "onboarding|human review"], "Evaluation and Agent MVP", "Validates quality with known cases before operational rollout.", "Run golden cases, measure retrieval quality and keep high-risk actions behind human review.", ["LangGraph", "AI Gateway", "Evaluation fixtures"], "quatta-implementation-docs.html#roadmap"],
+      ["ONB-04", "06 Onboarding", ["onboarding|security review", "onboarding|operational review", "onboarding|pilot go-live", "onboarding|scale plan"], "Pilot Readiness", "Final readiness gates for secure limited rollout and scale planning.", "Complete security, operations and evaluation sign-offs before go-live.", ["OpenTelemetry", "Cloud Monitoring", "Runbooks"], "quatta-implementation-docs.html#roadmap"],
+      ["ONB-05", "06 Onboarding", ["onboarding|discovery sign-off", "onboarding|rbac sign-off", "onboarding|eval sign-off", "onboarding|operations sign-off", "onboarding|go-live"], "Onboarding Sign-off", "Decision gates that prevent premature agent rollout.", "Use sign-offs to prove data access, RBAC, quality and operations are ready.", ["Project governance", "Audit log"], "quatta-implementation-docs.html#roadmap"]
+    ].map(([id, diagram, match, title, purpose, implementation, services, doc]) => ({
+      ...CORE_STEP_DEFAULTS,
+      id,
+      diagram,
+      match,
+      title,
+      purpose,
+      implementation,
+      services,
+      doc
+    }));
+
+    IMPLEMENTATION_STEPS.push(...extraCoreSteps);
 
     const tones = {
       customer: { fill: "#fbf8ff", stroke: "#7856d9", accent: "#7856d9" },
@@ -1778,7 +2052,7 @@
       const y = Number(rect.getAttribute("y"));
       const w = Number(rect.getAttribute("width"));
       const h = Number(rect.getAttribute("height"));
-      const lines = Array.from(svg.querySelectorAll("text.label"))
+      const lines = Array.from(svg.querySelectorAll("text.label, text.small, text.tiny"))
         .filter((text) => {
           const tx = Number(text.getAttribute("x"));
           const ty = Number(text.getAttribute("y"));
@@ -1800,7 +2074,7 @@
       const slide = svg.closest(".slide");
       if (!slide) return;
       const slideId = slide.id;
-      svg.querySelectorAll("rect.box").forEach((rect) => {
+      svg.querySelectorAll("rect.box, rect.pill").forEach((rect) => {
         const label = getRectLabel(svg, rect);
         const step = findStep(slideId, label);
         if (!step) return;
