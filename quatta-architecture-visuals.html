@@ -237,6 +237,7 @@
       font-size: 14px;
       fill: #65748c;
       font-weight: 600;
+      display: none;
     }
 
     .box {
@@ -611,7 +612,7 @@
     </section>
 
     <section class="implementation-note">
-      <strong>Implementation mode:</strong> click the numbered boxes in the diagrams to open setup guidance.
+      <strong>Implementation mode:</strong> click the highlighted boxes in the diagrams to open setup guidance.
       The full written guide lives in the <a href="quatta-implementation-guide.html">Implementation Guide</a>.
     </section>
 
@@ -1193,6 +1194,308 @@
     <div class="panel-body" id="panel-body"></div>
   </aside>
   <script>
+    function renderRedesignedDiagrams() {
+      const ns = "http://www.w3.org/2000/svg";
+      const esc = (value) => String(value).replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
+
+      const defs = () => `
+        <defs>
+          <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#3d4c63"/></marker>
+          <marker id="arrowSoft" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#8090a8"/></marker>
+          <marker id="arrowData" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#188b82"/></marker>
+          <marker id="arrowAi" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#c77700"/></marker>
+          <marker id="arrowSec" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#3267d6"/></marker>
+        </defs>`;
+
+      const text = (className, x, y, value, anchor = "start") =>
+        `<text class="${className}" x="${x}" y="${y}" text-anchor="${anchor}">${esc(value)}</text>`;
+
+      const zone = (x, y, w, h, title, note, fill) => `
+        <rect class="zone" x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}"/>
+        ${text("zone-label", x + 24, y + 40, title)}
+        ${note ? text("zone-note", x + 24, y + 66, note) : ""}`;
+
+      const box = (x, y, w, h, labels, smalls = [], options = {}) => {
+        const labelLines = Array.isArray(labels) ? labels : [labels];
+        const smallLines = Array.isArray(smalls) ? smalls : [smalls];
+        const className = `box${options.strong ? " box-strong" : ""}`;
+        const tone = options.tone ? ` data-tone="${options.tone}"` : "";
+        const labelStart = y + h / 2 - ((labelLines.length - 1) * 23 + smallLines.length * 19) / 2 + 8;
+        const labelMarkup = labelLines.map((line, index) =>
+          text("label", x + w / 2, Math.round(labelStart + index * 23), line, "middle")
+        ).join("");
+        const smallStart = labelStart + labelLines.length * 23 + 3;
+        const smallMarkup = smallLines.filter(Boolean).map((line, index) =>
+          text(options.tiny ? "tiny" : "small", x + w / 2, Math.round(smallStart + index * 19), line, "middle")
+        ).join("");
+        return `<rect class="${className}"${tone} x="${x}" y="${y}" width="${w}" height="${h}" fill="#fff"/>${labelMarkup}${smallMarkup}`;
+      };
+
+      const pill = (x, y, w, label) =>
+        `<rect class="pill" x="${x}" y="${y}" width="${w}" height="38"/>${text("small", x + w / 2, y + 25, label, "middle")}`;
+
+      const p = (className, d, marker = "") =>
+        `<path class="${className}" ${marker ? `marker-end="url(#${marker})"` : ""} d="${d}"/>`;
+
+      const caption = (x, y, value) => text("caption", x, y, value);
+
+      const diagrams = {
+        "high-level": `
+          ${defs()}
+          ${zone(44, 88, 235, 538, "Users", "Questions, review, decisions", "#f7fbff")}
+          ${zone(318, 88, 676, 538, "Quatta Platform", "FastAPI, policy, connectors, retrieval", "#eef7f6")}
+          ${zone(1034, 88, 258, 538, "AI Layer", "LangGraph and model providers", "#fff5e8")}
+          ${zone(1332, 88, 224, 538, "Customer Systems", "No source-system replacement", "#f4f0ff")}
+          ${zone(318, 672, 1238, 154, "Security / Monitoring", "Entra ID, RBAC, audit trail, OpenTelemetry", "#eef3fb")}
+
+          ${box(82, 284, 158, 86, "User", ["Ops, finance, planner"], { strong: true, tone: "user" })}
+          ${box(356, 214, 172, 90, "Quatta App", ["FastAPI on Cloud Run"], { strong: true })}
+          ${box(566, 214, 168, 90, "Auth / RBAC", ["Entra ID + roles"], { strong: true })}
+          ${box(772, 214, 174, 90, "AI Gateway", ["policy, routing, safety"], { strong: true })}
+          ${box(376, 420, 172, 86, "Connector Layer", ["read-only access"], { strong: true })}
+          ${box(586, 420, 174, 86, "Retrieval Layer", ["SQL, API, pgvector"], { strong: true })}
+          ${box(804, 420, 152, 86, "Context Builder", ["facts + citations"], { strong: true })}
+          ${box(1066, 214, 188, 90, "AI / Agent Layer", ["LangGraph workflows"], { strong: true })}
+          ${box(1066, 420, 188, 86, "Grounded Response", ["answer + sources + actions"], { strong: true })}
+          ${box(1364, 222, 160, 82, "ERP / WMS", ["SQL, APIs, files"], { strong: true, tone: "customer" })}
+          ${box(1364, 420, 160, 86, "Documents", ["SOPs, contracts, POD"], { tone: "customer" })}
+
+          ${pill(378, 730, 170, "Microsoft Entra ID")}
+          ${pill(590, 730, 170, "PostgreSQL Audit")}
+          ${pill(800, 730, 170, "OpenTelemetry")}
+          ${pill(1010, 730, 210, "Governance + Safety")}
+          ${pill(1260, 730, 190, "Tenant Isolation")}
+
+          ${p("arrow", "M240 327 H356", "arrow")}
+          ${p("arrow", "M528 259 H566", "arrow")}
+          ${p("arrow", "M734 259 H772", "arrow")}
+          ${p("arrowData", "M859 304 V372 H462 V420", "arrowData")}
+          ${p("arrowData", "M548 463 H586", "arrowData")}
+          ${p("arrowData", "M760 463 H804", "arrowData")}
+          ${p("arrowAi", "M956 463 H1010 V259 H1066", "arrowAi")}
+          ${p("arrowAi", "M1160 304 V420", "arrowAi")}
+          ${p("arrow-soft", "M1066 463 H1018 V166 H155 V284", "arrowSoft")}
+          ${p("arrowData", "M548 463 H1318 V263 H1364", "arrowData")}
+          ${p("arrowData", "M1364 462 H986 V463 H956", "arrowData")}
+          ${p("arrowSec", "M650 304 V730", "arrowSec")}
+          ${p("arrowSec", "M860 304 V730", "arrowSec")}
+          ${p("arrowSec", "M1160 506 V730", "arrowSec")}
+          ${caption(570, 578, "Data stays in customer systems; Quatta retrieves only what the user is allowed to see.")}
+        `,
+
+        "connectors": `
+          ${defs()}
+          ${zone(44, 86, 374, 650, "Customer Systems", "Read-only operational sources", "#f4f0ff")}
+          ${zone(458, 86, 910, 650, "Quatta Platform", "Authenticated adapters and normalized output", "#eef7f6")}
+          ${zone(1400, 86, 156, 650, "AI Layer", "Agent consumers", "#fff5e8")}
+          ${zone(458, 766, 1098, 82, "Security / Monitoring", "Secrets, logs, freshness and traceability", "#eef3fb")}
+
+          ${box(82, 184, 138, 58, "ERP", [], { tone: "customer" })}
+          ${box(246, 184, 138, 58, "WMS", [], { tone: "customer" })}
+          ${box(82, 284, 138, 58, "SQL DBs", [], { tone: "customer" })}
+          ${box(246, 284, 138, 58, "Excel / CSV", [], { tone: "customer" })}
+          ${box(82, 384, 138, 58, "SharePoint", [], { tone: "customer" })}
+          ${box(246, 384, 138, 58, "APIs", [], { tone: "customer" })}
+          ${box(164, 484, 138, 58, "Documents", [], { tone: "customer" })}
+
+          ${box(498, 210, 172, 82, "Authenticate", ["Entra + source creds"], { strong: true })}
+          ${box(720, 170, 220, 220, "Connector Modules", ["ERP | WMS | SQL", "Files | SharePoint", "API | Document intake"], { strong: true })}
+          ${box(990, 210, 178, 82, "Normalize", ["canonical records"], { strong: true })}
+          ${box(990, 360, 178, 82, "Validate", ["schema + provenance"], { strong: true })}
+          ${box(720, 500, 220, 78, "Optional TTL Cache", ["scoped, expiring, visible"], { strong: true })}
+          ${box(990, 506, 178, 78, "Normalized Data", ["facts + source refs"], { strong: true })}
+          ${box(1198, 506, 150, 78, "Context Builder", ["context-ready data"], { strong: true, tone: "platform" })}
+          ${box(1418, 388, 108, 74, "Agents", ["use context"], { strong: true })}
+
+          ${pill(740, 790, 150, "Secrets")}
+          ${pill(920, 790, 170, "Connector logs")}
+          ${pill(1120, 790, 188, "Freshness + Health")}
+          ${pill(1340, 790, 170, "Audit records")}
+
+          ${p("arrowData", "M384 213 H498", "arrowData")}
+          ${p("arrowData", "M384 313 H460 V251 H498", "arrowData")}
+          ${p("arrowData", "M384 413 H460 V251 H498", "arrowData")}
+          ${p("arrowData", "M302 513 H460 V251 H498", "arrowData")}
+          ${p("arrow", "M670 251 H720", "arrow")}
+          ${p("arrowData", "M940 251 H990", "arrowData")}
+          ${p("arrowData", "M1079 292 V360", "arrowData")}
+          ${p("arrowData", "M1079 442 V506", "arrowData")}
+          ${p("arrowData", "M940 539 H990", "arrowData")}
+          ${p("arrowData", "M1168 545 H1198", "arrowData")}
+          ${p("arrowAi", "M1348 545 H1384 V425 H1418", "arrowAi")}
+          ${p("arrowSec", "M584 292 V790", "arrowSec")}
+          ${p("arrowSec", "M830 390 V790", "arrowSec")}
+          ${p("arrowSec", "M1080 584 V790", "arrowSec")}
+          ${caption(516, 652, "Connectors return normalized, permission-scoped records; source systems remain the system of record.")}
+        `,
+
+        "rag": `
+          ${defs()}
+          ${zone(44, 90, 310, 626, "Customer Systems", "Structured sources and documents", "#f4f0ff")}
+          ${zone(394, 90, 844, 626, "Quatta Platform", "Retrieval, indexing, vector search and context assembly", "#eef7f6")}
+          ${zone(1278, 90, 278, 626, "AI Layer", "Grounded generation", "#fff5e8")}
+          ${zone(394, 754, 1162, 86, "Security / Monitoring", "ACL filters, versioning, traces and retrieval quality", "#eef3fb")}
+
+          ${box(78, 204, 240, 82, "ERP / WMS / SQL", ["orders, stock, transactions"], { strong: true, tone: "customer" })}
+          ${box(78, 456, 240, 82, "SharePoint / Docs", ["SOPs, contracts, PODs"], { strong: true, tone: "customer" })}
+
+          ${box(430, 196, 190, 82, "Structured Retrieval", ["SQL/API at query time"], { strong: true })}
+          ${box(680, 196, 170, 82, "Fact Results", ["tables + metadata"], { strong: true })}
+          ${box(430, 444, 168, 82, "Document AI", ["OCR + extraction"], { strong: true })}
+          ${box(646, 444, 140, 82, "Chunking", ["sections, pages"], { strong: true })}
+          ${box(834, 444, 150, 82, "Embeddings", ["Vertex AI"], { strong: true })}
+          ${box(1032, 444, 148, 82, "pgvector", ["vectors + ACL"], { strong: true })}
+          ${box(978, 232, 194, 104, "Context Builder", ["merge facts", "passages, citations"], { strong: true })}
+
+          ${box(1318, 250, 196, 92, "RAG Prompt", ["grounded context only"], { strong: true })}
+          ${box(1318, 456, 196, 92, "Answer", ["sources + warnings"], { strong: true })}
+
+          ${pill(540, 778, 150, "Tenant ACL")}
+          ${pill(730, 778, 170, "Document version")}
+          ${pill(940, 778, 158, "Citation trace")}
+          ${pill(1138, 778, 180, "Retrieval metrics")}
+
+          ${p("arrowData", "M318 245 H430", "arrowData")}
+          ${p("arrowData", "M620 237 H680", "arrowData")}
+          ${p("arrowData", "M850 237 H978", "arrowData")}
+          ${p("arrowData", "M318 497 H430", "arrowData")}
+          ${p("arrowData", "M598 485 H646", "arrowData")}
+          ${p("arrowData", "M786 485 H834", "arrowData")}
+          ${p("arrowData", "M984 485 H1032", "arrowData")}
+          ${p("arrowData", "M1106 444 V336", "arrowData")}
+          ${p("arrowAi", "M1172 284 H1318", "arrowAi")}
+          ${p("arrowAi", "M1416 342 V456", "arrowAi")}
+          ${p("arrowSec", "M526 526 V778", "arrowSec")}
+          ${p("arrowSec", "M1106 526 V778", "arrowSec")}
+          ${p("arrowSec", "M1075 336 V778", "arrowSec")}
+          ${caption(430, 644, "Structured retrieval stays live; document retrieval is indexed, permission-filtered and cited.")}
+        `,
+
+        "inventory": `
+          ${defs()}
+          ${zone(44, 88, 286, 152, "User / App", "Business question", "#f7fbff")}
+          ${zone(44, 276, 286, 462, "Customer Systems", "Evidence sources", "#f4f0ff")}
+          ${zone(370, 88, 838, 650, "Quatta Platform", "Intent, permission checks, retrieval and deterministic tools", "#eef7f6")}
+          ${zone(1248, 88, 308, 650, "AI Layer", "Explanation and recommended next actions", "#fff5e8")}
+          ${zone(370, 766, 1186, 82, "Security / Monitoring", "Tenant scope, audit and confidence tracking", "#eef3fb")}
+
+          ${box(78, 134, 210, 70, "User Question", ["Why has item X stock differences?"], { strong: true, tone: "user" })}
+          ${box(78, 364, 96, 58, "ERP", [], { tone: "customer" })}
+          ${box(194, 364, 96, 58, "WMS", [], { tone: "customer" })}
+          ${box(78, 478, 96, 58, "Tickets", [], { tone: "customer" })}
+          ${box(194, 478, 96, 58, "SOPs", [], { tone: "customer" })}
+
+          ${box(410, 134, 162, 70, "Intent Detection", ["inventory variance"], { strong: true })}
+          ${box(612, 134, 162, 70, "Permission Check", ["item, site, role"], { strong: true })}
+          ${box(838, 184, 204, 62, "ERP Transactions", ["adjustments, receipts"], { strong: true })}
+          ${box(838, 274, 204, 62, "WMS Transactions", ["moves, picks, counts"], { strong: true })}
+          ${box(838, 364, 204, 62, "Tickets / Claims", ["incidents, notes"], { strong: true })}
+          ${box(838, 454, 204, 62, "SOP / Contract Retrieval", ["rules, tolerance"], { strong: true })}
+          ${box(612, 590, 190, 82, "Reconcile + Context", ["time, unit, location", "evidence conflicts"], { strong: true })}
+          ${box(838, 590, 164, 82, "Pattern Tool", ["variance signals", "rule checks"], { strong: true })}
+          ${box(1036, 590, 136, 82, "Financial Impact", ["cost, exposure"], { strong: true, tone: "platform" })}
+
+          ${box(1292, 234, 214, 100, "Root Cause Summary", ["confidence, citations", "business language"], { strong: true })}
+          ${box(1292, 508, 214, 92, "Recommended Actions", ["approve, investigate", "no writeback by default"], { strong: true })}
+
+          ${pill(720, 790, 150, "Tenant + RBAC")}
+          ${pill(900, 790, 150, "Audit log")}
+          ${pill(1080, 790, 174, "OpenTelemetry")}
+          ${pill(1284, 790, 170, "Confidence gates")}
+
+          ${p("arrow", "M288 169 H410", "arrow")}
+          ${p("arrow", "M572 169 H612", "arrow")}
+          ${p("arrowData", "M774 169 H804 V215 H838", "arrowData")}
+          ${p("arrowData", "M804 215 V305 H838", "arrowData")}
+          ${p("arrowData", "M804 305 V395 H838", "arrowData")}
+          ${p("arrowData", "M804 395 V485 H838", "arrowData")}
+          ${p("arrowData", "M290 450 H804", "arrowData")}
+          ${p("arrowData", "M1042 215 H1080 V545 H707 V590", "arrowData")}
+          ${p("arrowData", "M707 672 V710 H1060 V672", "arrowData")}
+          ${p("arrowData", "M802 631 H838", "arrowData")}
+          ${p("arrowData", "M1002 631 H1036", "arrowData")}
+          ${p("arrowAi", "M1172 631 H1228 V284 H1292", "arrowAi")}
+          ${p("arrowAi", "M1399 334 V508", "arrowAi")}
+          ${p("arrowSec", "M693 204 V790", "arrowSec")}
+          ${p("arrowSec", "M707 672 V790", "arrowSec")}
+          ${p("arrowSec", "M1399 600 V790", "arrowSec")}
+          ${caption(470, 706, "Evidence is permission-filtered, reconciled, then summarized with citations and clear next actions.")}
+        `,
+
+        "claims": `
+          ${defs()}
+          ${zone(44, 88, 286, 152, "User / App", "Claim intake", "#f7fbff")}
+          ${zone(44, 276, 286, 462, "Customer Systems", "Claim data, orders and proof", "#f4f0ff")}
+          ${zone(370, 88, 852, 650, "Quatta Platform", "Retrieval, rules, calculations, review and outbound control", "#eef7f6")}
+          ${zone(1262, 88, 294, 650, "AI Layer", "Drafting and evidence narrative", "#fff5e8")}
+          ${zone(370, 766, 1186, 82, "Security / Monitoring", "Approval audit, evidence trace and outbound controls", "#eef3fb")}
+
+          ${box(78, 134, 210, 70, "Claim Request", ["late, damaged, missing"], { strong: true, tone: "user" })}
+          ${box(78, 364, 96, 58, "Ticket", [], { tone: "customer" })}
+          ${box(194, 364, 96, 58, "Order", [], { tone: "customer" })}
+          ${box(78, 478, 96, 58, "Contract", [], { tone: "customer" })}
+          ${box(194, 478, 96, 58, "Proof", [], { tone: "customer" })}
+
+          ${box(410, 134, 164, 70, "Permission", ["customer, case, carrier"], { strong: true })}
+          ${box(650, 184, 188, 62, "Ticket Data", ["status, notes, dates"], { strong: true })}
+          ${box(650, 274, 188, 62, "Delivery / Order Data", ["route, POD, SLA"], { strong: true })}
+          ${box(650, 364, 188, 62, "Contract Rules", ["terms, caps, limits"], { strong: true })}
+          ${box(650, 454, 188, 62, "Evidence Collection", ["photos, emails, scans"], { strong: true })}
+          ${box(906, 304, 176, 88, "Claim Case Context", ["facts, rules", "attachments"], { strong: true })}
+          ${box(1092, 190, 126, 64, "Eligibility", ["rules"], { strong: true, tone: "platform" })}
+          ${box(1092, 304, 126, 64, "Liability", ["amount"], { strong: true, tone: "platform" })}
+          ${box(1092, 418, 126, 64, ["Evidence", "Pack"], ["proof"], { strong: true, tone: "platform" })}
+          ${box(1302, 218, 184, 88, "Evidence Summary", ["clear narrative", "proof gaps"], { strong: true })}
+          ${box(1302, 426, 184, 88, "Draft Claim Email", ["email + attachments"], { strong: true })}
+          ${box(754, 590, 180, 82, "Human Review", ["approve, edit, reject"], { strong: true })}
+          ${box(982, 590, 170, 82, "Approved Send", ["export or send"], { strong: true, tone: "platform" })}
+
+          ${pill(720, 790, 150, "Tenant + RBAC")}
+          ${pill(900, 790, 150, "Audit log")}
+          ${pill(1080, 790, 170, "OpenTelemetry")}
+          ${pill(1280, 790, 188, "Outbound approval")}
+
+          ${p("arrow", "M288 169 H410", "arrow")}
+          ${p("arrowData", "M574 169 H610 V215 H650", "arrowData")}
+          ${p("arrowData", "M610 215 V305 H650", "arrowData")}
+          ${p("arrowData", "M610 305 V395 H650", "arrowData")}
+          ${p("arrowData", "M610 395 V485 H650", "arrowData")}
+          ${p("arrowData", "M290 450 H610", "arrowData")}
+          ${p("arrowData", "M838 215 H872 V348 H906", "arrowData")}
+          ${p("arrowData", "M838 305 H906", "arrowData")}
+          ${p("arrowData", "M838 395 H872 V348 H906", "arrowData")}
+          ${p("arrowData", "M838 485 H872 V348 H906", "arrowData")}
+          ${p("arrowData", "M1082 348 H1086 V222 H1092", "arrowData")}
+          ${p("arrowData", "M1082 348 H1092", "arrowData")}
+          ${p("arrowData", "M1082 348 H1086 V450 H1092", "arrowData")}
+          ${p("arrowAi", "M1218 222 H1240 V262 H1302", "arrowAi")}
+          ${p("arrowAi", "M1218 450 H1240 V262 H1302", "arrowAi")}
+          ${p("arrowAi", "M1394 306 V426", "arrowAi")}
+          ${p("arrow", "M1394 514 V632 H1152", "arrow")}
+          ${p("arrow", "M934 631 H982", "arrow")}
+          ${p("arrowSec", "M492 204 V790", "arrowSec")}
+          ${p("arrowSec", "M844 672 V790", "arrowSec")}
+          ${p("arrowSec", "M1067 672 V790", "arrowSec")}
+          ${caption(470, 706, "AI drafts the package; Quatta keeps the approval and outbound send under human control.")}
+        `
+      };
+
+      Object.entries(diagrams).forEach(([id, markup]) => {
+        const svg = document.querySelector(`#${id} svg`);
+        if (!svg) return;
+        svg.setAttribute("viewBox", "0 0 1600 900");
+        svg.innerHTML = markup;
+      });
+    }
+
+    renderRedesignedDiagrams();
+
     const IMPLEMENTATION_STEPS = [
       {
         id: "HL-02",
@@ -1424,47 +1727,6 @@
 
     document.querySelectorAll("svg").forEach((svg) => {
       const ns = "http://www.w3.org/2000/svg";
-      const legend = document.createElementNS(ns, "g");
-      legend.setAttribute("aria-label", "Arrow legend");
-      const legendItems = [
-        ["#3d4c63", "Process", 0],
-        ["#188b82", "Data", 82],
-        ["#c77700", "AI reasoning", 150],
-        ["#3267d6", "Security / audit", 270]
-      ];
-      const legendX = 1135;
-      const legendY = 28;
-      const bg = document.createElementNS(ns, "rect");
-      bg.setAttribute("x", legendX - 18);
-      bg.setAttribute("y", legendY - 14);
-      bg.setAttribute("width", 438);
-      bg.setAttribute("height", 34);
-      bg.setAttribute("rx", 8);
-      bg.setAttribute("fill", "#ffffff");
-      bg.setAttribute("stroke", "#d6deea");
-      legend.appendChild(bg);
-      legendItems.forEach(([color, text, offset]) => {
-        const x = legendX + offset;
-        const line = document.createElementNS(ns, "line");
-        line.setAttribute("x1", x);
-        line.setAttribute("x2", x + 20);
-        line.setAttribute("y1", legendY + 2);
-        line.setAttribute("y2", legendY + 2);
-        line.setAttribute("stroke", color);
-        line.setAttribute("stroke-width", color === "#3267d6" ? "1.5" : "2.5");
-        if (color === "#3267d6") line.setAttribute("stroke-dasharray", "5 4");
-        legend.appendChild(line);
-        const label = document.createElementNS(ns, "text");
-        label.setAttribute("x", x + 25);
-        label.setAttribute("y", legendY + 6);
-        label.setAttribute("font-size", "11");
-        label.setAttribute("font-weight", "800");
-        label.setAttribute("fill", "#4d5e77");
-        label.textContent = text;
-        legend.appendChild(label);
-      });
-      svg.appendChild(legend);
-
       const firstBox = Array.from(svg.children).find((node) => node.matches && node.matches("rect.box"));
       if (firstBox) {
         svg.querySelectorAll("path").forEach((path) => {
@@ -1489,19 +1751,11 @@
           stripe.setAttribute("x", x + 1.5);
           stripe.setAttribute("y", y + 1.5);
           stripe.setAttribute("width", Math.max(20, w - 3));
-          stripe.setAttribute("height", 8);
+          stripe.setAttribute("height", 6);
           stripe.setAttribute("rx", 4);
           stripe.setAttribute("fill", tone.accent);
-          stripe.setAttribute("opacity", rect.classList.contains("box-strong") ? "0.95" : "0.68");
+          stripe.setAttribute("opacity", rect.classList.contains("box-strong") ? "0.9" : "0.55");
           rect.insertAdjacentElement("afterend", stripe);
-
-          const node = document.createElementNS(ns, "circle");
-          node.setAttribute("cx", x + w - 18);
-          node.setAttribute("cy", y + 20);
-          node.setAttribute("r", rect.classList.contains("box-strong") ? 7 : 5);
-          node.setAttribute("fill", tone.accent);
-          node.setAttribute("opacity", "0.92");
-          stripe.insertAdjacentElement("afterend", node);
         }
       });
 
@@ -1561,7 +1815,6 @@
             openStepPanel(step);
           }
         });
-        addStepBadge(svg, rect, step.id);
         addStepHotspot(svg, rect, step);
       });
     }
@@ -1573,15 +1826,15 @@
       const group = document.createElementNS(ns, "g");
       const bg = document.createElementNS(ns, "rect");
       bg.setAttribute("class", "node-badge-bg");
-      bg.setAttribute("x", x + 9);
-      bg.setAttribute("y", y + 14);
+      bg.setAttribute("x", x + 8);
+      bg.setAttribute("y", y - 10);
       bg.setAttribute("width", 42);
       bg.setAttribute("height", 20);
       bg.setAttribute("rx", 8);
       const text = document.createElementNS(ns, "text");
       text.setAttribute("class", "node-badge");
-      text.setAttribute("x", x + 30);
-      text.setAttribute("y", y + 28);
+      text.setAttribute("x", x + 29);
+      text.setAttribute("y", y + 4);
       text.setAttribute("text-anchor", "middle");
       text.textContent = id;
       group.appendChild(bg);
