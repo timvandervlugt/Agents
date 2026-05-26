@@ -1,0 +1,1672 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quatta Core AI Architecture Visuals</title>
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #617089;
+      --line: #c9d3e2;
+      --paper: #f6f8fb;
+      --panel: #ffffff;
+      --platform: #eef7f6;
+      --customer: #f4f0ff;
+      --ai: #fff5e8;
+      --security: #eef3fb;
+      --teal: #188b82;
+      --blue: #3267d6;
+      --amber: #c77700;
+      --violet: #7856d9;
+      --green: #2d7d4f;
+      --red: #be4b45;
+      --shadow: 0 18px 48px rgba(26, 38, 64, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, Segoe UI, Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      min-height: 64px;
+      padding: 12px 28px;
+      background: rgba(246, 248, 251, 0.92);
+      border-bottom: 1px solid rgba(201, 211, 226, 0.8);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 230px;
+      font-weight: 760;
+      font-size: 17px;
+    }
+
+    .mark {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      color: white;
+      background: linear-gradient(135deg, #188b82, #3267d6);
+      font-weight: 800;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .nav a {
+      color: var(--muted);
+      text-decoration: none;
+      padding: 7px 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .nav a:hover {
+      color: var(--ink);
+      background: #e9eef6;
+    }
+
+    .guide-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 8px 11px;
+      color: #244fba;
+      background: #eef3ff;
+      border: 1px solid #cad8ff;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .guide-link:hover {
+      color: #173a94;
+      background: #e4ecff;
+    }
+
+    main {
+      width: min(1520px, calc(100vw - 40px));
+      margin: 28px auto 54px;
+    }
+
+    .intro {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(30px, 4vw, 56px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .intro p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.55;
+      max-width: 820px;
+    }
+
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      padding: 16px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 8px 20px rgba(26, 38, 64, 0.07);
+    }
+
+    .legend span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 4px;
+      border: 1px solid rgba(23, 32, 51, 0.12);
+    }
+
+    .deck {
+      display: grid;
+      gap: 28px;
+    }
+
+    .slide {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .slide-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 20px 24px 14px;
+      border-bottom: 1px solid #e4eaf3;
+    }
+
+    .slide h2 {
+      margin: 0;
+      font-size: clamp(20px, 2vw, 30px);
+      letter-spacing: 0;
+    }
+
+    .slide-kicker {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .canvas {
+      padding: 18px;
+      background:
+        linear-gradient(#f9fbfe 1px, transparent 1px),
+        linear-gradient(90deg, #f9fbfe 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: white;
+      border: 1px solid #e6ecf5;
+      border-radius: 8px;
+    }
+
+    .zone {
+      stroke: #c7d1df;
+      stroke-width: 1.5;
+      rx: 8;
+    }
+
+    .zone-label {
+      font-size: 22px;
+      font-weight: 800;
+      fill: #243149;
+    }
+
+    .zone-note {
+      font-size: 14px;
+      fill: #65748c;
+      font-weight: 600;
+    }
+
+    .box {
+      fill: white;
+      stroke: #bfcadc;
+      stroke-width: 1.5;
+      rx: 8;
+      filter: drop-shadow(0 8px 14px rgba(26, 38, 64, 0.08));
+    }
+
+    .box-strong {
+      stroke-width: 2.2;
+    }
+
+    .label {
+      fill: #1f2b43;
+      font-size: 17px;
+      font-weight: 760;
+    }
+
+    .small {
+      fill: #617089;
+      font-size: 13px;
+      font-weight: 620;
+    }
+
+    .tiny {
+      fill: #617089;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .pill {
+      fill: #f7f9fc;
+      stroke: #cfd8e6;
+      rx: 8;
+    }
+
+    .arrow {
+      fill: none;
+      stroke: #3d4c63;
+      stroke-width: 2.2;
+      marker-end: url(#arrow);
+    }
+
+    .arrow-soft {
+      fill: none;
+      stroke: #8090a8;
+      stroke-width: 1.8;
+      marker-end: url(#arrowSoft);
+    }
+
+    .arrow-data {
+      fill: none;
+      stroke: var(--teal);
+      stroke-width: 2.4;
+      marker-end: url(#arrowData);
+    }
+
+    .arrowData {
+      fill: none;
+      stroke: var(--teal);
+      stroke-width: 2.4;
+    }
+
+    .arrow-ai {
+      fill: none;
+      stroke: var(--amber);
+      stroke-width: 2.4;
+      marker-end: url(#arrowAi);
+    }
+
+    .arrowAi {
+      fill: none;
+      stroke: var(--amber);
+      stroke-width: 2.4;
+    }
+
+    .arrow-sec {
+      fill: none;
+      stroke: var(--blue);
+      stroke-width: 1.35;
+      stroke-dasharray: 8 6;
+      opacity: 0.55;
+      marker-end: url(#arrowSec);
+    }
+
+    .arrowSec {
+      fill: none;
+      stroke: var(--blue);
+      stroke-width: 1.35;
+      stroke-dasharray: 8 6;
+      opacity: 0.55;
+    }
+
+    .badge {
+      font-size: 12px;
+      font-weight: 800;
+      fill: white;
+    }
+
+    .caption {
+      font-size: 12px;
+      fill: #4d5e77;
+      font-weight: 700;
+    }
+
+    .route-label {
+      font-size: 11px;
+      fill: #243149;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .implementation-note {
+      margin: 0 0 24px;
+      padding: 14px 16px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 14px;
+      box-shadow: 0 8px 20px rgba(26, 38, 64, 0.07);
+    }
+
+    .implementation-note strong {
+      color: var(--ink);
+    }
+
+    .step-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      z-index: 20;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      width: min(500px, 100vw);
+      height: 100vh;
+      background: #ffffff;
+      border-left: 1px solid var(--line);
+      box-shadow: -20px 0 50px rgba(26, 38, 64, 0.22);
+      transform: translateX(102%);
+      transition: transform 160ms ease;
+    }
+
+    .step-panel.is-open {
+      transform: translateX(0);
+    }
+
+    .panel-head {
+      padding: 18px 20px 12px;
+      border-bottom: 1px solid #e2e9f3;
+    }
+
+    .panel-kicker {
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .panel-title-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .panel-title-row h3 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.15;
+    }
+
+    .panel-close {
+      width: 34px;
+      height: 34px;
+      border: 1px solid #ccd6e4;
+      border-radius: 8px;
+      background: #f7f9fc;
+      color: var(--ink);
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .mode-switch {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-top: 14px;
+    }
+
+    .mode-switch button {
+      min-height: 34px;
+      border: 1px solid #ccd6e4;
+      border-radius: 8px;
+      background: #f7f9fc;
+      color: var(--muted);
+      font-weight: 780;
+      cursor: pointer;
+    }
+
+    .mode-switch button.is-active {
+      color: #ffffff;
+      border-color: var(--teal);
+      background: var(--teal);
+    }
+
+    .panel-body {
+      overflow: auto;
+      padding: 18px 20px 28px;
+    }
+
+    .panel-body h4 {
+      margin: 18px 0 8px;
+      font-size: 14px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .panel-body p {
+      margin: 0 0 10px;
+      color: #33415a;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .panel-body ul {
+      margin: 0 0 12px;
+      padding-left: 19px;
+      color: #33415a;
+      font-size: 14px;
+      line-height: 1.48;
+    }
+
+    .stack-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 10px;
+    }
+
+    .stack-list span {
+      padding: 6px 8px;
+      border: 1px solid #d1dbe8;
+      border-radius: 8px;
+      background: #f7f9fc;
+      color: #4d5e77;
+      font-size: 12px;
+      font-weight: 760;
+    }
+
+    .doc-link {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 8px;
+      padding: 9px 11px;
+      border-radius: 8px;
+      background: var(--ink);
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .node-badge {
+      pointer-events: none;
+      font-size: 10px;
+      font-weight: 900;
+      fill: #ffffff;
+    }
+
+    .node-badge-bg {
+      pointer-events: none;
+      fill: #172033;
+      opacity: 0.9;
+    }
+
+    .clickable-node {
+      cursor: pointer;
+    }
+
+    .clickable-node:hover {
+      stroke-width: 3 !important;
+    }
+
+    .node-hotspot {
+      fill: transparent;
+      cursor: pointer;
+      pointer-events: all;
+    }
+
+    @media (max-width: 900px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .intro {
+        grid-template-columns: 1fr;
+      }
+
+      .legend {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .topbar,
+      .intro {
+        display: none;
+      }
+
+      main {
+        width: 100%;
+        margin: 0;
+      }
+
+      .slide {
+        page-break-after: always;
+        border: 0;
+        box-shadow: none;
+      }
+
+      .canvas {
+        padding: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="mark">Q</div>
+      <div>Quatta AI Architecture</div>
+    </div>
+    <nav class="nav" aria-label="Diagram navigation">
+      <a href="#high-level">High-Level</a>
+      <a href="#connectors">Connectors</a>
+      <a href="#rag">Retrieval + RAG</a>
+      <a href="#inventory">Inventory Agent</a>
+      <a href="#claims">Claims Agent</a>
+      <a href="quatta-implementation-guide.html">Implementation Guide</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="intro" aria-label="Overview">
+      <div>
+        <h1>Core architecture for Quatta</h1>
+        <p>
+          A practical AI layer above existing customer systems. Operational data stays in ERP,
+          WMS, SQL, Excel, SharePoint, documents and APIs. Quatta adds secure retrieval,
+          orchestration, reasoning, monitoring and auditability.
+        </p>
+        <p style="margin-top: 12px">
+          Each diagram now links to the implementation guide with concrete setup steps,
+          service choices, acceptance criteria and pilot-readiness checks.
+        </p>
+      </div>
+      <div class="legend" aria-label="Legend">
+        <span><i class="dot" style="background: var(--customer)"></i>Customer Systems</span>
+        <span><i class="dot" style="background: var(--platform)"></i>Quatta Platform</span>
+        <span><i class="dot" style="background: var(--ai)"></i>AI Layer</span>
+        <span><i class="dot" style="background: var(--security)"></i>Security / Monitoring</span>
+      </div>
+    </section>
+
+    <section class="implementation-note">
+      <strong>Implementation mode:</strong> click the numbered boxes in the diagrams to open setup guidance.
+      The full written guide lives in the <a href="quatta-implementation-guide.html">Implementation Guide</a>.
+    </section>
+
+    <section class="deck">
+      <article class="slide" id="high-level">
+        <div class="slide-head">
+          <div>
+            <div class="slide-kicker">01 / Core platform</div>
+            <h2>High-Level Quatta Architecture</h2>
+          </div>
+          <a class="guide-link" href="quatta-implementation-guide.html#flow-docs">Implementation steps</a>
+        </div>
+        <div class="canvas">
+          <svg viewBox="0 0 1600 900" role="img" aria-label="High-Level Quatta Architecture diagram">
+            <defs>
+              <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#3d4c63"/></marker>
+              <marker id="arrowSoft" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#8090a8"/></marker>
+              <marker id="arrowData" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#188b82"/></marker>
+              <marker id="arrowAi" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#c77700"/></marker>
+              <marker id="arrowSec" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#3267d6"/></marker>
+            </defs>
+
+            <rect class="zone" x="36" y="76" width="245" height="520" fill="#f7fbff"/>
+            <text class="zone-label" x="58" y="115">Users</text>
+            <text class="zone-note" x="58" y="140">Business teams and managers</text>
+
+            <rect class="zone" x="318" y="76" width="720" height="520" fill="#eef7f6"/>
+            <text class="zone-label" x="340" y="115">Quatta Platform</text>
+            <text class="zone-note" x="340" y="140">FastAPI on Google Cloud Run</text>
+
+            <rect class="zone" x="1076" y="76" width="488" height="520" fill="#fff5e8"/>
+            <text class="zone-label" x="1098" y="115">AI Layer</text>
+            <text class="zone-note" x="1098" y="140">LangGraph plus Gemini on Vertex AI</text>
+
+            <rect class="zone" x="318" y="632" width="1246" height="198" fill="#eef3fb"/>
+            <text class="zone-label" x="340" y="674">Security / Monitoring</text>
+            <text class="zone-note" x="340" y="700">Tenant isolation, policy, telemetry and audit trail</text>
+
+            <rect class="box box-strong" x="70" y="260" width="170" height="92" fill="#fff"/>
+            <text class="label" x="155" y="298" text-anchor="middle">User</text>
+            <text class="small" x="155" y="324" text-anchor="middle">Planner, finance, ops</text>
+
+            <rect class="box box-strong" x="358" y="250" width="180" height="112" fill="#fff"/>
+            <text class="label" x="448" y="292" text-anchor="middle">Quatta App</text>
+            <text class="small" x="448" y="318" text-anchor="middle">FastAPI interface</text>
+
+            <rect class="box" x="582" y="250" width="180" height="112" fill="#fff"/>
+            <text class="label" x="672" y="292" text-anchor="middle">Auth / RBAC</text>
+            <text class="small" x="672" y="318" text-anchor="middle">Role scoped access</text>
+
+            <rect class="box box-strong" x="806" y="250" width="190" height="112" fill="#fff"/>
+            <text class="label" x="901" y="292" text-anchor="middle">AI Gateway</text>
+            <text class="small" x="901" y="318" text-anchor="middle">Policy, routing, safety</text>
+
+            <rect class="box" x="400" y="432" width="180" height="104" fill="#fff"/>
+            <text class="label" x="490" y="473" text-anchor="middle">Connector</text>
+            <text class="small" x="490" y="499" text-anchor="middle">Read-only modules</text>
+
+            <rect class="box" x="624" y="432" width="180" height="104" fill="#fff"/>
+            <text class="label" x="714" y="473" text-anchor="middle">Retrieval</text>
+            <text class="small" x="714" y="499" text-anchor="middle">SQL, API, pgvector</text>
+
+            <rect class="box" x="1142" y="224" width="180" height="112" fill="#fff"/>
+            <text class="label" x="1232" y="265" text-anchor="middle">LangGraph</text>
+            <text class="small" x="1232" y="292" text-anchor="middle">Agent workflows</text>
+
+            <rect class="box" x="1354" y="224" width="166" height="112" fill="#fff"/>
+            <text class="label" x="1437" y="265" text-anchor="middle">LLMs</text>
+            <text class="small" x="1437" y="292" text-anchor="middle">Gemini / OpenAI</text>
+
+            <rect class="box box-strong" x="1142" y="420" width="378" height="112" fill="#fff"/>
+            <text class="label" x="1331" y="462" text-anchor="middle">Grounded Response</text>
+            <text class="small" x="1331" y="489" text-anchor="middle">Answer with sources and actions</text>
+
+            <rect class="box" data-tone="customer" x="842" y="432" width="154" height="104" fill="#fff"/>
+            <text class="label" x="919" y="468" text-anchor="middle">Customer</text>
+            <text class="label" x="919" y="492" text-anchor="middle">Systems</text>
+            <text class="small" x="919" y="516" text-anchor="middle">ERP, WMS, SQL, files</text>
+
+            <rect class="box" x="382" y="724" width="200" height="66" fill="#fff"/>
+            <text class="label" x="482" y="765" text-anchor="middle">Microsoft Entra ID</text>
+
+            <rect class="box" x="632" y="724" width="180" height="66" fill="#fff"/>
+            <text class="label" x="722" y="765" text-anchor="middle">PostgreSQL Audit</text>
+
+            <rect class="box" x="862" y="724" width="180" height="66" fill="#fff"/>
+            <text class="label" x="952" y="765" text-anchor="middle">OpenTelemetry</text>
+
+            <rect class="box" x="1092" y="724" width="230" height="66" fill="#fff"/>
+            <text class="label" x="1207" y="752" text-anchor="middle">Governance & Safety</text>
+            <text class="tiny" x="1207" y="774" text-anchor="middle">PII, prompt injection, validation</text>
+
+            <path class="arrow" d="M240 306 H358"/>
+            <path class="arrow" d="M538 306 H582"/>
+            <path class="arrow" d="M762 306 H806"/>
+            <path class="arrow-data" d="M901 362 C901 428 820 484 804 484"/>
+            <path class="arrow-data" d="M580 484 H624"/>
+            <path class="arrow-data" d="M804 484 H842"/>
+            <path class="arrow-data" d="M842 510 C760 568 620 552 580 520"/>
+            <path class="arrow-ai" d="M804 484 C974 484 1006 280 1142 280"/>
+            <path class="arrow-ai" d="M1322 280 H1354"/>
+            <path class="arrow-ai" d="M1437 336 C1437 388 1395 420 1352 420"/>
+            <path class="arrow" d="M1142 476 C1018 585 686 610 448 362"/>
+            <path class="arrow-sec" d="M482 724 C530 620 605 510 672 362"/>
+            <path class="arrow-sec" d="M901 362 C820 520 740 650 722 724"/>
+            <path class="arrow-sec" d="M952 724 C1010 620 1010 444 996 342"/>
+            <path class="arrow-sec" d="M1207 724 C1150 594 1010 416 996 342"/>
+
+            <text class="caption" x="1010" y="395">read-only access | no replication by default | no writeback without approval</text>
+          </svg>
+        </div>
+      </article>
+
+      <article class="slide" id="connectors">
+        <div class="slide-head">
+          <div>
+            <div class="slide-kicker">02 / Data access</div>
+            <h2>Connector Layer Flow</h2>
+          </div>
+          <a class="guide-link" href="docs/implementation/02-connector-layer.md">Connector setup doc</a>
+        </div>
+        <div class="canvas">
+          <svg viewBox="0 0 1600 900" role="img" aria-label="Connector Layer Flow diagram">
+            <defs>
+              <marker id="arrow2" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#3d4c63"/></marker>
+              <marker id="arrowData2" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#188b82"/></marker>
+              <marker id="arrowSec2" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#3267d6"/></marker>
+            </defs>
+
+            <rect class="zone" x="42" y="78" width="430" height="664" fill="#f4f0ff"/>
+            <text class="zone-label" x="66" y="118">Customer Systems</text>
+            <text class="zone-note" x="66" y="144">Read-only operational sources</text>
+
+            <rect class="zone" x="520" y="78" width="706" height="664" fill="#eef7f6"/>
+            <text class="zone-label" x="544" y="118">Quatta Platform</text>
+            <text class="zone-note" x="544" y="144">Authenticated connectors and normalized output</text>
+
+            <rect class="zone" x="1270" y="78" width="286" height="664" fill="#fff5e8"/>
+            <text class="zone-label" x="1294" y="118">AI Layer</text>
+            <text class="zone-note" x="1294" y="144">Context-ready data</text>
+
+            <rect class="zone" x="520" y="768" width="1036" height="82" fill="#eef3fb"/>
+            <text class="zone-label" x="544" y="818">Security / Monitoring</text>
+
+            <g>
+              <rect class="box" x="92" y="204" width="140" height="64"/><text class="label" x="162" y="244" text-anchor="middle">ERP</text>
+              <rect class="box" x="278" y="204" width="140" height="64"/><text class="label" x="348" y="244" text-anchor="middle">WMS</text>
+              <rect class="box" x="92" y="310" width="140" height="64"/><text class="label" x="162" y="350" text-anchor="middle">SQL DBs</text>
+              <rect class="box" x="278" y="310" width="140" height="64"/><text class="label" x="348" y="350" text-anchor="middle">Excel / CSV</text>
+              <rect class="box" x="92" y="416" width="140" height="64"/><text class="label" x="162" y="456" text-anchor="middle">SharePoint</text>
+              <rect class="box" x="278" y="416" width="140" height="64"/><text class="label" x="348" y="456" text-anchor="middle">APIs</text>
+              <rect class="box" x="185" y="522" width="140" height="64"/><text class="label" x="255" y="562" text-anchor="middle">Documents</text>
+            </g>
+
+            <rect class="box box-strong" x="580" y="214" width="168" height="92" fill="#fff"/>
+            <text class="label" x="664" y="253" text-anchor="middle">Authenticate</text>
+            <text class="small" x="664" y="278" text-anchor="middle">Entra + source creds</text>
+
+            <rect class="box box-strong" x="806" y="186" width="230" height="250" fill="#fff"/>
+            <text class="label" x="921" y="226" text-anchor="middle">Connector Modules</text>
+            <text class="small" x="921" y="255" text-anchor="middle">ERP adapter</text>
+            <text class="small" x="921" y="285" text-anchor="middle">WMS adapter</text>
+            <text class="small" x="921" y="315" text-anchor="middle">SQL adapter</text>
+            <text class="small" x="921" y="345" text-anchor="middle">Files adapter</text>
+            <text class="small" x="921" y="375" text-anchor="middle">SharePoint adapter</text>
+            <text class="small" x="921" y="405" text-anchor="middle">API adapter</text>
+
+            <rect class="box" x="580" y="472" width="168" height="88" fill="#fff"/>
+            <text class="label" x="664" y="506" text-anchor="middle">Optional</text>
+            <text class="label" x="664" y="530" text-anchor="middle">TTL Cache</text>
+            <text class="small" x="664" y="550" text-anchor="middle">role scoped</text>
+
+            <rect class="box box-strong" x="806" y="496" width="230" height="94" fill="#fff"/>
+            <text class="label" x="921" y="535" text-anchor="middle">Normalize Output</text>
+            <text class="small" x="921" y="561" text-anchor="middle">canonical tables and objects</text>
+
+            <rect class="box box-strong" x="1084" y="358" width="96" height="140" fill="#fff"/>
+            <text class="label" x="1132" y="418" text-anchor="middle">Log</text>
+            <text class="small" x="1132" y="444" text-anchor="middle">trace</text>
+            <text class="small" x="1132" y="468" text-anchor="middle">audit</text>
+
+            <rect class="box" x="840" y="626" width="238" height="68" fill="#fff"/>
+            <text class="label" x="959" y="654" text-anchor="middle">Freshness + Health</text>
+            <text class="small" x="959" y="678" text-anchor="middle">last sync, retry, partial results</text>
+
+            <rect class="box box-strong" x="1322" y="388" width="180" height="100" fill="#fff"/>
+            <text class="label" x="1412" y="426" text-anchor="middle">Context Builder</text>
+            <text class="small" x="1412" y="452" text-anchor="middle">ready for agents</text>
+
+            <rect class="pill" x="800" y="790" width="160" height="38"/><text class="small" x="880" y="815" text-anchor="middle">Tenant isolation</text>
+            <rect class="pill" x="994" y="790" width="150" height="38"/><text class="small" x="1069" y="815" text-anchor="middle">Secrets</text>
+            <rect class="pill" x="1178" y="790" width="160" height="38"/><text class="small" x="1258" y="815" text-anchor="middle">OpenTelemetry</text>
+            <rect class="pill" x="1372" y="790" width="150" height="38"/><text class="small" x="1447" y="815" text-anchor="middle">Audit records</text>
+
+            <path class="arrowData" marker-end="url(#arrowData2)" d="M418 236 C548 236 532 260 580 260"/>
+            <path class="arrowData" marker-end="url(#arrowData2)" d="M418 342 C548 342 532 260 580 260"/>
+            <path class="arrowData" marker-end="url(#arrowData2)" d="M418 448 C548 448 532 260 580 260"/>
+            <path class="arrowData" marker-end="url(#arrowData2)" d="M325 554 C520 554 522 260 580 260"/>
+            <path class="arrow" marker-end="url(#arrow2)" d="M748 260 H806"/>
+            <path class="arrowData" marker-end="url(#arrowData2)" d="M921 436 V496"/>
+            <path class="arrowData" marker-end="url(#arrowData2)" d="M748 516 H806"/>
+            <path class="arrowData" marker-end="url(#arrowData2)" d="M921 590 V626"/>
+            <path class="arrowData" marker-end="url(#arrowData2)" d="M1036 543 C1168 543 1208 438 1322 438"/>
+            <path class="arrowSec" marker-end="url(#arrowSec2)" d="M664 306 C666 636 716 718 725 790"/>
+            <path class="arrowSec" marker-end="url(#arrowSec2)" d="M921 436 C970 576 1088 690 1149 790"/>
+            <path class="arrowSec" marker-end="url(#arrowSec2)" d="M1036 385 H1084"/>
+            <path class="arrowSec" marker-end="url(#arrowSec2)" d="M1132 498 C1160 625 1272 730 1361 790"/>
+
+            <text class="caption" x="574" y="644">normalized output removes source-system complexity before AI reasoning</text>
+          </svg>
+        </div>
+      </article>
+
+      <article class="slide" id="rag">
+        <div class="slide-head">
+          <div>
+            <div class="slide-kicker">03 / Retrieval</div>
+            <h2>Retrieval + RAG Flow</h2>
+          </div>
+          <a class="guide-link" href="docs/implementation/03-retrieval-rag.md">Retrieval setup doc</a>
+        </div>
+        <div class="canvas">
+          <svg viewBox="0 0 1600 900" role="img" aria-label="Retrieval and RAG Flow diagram">
+            <defs>
+              <marker id="arrow3" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#3d4c63"/></marker>
+              <marker id="arrowData3" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#188b82"/></marker>
+              <marker id="arrowAi3" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#c77700"/></marker>
+              <marker id="arrowSec3" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#3267d6"/></marker>
+            </defs>
+
+            <rect class="zone" x="48" y="92" width="350" height="620" fill="#f4f0ff"/>
+            <text class="zone-label" x="72" y="132">Customer Systems</text>
+            <text class="zone-note" x="72" y="158">Structured and document sources</text>
+
+            <rect class="zone" x="446" y="92" width="750" height="620" fill="#eef7f6"/>
+            <text class="zone-label" x="470" y="132">Quatta Platform</text>
+            <text class="zone-note" x="470" y="158">Retrieval, indexing and context assembly</text>
+
+            <rect class="zone" x="1238" y="92" width="314" height="620" fill="#fff5e8"/>
+            <text class="zone-label" x="1262" y="132">AI Layer</text>
+            <text class="zone-note" x="1262" y="158">Grounded answer generation</text>
+
+            <rect class="zone" x="446" y="746" width="1106" height="94" fill="#eef3fb"/>
+            <text class="zone-label" x="470" y="804">Security / Monitoring</text>
+
+            <rect class="box box-strong" x="84" y="218" width="278" height="82" fill="#fff"/>
+            <text class="label" x="223" y="252" text-anchor="middle">ERP / WMS / SQL</text>
+            <text class="small" x="223" y="278" text-anchor="middle">transactions, orders, stock</text>
+
+            <rect class="box box-strong" x="84" y="514" width="278" height="82" fill="#fff"/>
+            <text class="label" x="223" y="548" text-anchor="middle">SharePoint / PDFs</text>
+            <text class="small" x="223" y="574" text-anchor="middle">SOPs, contracts, claims proof</text>
+
+            <rect class="box box-strong" x="500" y="214" width="170" height="92" fill="#fff"/>
+            <text class="label" x="585" y="250" text-anchor="middle">Retrieval</text>
+            <text class="small" x="585" y="276" text-anchor="middle">Router</text>
+
+            <rect class="box" x="730" y="180" width="196" height="92" fill="#fff"/>
+            <text class="label" x="828" y="217" text-anchor="middle">Structured Path</text>
+            <text class="small" x="828" y="244" text-anchor="middle">SQL and API queries</text>
+
+            <rect class="box" x="730" y="328" width="196" height="92" fill="#fff"/>
+            <text class="label" x="828" y="365" text-anchor="middle">Semantic Map</text>
+            <text class="small" x="828" y="392" text-anchor="middle">tables, metrics, IDs</text>
+
+            <rect class="box" x="520" y="514" width="150" height="80" fill="#fff"/>
+            <text class="label" x="595" y="550" text-anchor="middle">Document AI</text>
+            <text class="small" x="595" y="574" text-anchor="middle">OCR</text>
+
+            <rect class="box" x="720" y="514" width="130" height="80" fill="#fff"/>
+            <text class="label" x="785" y="550" text-anchor="middle">Chunk</text>
+            <text class="small" x="785" y="574" text-anchor="middle">semantic split</text>
+
+            <rect class="box" x="900" y="514" width="140" height="80" fill="#fff"/>
+            <text class="label" x="970" y="550" text-anchor="middle">Embeddings</text>
+            <text class="small" x="970" y="574" text-anchor="middle">vectors</text>
+
+            <rect class="box" x="1080" y="514" width="94" height="80" fill="#fff"/>
+            <text class="label" x="1127" y="550" text-anchor="middle">pgvector</text>
+            <text class="small" x="1127" y="574" text-anchor="middle">index</text>
+
+            <rect class="box box-strong" x="984" y="284" width="172" height="126" fill="#fff"/>
+            <text class="label" x="1070" y="330" text-anchor="middle">Context</text>
+            <text class="label" x="1070" y="356" text-anchor="middle">Builder</text>
+            <text class="small" x="1070" y="380" text-anchor="middle">facts + provenance</text>
+            <text class="tiny" x="1070" y="398" text-anchor="middle">record, doc, chunk, time</text>
+
+            <rect class="box box-strong" x="1288" y="272" width="210" height="104" fill="#fff"/>
+            <text class="label" x="1393" y="313" text-anchor="middle">LangGraph Agent</text>
+            <text class="small" x="1393" y="340" text-anchor="middle">task-specific reasoning</text>
+
+            <rect class="box" x="1288" y="452" width="210" height="104" fill="#fff"/>
+            <text class="label" x="1393" y="493" text-anchor="middle">Grounded Answer</text>
+            <text class="small" x="1393" y="520" text-anchor="middle">with source references</text>
+
+            <rect class="pill" x="740" y="772" width="150" height="38"/><text class="small" x="815" y="797" text-anchor="middle">Metadata filters</text>
+            <rect class="pill" x="940" y="772" width="170" height="38"/><text class="small" x="1025" y="797" text-anchor="middle">Retrieval audit</text>
+            <rect class="pill" x="1150" y="772" width="170" height="38"/><text class="small" x="1235" y="797" text-anchor="middle">OpenTelemetry</text>
+
+            <path class="arrowData" marker-end="url(#arrowData3)" d="M362 259 H500"/>
+            <path class="arrowData" marker-end="url(#arrowData3)" d="M670 246 H730"/>
+            <path class="arrowData" marker-end="url(#arrowData3)" d="M828 272 V328"/>
+            <path class="arrowData" marker-end="url(#arrowData3)" d="M926 374 H984"/>
+            <path class="arrowData" marker-end="url(#arrowData3)" d="M362 555 H520"/>
+            <path class="arrowData" marker-end="url(#arrowData3)" d="M670 554 H720"/>
+            <path class="arrowData" marker-end="url(#arrowData3)" d="M850 554 H900"/>
+            <path class="arrowData" marker-end="url(#arrowData3)" d="M1040 554 H1080"/>
+            <path class="arrowData" marker-end="url(#arrowData3)" d="M1127 514 C1127 450 1124 430 1110 410"/>
+            <path class="arrowAi" marker-end="url(#arrowAi3)" d="M1156 347 H1288"/>
+            <path class="arrowAi" marker-end="url(#arrowAi3)" d="M1393 376 V452"/>
+            <path class="arrowSec" marker-end="url(#arrowSec3)" d="M609 772 C580 655 580 424 585 306"/>
+            <path class="arrowSec" marker-end="url(#arrowSec3)" d="M809 772 C880 640 1012 502 1070 410"/>
+            <path class="arrowSec" marker-end="url(#arrowSec3)" d="M1019 772 C1060 650 1080 504 1070 410"/>
+
+            <text class="caption" x="730" y="155">query-time retrieval</text>
+            <text class="caption" x="520" y="636">indexing pipeline: OCR, chunking, embeddings, versioning and ACL sync</text>
+            <text class="caption" x="520" y="672">structured facts and document evidence meet before agent reasoning</text>
+          </svg>
+        </div>
+      </article>
+
+      <article class="slide" id="inventory">
+        <div class="slide-head">
+          <div>
+            <div class="slide-kicker">04 / Agent workflow</div>
+            <h2>Inventory Agent Flow</h2>
+          </div>
+          <a class="guide-link" href="docs/implementation/04-inventory-agent.md">Inventory agent doc</a>
+        </div>
+        <div class="canvas">
+          <svg viewBox="0 0 1600 900" role="img" aria-label="Inventory Agent Flow diagram">
+            <defs>
+              <marker id="arrow4" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#3d4c63"/></marker>
+              <marker id="arrowData4" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#188b82"/></marker>
+              <marker id="arrowAi4" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#c77700"/></marker>
+              <marker id="arrowSec4" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#3267d6"/></marker>
+            </defs>
+
+            <rect class="zone" x="42" y="84" width="300" height="654" fill="#f4f0ff"/>
+            <text class="zone-label" x="66" y="124">Customer Systems</text>
+            <text class="zone-note" x="66" y="150">Evidence sources</text>
+
+            <rect class="zone" x="386" y="84" width="690" height="654" fill="#eef7f6"/>
+            <text class="zone-label" x="410" y="124">Quatta Platform</text>
+            <text class="zone-note" x="410" y="150">Permissioned retrieval and context assembly</text>
+
+            <rect class="zone" x="1120" y="84" width="438" height="654" fill="#fff5e8"/>
+            <text class="zone-label" x="1144" y="124">AI Layer</text>
+            <text class="zone-note" x="1144" y="150">Pattern analysis and actions</text>
+
+            <rect class="zone" x="386" y="764" width="1172" height="82" fill="#eef3fb"/>
+            <text class="zone-label" x="410" y="815">Security / Monitoring</text>
+
+            <rect class="box box-strong" x="74" y="202" width="234" height="92" fill="#fff"/>
+            <text class="label" x="191" y="239" text-anchor="middle">Question</text>
+            <text class="small" x="191" y="266" text-anchor="middle">Why does item X</text>
+            <text class="small" x="191" y="286" text-anchor="middle">have stock differences?</text>
+
+            <rect class="box" x="74" y="372" width="108" height="64" fill="#fff"/><text class="label" x="128" y="412" text-anchor="middle">ERP</text>
+            <rect class="box" x="200" y="372" width="108" height="64" fill="#fff"/><text class="label" x="254" y="412" text-anchor="middle">WMS</text>
+            <rect class="box" x="74" y="486" width="108" height="64" fill="#fff"/><text class="label" x="128" y="526" text-anchor="middle">Tickets</text>
+            <rect class="box" x="200" y="486" width="108" height="64" fill="#fff"/><text class="label" x="254" y="526" text-anchor="middle">SOPs</text>
+
+            <rect class="box box-strong" x="428" y="194" width="170" height="86" fill="#fff"/>
+            <text class="label" x="513" y="229" text-anchor="middle">Intent</text>
+            <text class="small" x="513" y="255" text-anchor="middle">inventory variance</text>
+
+            <rect class="box" x="648" y="194" width="170" height="86" fill="#fff"/>
+            <text class="label" x="733" y="229" text-anchor="middle">Permission</text>
+            <text class="small" x="733" y="255" text-anchor="middle">item, site, role</text>
+
+            <rect class="box" x="450" y="342" width="170" height="76" fill="#fff"/>
+            <text class="label" x="535" y="374" text-anchor="middle">ERP</text>
+            <text class="small" x="535" y="398" text-anchor="middle">transactions</text>
+
+            <rect class="box" x="664" y="342" width="170" height="76" fill="#fff"/>
+            <text class="label" x="749" y="374" text-anchor="middle">WMS</text>
+            <text class="small" x="749" y="398" text-anchor="middle">movements</text>
+
+            <rect class="box" x="450" y="478" width="170" height="76" fill="#fff"/>
+            <text class="label" x="535" y="510" text-anchor="middle">Tickets</text>
+            <text class="small" x="535" y="534" text-anchor="middle">claims, incidents</text>
+
+            <rect class="box" x="664" y="478" width="170" height="76" fill="#fff"/>
+            <text class="label" x="749" y="510" text-anchor="middle">SOP / Contract</text>
+            <text class="small" x="749" y="534" text-anchor="middle">retrieval</text>
+
+            <rect class="box box-strong" x="894" y="394" width="142" height="108" fill="#fff"/>
+            <text class="label" x="965" y="428" text-anchor="middle">Reconcile</text>
+            <text class="label" x="965" y="452" text-anchor="middle">+ Context</text>
+            <text class="small" x="965" y="476" text-anchor="middle">time, unit, location</text>
+            <text class="tiny" x="965" y="494" text-anchor="middle">status + evidence</text>
+
+            <rect class="box box-strong" x="1164" y="202" width="170" height="84" fill="#fff"/>
+            <text class="label" x="1249" y="236" text-anchor="middle">Pattern</text>
+            <text class="small" x="1249" y="262" text-anchor="middle">analysis</text>
+
+            <rect class="box" x="1164" y="356" width="170" height="84" fill="#fff"/>
+            <text class="label" x="1249" y="390" text-anchor="middle">Financial</text>
+            <text class="small" x="1249" y="416" text-anchor="middle">impact</text>
+
+            <rect class="box box-strong" x="1370" y="286" width="146" height="102" fill="#fff"/>
+            <text class="label" x="1443" y="328" text-anchor="middle">Root Cause</text>
+            <text class="small" x="1443" y="350" text-anchor="middle">summary</text>
+            <text class="tiny" x="1443" y="370" text-anchor="middle">confidence + citations</text>
+
+            <rect class="box box-strong" x="1302" y="500" width="214" height="100" fill="#fff"/>
+            <text class="label" x="1409" y="538" text-anchor="middle">Recommended</text>
+            <text class="label" x="1409" y="563" text-anchor="middle">Actions</text>
+            <text class="tiny" x="1409" y="586" text-anchor="middle">manager approval, no writeback</text>
+
+            <rect class="pill" x="700" y="786" width="156" height="38"/><text class="small" x="778" y="811" text-anchor="middle">Tenant + RBAC</text>
+            <rect class="pill" x="900" y="786" width="132" height="38"/><text class="small" x="966" y="811" text-anchor="middle">Audit log</text>
+            <rect class="pill" x="1076" y="786" width="154" height="38"/><text class="small" x="1153" y="811" text-anchor="middle">OpenTelemetry</text>
+
+            <path class="arrow" marker-end="url(#arrow4)" d="M308 248 H428"/>
+            <path class="arrow" marker-end="url(#arrow4)" d="M598 237 H648"/>
+            <path class="arrowData" marker-end="url(#arrowData4)" d="M733 280 C704 320 620 342 535 342"/>
+            <path class="arrowData" marker-end="url(#arrowData4)" d="M733 280 C770 318 780 342 749 342"/>
+            <path class="arrowData" marker-end="url(#arrowData4)" d="M733 280 C678 392 610 456 535 478"/>
+            <path class="arrowData" marker-end="url(#arrowData4)" d="M733 280 C740 392 746 446 749 478"/>
+            <path class="arrowData" marker-end="url(#arrowData4)" d="M182 404 H450"/>
+            <path class="arrowData" marker-end="url(#arrowData4)" d="M308 404 H664"/>
+            <path class="arrowData" marker-end="url(#arrowData4)" d="M182 518 H450"/>
+            <path class="arrowData" marker-end="url(#arrowData4)" d="M308 518 H664"/>
+            <path class="arrowData" marker-end="url(#arrowData4)" d="M620 380 C750 380 780 422 894 448"/>
+            <path class="arrowData" marker-end="url(#arrowData4)" d="M834 380 C850 398 874 424 894 448"/>
+            <path class="arrowData" marker-end="url(#arrowData4)" d="M620 516 C764 516 810 482 894 448"/>
+            <path class="arrowData" marker-end="url(#arrowData4)" d="M834 516 C860 498 876 476 894 448"/>
+            <path class="arrowAi" marker-end="url(#arrowAi4)" d="M1036 448 C1094 398 1126 286 1164 244"/>
+            <path class="arrowAi" marker-end="url(#arrowAi4)" d="M1249 286 V356"/>
+            <path class="arrowAi" marker-end="url(#arrowAi4)" d="M1334 398 C1368 392 1392 376 1408 388"/>
+            <path class="arrowAi" marker-end="url(#arrowAi4)" d="M1443 388 V500"/>
+            <path class="arrowSec" marker-end="url(#arrowSec4)" d="M596 786 C630 644 690 434 733 280"/>
+            <path class="arrowSec" marker-end="url(#arrowSec4)" d="M784 786 C890 700 1104 610 1409 600"/>
+            <path class="arrowSec" marker-end="url(#arrowSec4)" d="M971 786 C990 642 988 548 965 502"/>
+
+            <text class="caption" x="438" y="640">agent reconciles evidence, flags conflicts, then explains causes in business terms</text>
+          </svg>
+        </div>
+      </article>
+
+      <article class="slide" id="claims">
+        <div class="slide-head">
+          <div>
+            <div class="slide-kicker">05 / Agent workflow</div>
+            <h2>Claims Agent Flow</h2>
+          </div>
+          <a class="guide-link" href="docs/implementation/05-claims-agent.md">Claims agent doc</a>
+        </div>
+        <div class="canvas">
+          <svg viewBox="0 0 1600 900" role="img" aria-label="Claims Agent Flow diagram">
+            <defs>
+              <marker id="arrow5" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#3d4c63"/></marker>
+              <marker id="arrowData5" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#188b82"/></marker>
+              <marker id="arrowAi5" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#c77700"/></marker>
+              <marker id="arrowSec5" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M2,2 L10,6 L2,10 Z" fill="#3267d6"/></marker>
+            </defs>
+
+            <rect class="zone" x="42" y="86" width="316" height="650" fill="#f4f0ff"/>
+            <text class="zone-label" x="66" y="126">Customer Systems</text>
+            <text class="zone-note" x="66" y="152">Claim evidence and rules</text>
+
+            <rect class="zone" x="400" y="86" width="624" height="650" fill="#eef7f6"/>
+            <text class="zone-label" x="424" y="126">Quatta Platform</text>
+            <text class="zone-note" x="424" y="152">Data collection and case context</text>
+
+            <rect class="zone" x="1066" y="86" width="492" height="650" fill="#fff5e8"/>
+            <text class="zone-label" x="1090" y="126">AI Layer</text>
+            <text class="zone-note" x="1090" y="152">Eligibility, liability and draft communication</text>
+
+            <rect class="zone" x="400" y="762" width="1158" height="84" fill="#eef3fb"/>
+            <text class="zone-label" x="424" y="815">Security / Monitoring</text>
+
+            <rect class="box box-strong" x="78" y="206" width="236" height="82" fill="#fff"/>
+            <text class="label" x="196" y="240" text-anchor="middle">Claim Request</text>
+            <text class="small" x="196" y="266" text-anchor="middle">late, damaged, missing, penalty</text>
+
+            <rect class="box" x="82" y="380" width="106" height="64" fill="#fff"/><text class="label" x="135" y="420" text-anchor="middle">Ticket</text>
+            <rect class="box" x="208" y="380" width="106" height="64" fill="#fff"/><text class="label" x="261" y="420" text-anchor="middle">Order</text>
+            <rect class="box" x="82" y="498" width="106" height="64" fill="#fff"/><text class="label" x="135" y="538" text-anchor="middle">Contract</text>
+            <rect class="box" x="208" y="498" width="106" height="64" fill="#fff"/><text class="label" x="261" y="538" text-anchor="middle">Proof</text>
+
+            <rect class="box" x="440" y="206" width="172" height="82" fill="#fff"/>
+            <text class="label" x="526" y="240" text-anchor="middle">Permission</text>
+            <text class="small" x="526" y="266" text-anchor="middle">customer, carrier, case</text>
+
+            <rect class="box" x="440" y="360" width="160" height="74" fill="#fff"/>
+            <text class="label" x="520" y="391" text-anchor="middle">Ticket Data</text>
+            <text class="small" x="520" y="414" text-anchor="middle">status, notes, dates</text>
+
+            <rect class="box" x="634" y="360" width="160" height="74" fill="#fff"/>
+            <text class="label" x="714" y="391" text-anchor="middle">Delivery Data</text>
+            <text class="small" x="714" y="414" text-anchor="middle">order, route, POD</text>
+
+            <rect class="box" x="440" y="496" width="160" height="74" fill="#fff"/>
+            <text class="label" x="520" y="527" text-anchor="middle">Contract Rules</text>
+            <text class="small" x="520" y="550" text-anchor="middle">SLA, terms, caps</text>
+
+            <rect class="box" x="634" y="496" width="160" height="74" fill="#fff"/>
+            <text class="label" x="714" y="527" text-anchor="middle">Evidence</text>
+            <text class="small" x="714" y="550" text-anchor="middle">photos, emails, scans</text>
+
+            <rect class="box box-strong" x="844" y="414" width="144" height="110" fill="#fff"/>
+            <text class="label" x="916" y="455" text-anchor="middle">Claim Case</text>
+            <text class="label" x="916" y="480" text-anchor="middle">Context</text>
+            <text class="small" x="916" y="504" text-anchor="middle">facts + rule set</text>
+
+            <rect class="box box-strong" x="1104" y="198" width="174" height="82" fill="#fff"/>
+            <text class="label" x="1191" y="232" text-anchor="middle">Eligibility</text>
+            <text class="small" x="1191" y="258" text-anchor="middle">check</text>
+
+            <rect class="box" x="1104" y="326" width="174" height="82" fill="#fff"/>
+            <text class="label" x="1191" y="360" text-anchor="middle">Liability</text>
+            <text class="small" x="1191" y="386" text-anchor="middle">calculation</text>
+
+            <rect class="box" x="1104" y="454" width="174" height="82" fill="#fff"/>
+            <text class="label" x="1191" y="488" text-anchor="middle">Evidence</text>
+            <text class="small" x="1191" y="514" text-anchor="middle">summary</text>
+
+            <rect class="box box-strong" x="1330" y="264" width="178" height="94" fill="#fff"/>
+            <text class="label" x="1419" y="300" text-anchor="middle">Draft Claim</text>
+            <text class="small" x="1419" y="326" text-anchor="middle">email + attachments</text>
+
+            <rect class="box box-strong" x="1330" y="474" width="178" height="94" fill="#fff"/>
+            <text class="label" x="1419" y="510" text-anchor="middle">Human Review</text>
+            <text class="small" x="1419" y="536" text-anchor="middle">approve, edit, reject</text>
+
+            <rect class="box box-strong" x="1330" y="612" width="178" height="76" fill="#fff"/>
+            <text class="label" x="1419" y="642" text-anchor="middle">Approved Send</text>
+            <text class="small" x="1419" y="666" text-anchor="middle">status tracking</text>
+
+            <rect class="pill" x="700" y="786" width="160" height="38"/><text class="small" x="780" y="811" text-anchor="middle">Tenant + RBAC</text>
+            <rect class="pill" x="902" y="786" width="150" height="38"/><text class="small" x="977" y="811" text-anchor="middle">Audit log</text>
+            <rect class="pill" x="1094" y="786" width="160" height="38"/><text class="small" x="1174" y="811" text-anchor="middle">OpenTelemetry</text>
+
+            <path class="arrow" marker-end="url(#arrow5)" d="M314 247 H440"/>
+            <path class="arrowData" marker-end="url(#arrowData5)" d="M526 288 C522 320 520 340 520 360"/>
+            <path class="arrowData" marker-end="url(#arrowData5)" d="M526 288 C632 314 700 336 714 360"/>
+            <path class="arrowData" marker-end="url(#arrowData5)" d="M526 288 C500 386 500 454 520 496"/>
+            <path class="arrowData" marker-end="url(#arrowData5)" d="M526 288 C664 394 704 456 714 496"/>
+            <path class="arrowData" marker-end="url(#arrowData5)" d="M188 412 H440"/>
+            <path class="arrowData" marker-end="url(#arrowData5)" d="M314 412 H634"/>
+            <path class="arrowData" marker-end="url(#arrowData5)" d="M188 530 H440"/>
+            <path class="arrowData" marker-end="url(#arrowData5)" d="M314 530 H634"/>
+            <path class="arrowData" marker-end="url(#arrowData5)" d="M600 397 C710 397 778 428 844 469"/>
+            <path class="arrowData" marker-end="url(#arrowData5)" d="M794 397 C816 420 832 444 844 469"/>
+            <path class="arrowData" marker-end="url(#arrowData5)" d="M600 533 C718 533 790 508 844 469"/>
+            <path class="arrowData" marker-end="url(#arrowData5)" d="M794 533 C820 516 834 492 844 469"/>
+            <path class="arrowAi" marker-end="url(#arrowAi5)" d="M988 469 C1042 418 1070 290 1104 239"/>
+            <path class="arrowAi" marker-end="url(#arrowAi5)" d="M1191 280 V326"/>
+            <path class="arrowAi" marker-end="url(#arrowAi5)" d="M1191 408 V454"/>
+            <path class="arrowAi" marker-end="url(#arrowAi5)" d="M1278 495 C1324 484 1350 396 1419 358"/>
+            <path class="arrowAi" marker-end="url(#arrowAi5)" d="M1419 358 V474"/>
+            <path class="arrowAi" marker-end="url(#arrowAi5)" d="M1419 568 V612"/>
+            <path class="arrowSec" marker-end="url(#arrowSec5)" d="M588 786 C560 630 540 430 526 288"/>
+            <path class="arrowSec" marker-end="url(#arrowSec5)" d="M785 786 C960 686 1240 604 1419 568"/>
+            <path class="arrowSec" marker-end="url(#arrowSec5)" d="M982 786 C950 670 926 564 916 524"/>
+
+            <text class="caption" x="440" y="642">low confidence or missing contract evidence escalates to human review</text>
+          </svg>
+        </div>
+      </article>
+    </section>
+  </main>
+  <aside class="step-panel" id="step-panel" aria-live="polite" aria-label="Implementation step details">
+    <div class="panel-head">
+      <div class="panel-kicker" id="panel-kicker">Implementation step</div>
+      <div class="panel-title-row">
+        <h3 id="panel-title">Select a node</h3>
+        <button class="panel-close" id="panel-close" type="button" aria-label="Close panel">x</button>
+      </div>
+      <div class="mode-switch" aria-label="Panel mode">
+        <button type="button" data-mode="executive" class="is-active">Executive</button>
+        <button type="button" data-mode="implementation">Implementation</button>
+        <button type="button" data-mode="risk">Risk</button>
+      </div>
+    </div>
+    <div class="panel-body" id="panel-body"></div>
+  </aside>
+  <script>
+    const IMPLEMENTATION_STEPS = [
+      {
+        id: "HL-02",
+        diagram: "01 Core Platform",
+        match: ["high-level|quatta app"],
+        title: "Quatta App",
+        status: "Designed",
+        purpose: "The user-facing entry point for questions, reviews, approvals and responses.",
+        implementation: "Build a Python FastAPI service for request handling, session context, and routing into the AI Gateway.",
+        services: ["Python", "FastAPI", "Cloud Run", "OpenTelemetry"],
+        inputs: "User question, tenant context, role claims, selected entities.",
+        outputs: "Normalized request with trace ID and workflow intent.",
+        security: "Require Entra-authenticated user context before any AI or connector call.",
+        monitoring: "Trace request latency, errors, user action, and route selected.",
+        checklist: ["Create FastAPI skeleton", "Add request/response schemas", "Add trace ID middleware", "Deploy to Cloud Run"],
+        doc: "docs/implementation/01-high-level-platform.md"
+      },
+      {
+        id: "HL-03",
+        diagram: "01 Core Platform",
+        match: ["high-level|auth / rbac", "inventory|permission", "claims|permission"],
+        title: "Auth / RBAC",
+        status: "Designed",
+        purpose: "Verifies who the user is and what tenant, site, article, order, claim and source data they can access.",
+        implementation: "Use Microsoft Entra ID for identity and FastAPI middleware plus PostgreSQL role mapping for authorization.",
+        services: ["Microsoft Entra ID", "FastAPI", "PostgreSQL"],
+        inputs: "OIDC token, Entra groups, tenant mapping, requested action.",
+        outputs: "Permission decision and scoped request context.",
+        security: "Apply least privilege and block connector/retrieval calls before data access.",
+        monitoring: "Audit allowed and denied permission checks.",
+        checklist: ["Register Entra app", "Map groups to roles", "Add tenant ID to context", "Test denied access paths"],
+        doc: "docs/implementation/01-high-level-platform.md"
+      },
+      {
+        id: "HL-04",
+        diagram: "01 Core Platform",
+        match: ["high-level|ai gateway"],
+        title: "AI Gateway",
+        status: "Designed",
+        purpose: "The control point for model routing, prompt policy, safety checks, tool permissions and response validation.",
+        implementation: "Build a FastAPI gateway that calls Gemini via Vertex AI by default and can route to OpenAI/Azure OpenAI where required.",
+        services: ["FastAPI", "Vertex AI Gemini", "OpenAI optional", "Azure OpenAI optional"],
+        inputs: "Request, scoped context, selected workflow, model policy.",
+        outputs: "Validated model/tool response with citations and audit metadata.",
+        security: "Prompt-injection checks, PII filtering, data minimization, tool allowlist, low-confidence escalation.",
+        monitoring: "Model latency, provider, token/cost estimate, safety outcome, response validation failures.",
+        checklist: ["Define model provider interface", "Add policy middleware", "Add response schemas", "Audit every model/tool call"],
+        doc: "docs/implementation/01-high-level-platform.md"
+      },
+      {
+        id: "HL-05",
+        diagram: "01 Core Platform",
+        match: ["high-level|connector", "connectors|connector modules"],
+        title: "Connector Modules",
+        status: "Designed",
+        purpose: "Read permitted data from customer systems without replacing or broadly copying them.",
+        implementation: "Build Python read-only connector modules with authenticate, fetch, normalize, health_check and audit functions.",
+        services: ["Python", "Secret Manager", "PostgreSQL", "OpenTelemetry"],
+        inputs: "Scoped request, tenant connector config, source credentials.",
+        outputs: "Normalized records with source provenance.",
+        security: "Read-only credentials, tenant isolation, no writeback by default.",
+        monitoring: "Connector health, last successful read, retry count, partial-result warnings.",
+        checklist: ["Define connector interface", "Store credentials", "Normalize outputs", "Add retry/backoff", "Emit audit events"],
+        doc: "docs/implementation/02-connector-layer.md"
+      },
+      {
+        id: "CON-04",
+        diagram: "02 Data Access",
+        match: ["connectors|optional ttl cache"],
+        title: "Optional TTL Cache",
+        status: "Designed",
+        purpose: "Improves performance while avoiding an uncontrolled copy of customer data.",
+        implementation: "Store tenant-scoped cached results or metadata in PostgreSQL with TTL, permission scope and source timestamps.",
+        services: ["PostgreSQL", "FastAPI"],
+        inputs: "Normalized connector result and cache policy.",
+        outputs: "Fresh or stale cache result with visible freshness metadata.",
+        security: "Cache never bypasses RBAC and should exclude or encrypt sensitive fields.",
+        monitoring: "Cache hits, staleness, source timestamp, retrieval timestamp.",
+        checklist: ["Define TTL per source", "Store permission scope", "Add stale warnings", "Test cache invalidation"],
+        doc: "docs/implementation/02-connector-layer.md"
+      },
+      {
+        id: "CON-06",
+        diagram: "02 Data Access",
+        match: ["connectors|freshness + health"],
+        title: "Freshness + Health",
+        status: "Designed",
+        purpose: "Makes missing, stale or failing source data visible before AI reasoning.",
+        implementation: "Add connector health checks, retry/backoff, partial-result mode and user-facing missing-source warnings.",
+        services: ["OpenTelemetry", "PostgreSQL", "Cloud Monitoring"],
+        inputs: "Connector status, last sync/read timestamp, error details.",
+        outputs: "Health status and warnings for Context Builder and user response.",
+        security: "Do not hide missing evidence; audit partial responses.",
+        monitoring: "Connector availability, latency, errors, retry count, last successful read.",
+        checklist: ["Add health endpoint", "Add retry policy", "Add partial-result warning", "Create alert rules"],
+        doc: "docs/implementation/02-connector-layer.md"
+      },
+      {
+        id: "RAG-04",
+        diagram: "03 Retrieval + RAG",
+        match: ["rag|document ai"],
+        title: "Document AI",
+        status: "Designed",
+        purpose: "Extracts text and structure from PDFs, contracts, SOPs, PODs and claim evidence.",
+        implementation: "Use Vertex AI Document AI processors before chunking and embedding documents.",
+        services: ["Vertex AI Document AI", "Cloud Run worker", "PostgreSQL"],
+        inputs: "Document file, source metadata, source permissions.",
+        outputs: "Extracted text, tables, page references and document metadata.",
+        security: "Preserve tenant, source ACL, document version and retention metadata.",
+        monitoring: "Extraction latency, processor errors, document version processed.",
+        checklist: ["Create processor", "Store extraction metadata", "Handle OCR failures", "Trigger re-index on change"],
+        doc: "docs/implementation/03-retrieval-rag.md"
+      },
+      {
+        id: "RAG-07",
+        diagram: "03 Retrieval + RAG",
+        match: ["rag|pgvector"],
+        title: "pgvector",
+        status: "Designed",
+        purpose: "Stores document embeddings in PostgreSQL so retrieval can use vectors plus normal SQL metadata filters.",
+        implementation: "Enable pgvector and store embeddings with tenant, ACL, document ID, chunk ID, version and timestamp metadata.",
+        services: ["PostgreSQL", "pgvector", "Vertex AI embeddings"],
+        inputs: "Chunk text, embedding vector, metadata.",
+        outputs: "Permission-filtered candidate passages.",
+        security: "Apply tenant and ACL filters before similarity search.",
+        monitoring: "Retrieval latency, top-k scores, empty-result rate, stale index warnings.",
+        checklist: ["Enable extension", "Create embeddings table", "Add metadata indexes", "Test tenant isolation"],
+        doc: "docs/implementation/03-retrieval-rag.md"
+      },
+      {
+        id: "RAG-08",
+        diagram: "03 Retrieval + RAG",
+        match: ["rag|context builder", "connectors|context builder", "claims|claim case context"],
+        title: "Context Builder",
+        status: "Designed",
+        purpose: "Combines structured facts and document passages into one grounded context package.",
+        implementation: "Build a retrieval service that merges SQL/API facts and RAG passages with citations and warnings.",
+        services: ["FastAPI", "PostgreSQL", "pgvector"],
+        inputs: "Structured records, passages, source metadata, permissions.",
+        outputs: "Context package with facts, citations, missing/conflicting evidence and trace ID.",
+        security: "Only include evidence allowed by tenant, role and source permissions.",
+        monitoring: "Context size, retrieval quality, citation completeness, missing evidence.",
+        checklist: ["Define context schema", "Add citation model", "Add conflict warnings", "Validate max context size"],
+        doc: "docs/implementation/03-retrieval-rag.md"
+      },
+      {
+        id: "INV-07",
+        diagram: "04 Inventory Agent",
+        match: ["inventory|reconcile + context"],
+        title: "Reconcile + Context",
+        status: "Designed",
+        purpose: "Normalizes ERP/WMS/ticket/SOP evidence before the agent analyzes inventory differences.",
+        implementation: "Reconcile timestamps, units, locations, article IDs, status codes and reversals.",
+        services: ["Python", "PostgreSQL", "Context Builder"],
+        inputs: "ERP transactions, WMS movements, tickets, SOP/contract snippets.",
+        outputs: "Variance timeline and evidence package.",
+        security: "Preserve source provenance and tenant scope.",
+        monitoring: "Conflicting evidence count, missing source warnings, reconciliation errors.",
+        checklist: ["Map units and statuses", "Align time zones", "Detect reversals", "Add conflict flags"],
+        doc: "docs/implementation/04-inventory-agent.md"
+      },
+      {
+        id: "INV-10",
+        diagram: "04 Inventory Agent",
+        match: ["inventory|root cause"],
+        title: "Root Cause Summary",
+        status: "Designed",
+        purpose: "Explains the likely reason for inventory variance in operational language.",
+        implementation: "Use LangGraph plus Gemini through AI Gateway, with confidence and citations.",
+        services: ["LangGraph", "Vertex AI Gemini", "AI Gateway"],
+        inputs: "Reconciled context, pattern findings, financial impact.",
+        outputs: "Root cause, confidence, evidence and recommended actions.",
+        security: "Low confidence or conflicting evidence escalates to human review.",
+        monitoring: "Confidence level, citation count, escalation rate.",
+        checklist: ["Define output schema", "Add confidence thresholds", "Require citations", "Test conflicting evidence"],
+        doc: "docs/implementation/04-inventory-agent.md"
+      },
+      {
+        id: "CLM-12",
+        diagram: "05 Claims Agent",
+        match: ["claims|human review"],
+        title: "Human Review",
+        status: "Designed",
+        purpose: "Keeps claim submission under human control after AI drafts the package.",
+        implementation: "Build approval UI for approve, edit, reject and final audited send.",
+        services: ["Quatta App", "FastAPI", "PostgreSQL audit"],
+        inputs: "Draft email, evidence summary, liability calculation, eligibility result.",
+        outputs: "Approved/rejected claim package and audit record.",
+        security: "No outbound claim communication without approval.",
+        monitoring: "Approval time, edits, rejection reason, final approved version.",
+        checklist: ["Add review screen", "Store final version", "Block auto-send", "Audit reviewer action"],
+        doc: "docs/implementation/05-claims-agent.md"
+      },
+      {
+        id: "CLM-13",
+        diagram: "05 Claims Agent",
+        match: ["claims|approved send"],
+        title: "Approved Send",
+        status: "Designed",
+        purpose: "Sends or exports the human-approved claim and tracks its status.",
+        implementation: "Integrate approved outbound email/API/ticket update only after explicit review.",
+        services: ["FastAPI", "Email/API connector", "PostgreSQL"],
+        inputs: "Human-approved claim package.",
+        outputs: "Sent/exported claim and status tracking record.",
+        security: "Use approved template and immutable audit record.",
+        monitoring: "Send status, delivery failures, external claim ID, follow-up SLA.",
+        checklist: ["Choose outbound channel", "Add status model", "Handle send failures", "Audit final payload"],
+        doc: "docs/implementation/05-claims-agent.md"
+      }
+    ];
+
+    const tones = {
+      customer: { fill: "#fbf8ff", stroke: "#7856d9", accent: "#7856d9" },
+      platform: { fill: "#f2fbf9", stroke: "#188b82", accent: "#188b82" },
+      ai: { fill: "#fff8ed", stroke: "#c77700", accent: "#c77700" },
+      security: { fill: "#f5f8ff", stroke: "#3267d6", accent: "#3267d6" },
+      user: { fill: "#f7fbff", stroke: "#617089", accent: "#617089" }
+    };
+
+    function pickTone(rect) {
+      if (rect.dataset.tone && tones[rect.dataset.tone]) return tones[rect.dataset.tone];
+      const x = Number(rect.getAttribute("x"));
+      const y = Number(rect.getAttribute("y"));
+      if (y > 700) return tones.security;
+      if (x < 340) return tones.customer;
+      if (x > 1060) return tones.ai;
+      return tones.platform;
+    }
+
+    document.querySelectorAll("svg").forEach((svg) => {
+      const ns = "http://www.w3.org/2000/svg";
+      const legend = document.createElementNS(ns, "g");
+      legend.setAttribute("aria-label", "Arrow legend");
+      const legendItems = [
+        ["#3d4c63", "Process", 0],
+        ["#188b82", "Data", 82],
+        ["#c77700", "AI reasoning", 150],
+        ["#3267d6", "Security / audit", 270]
+      ];
+      const legendX = 1135;
+      const legendY = 28;
+      const bg = document.createElementNS(ns, "rect");
+      bg.setAttribute("x", legendX - 18);
+      bg.setAttribute("y", legendY - 14);
+      bg.setAttribute("width", 438);
+      bg.setAttribute("height", 34);
+      bg.setAttribute("rx", 8);
+      bg.setAttribute("fill", "#ffffff");
+      bg.setAttribute("stroke", "#d6deea");
+      legend.appendChild(bg);
+      legendItems.forEach(([color, text, offset]) => {
+        const x = legendX + offset;
+        const line = document.createElementNS(ns, "line");
+        line.setAttribute("x1", x);
+        line.setAttribute("x2", x + 20);
+        line.setAttribute("y1", legendY + 2);
+        line.setAttribute("y2", legendY + 2);
+        line.setAttribute("stroke", color);
+        line.setAttribute("stroke-width", color === "#3267d6" ? "1.5" : "2.5");
+        if (color === "#3267d6") line.setAttribute("stroke-dasharray", "5 4");
+        legend.appendChild(line);
+        const label = document.createElementNS(ns, "text");
+        label.setAttribute("x", x + 25);
+        label.setAttribute("y", legendY + 6);
+        label.setAttribute("font-size", "11");
+        label.setAttribute("font-weight", "800");
+        label.setAttribute("fill", "#4d5e77");
+        label.textContent = text;
+        legend.appendChild(label);
+      });
+      svg.appendChild(legend);
+
+      const firstBox = Array.from(svg.children).find((node) => node.matches && node.matches("rect.box"));
+      if (firstBox) {
+        svg.querySelectorAll("path").forEach((path) => {
+          if (!path.closest("defs")) {
+            svg.insertBefore(path, firstBox);
+          }
+        });
+      }
+
+      svg.querySelectorAll("rect.box").forEach((rect, index) => {
+        const tone = pickTone(rect);
+        const x = Number(rect.getAttribute("x"));
+        const y = Number(rect.getAttribute("y"));
+        const w = Number(rect.getAttribute("width"));
+        const h = Number(rect.getAttribute("height"));
+        rect.setAttribute("fill", tone.fill);
+        rect.setAttribute("stroke", tone.stroke);
+        rect.setAttribute("stroke-width", rect.classList.contains("box-strong") ? "2.4" : "1.6");
+
+        if (w >= 90 && h >= 58) {
+          const stripe = document.createElementNS(ns, "rect");
+          stripe.setAttribute("x", x + 1.5);
+          stripe.setAttribute("y", y + 1.5);
+          stripe.setAttribute("width", Math.max(20, w - 3));
+          stripe.setAttribute("height", 8);
+          stripe.setAttribute("rx", 4);
+          stripe.setAttribute("fill", tone.accent);
+          stripe.setAttribute("opacity", rect.classList.contains("box-strong") ? "0.95" : "0.68");
+          rect.insertAdjacentElement("afterend", stripe);
+
+          const node = document.createElementNS(ns, "circle");
+          node.setAttribute("cx", x + w - 18);
+          node.setAttribute("cy", y + 20);
+          node.setAttribute("r", rect.classList.contains("box-strong") ? 7 : 5);
+          node.setAttribute("fill", tone.accent);
+          node.setAttribute("opacity", "0.92");
+          stripe.insertAdjacentElement("afterend", node);
+        }
+      });
+
+      svg.querySelectorAll("rect.zone").forEach((zone) => {
+        zone.setAttribute("stroke-width", "2");
+      });
+
+      wireImplementationNodes(svg);
+    });
+
+    let activePanelMode = "executive";
+    let activeStep = null;
+
+    function normalizeStepText(value) {
+      return value.toLowerCase().replace(/\s+/g, " ").trim();
+    }
+
+    function getRectLabel(svg, rect) {
+      const x = Number(rect.getAttribute("x"));
+      const y = Number(rect.getAttribute("y"));
+      const w = Number(rect.getAttribute("width"));
+      const h = Number(rect.getAttribute("height"));
+      const lines = Array.from(svg.querySelectorAll("text.label"))
+        .filter((text) => {
+          const tx = Number(text.getAttribute("x"));
+          const ty = Number(text.getAttribute("y"));
+          return tx >= x && tx <= x + w && ty >= y && ty <= y + h + 8;
+        })
+        .sort((a, b) => Number(a.getAttribute("y")) - Number(b.getAttribute("y")))
+        .map((text) => text.textContent.trim());
+      return normalizeStepText(lines.join(" "));
+    }
+
+    function findStep(slideId, label) {
+      const key = `${slideId}|${label}`;
+      return IMPLEMENTATION_STEPS.find((step) =>
+        step.match.some((match) => key.includes(normalizeStepText(match)))
+      );
+    }
+
+    function wireImplementationNodes(svg) {
+      const slide = svg.closest(".slide");
+      if (!slide) return;
+      const slideId = slide.id;
+      svg.querySelectorAll("rect.box").forEach((rect) => {
+        const label = getRectLabel(svg, rect);
+        const step = findStep(slideId, label);
+        if (!step) return;
+        rect.classList.add("clickable-node");
+        rect.setAttribute("tabindex", "0");
+        rect.setAttribute("role", "button");
+        rect.setAttribute("aria-label", `Open implementation guide for ${step.id} ${step.title}`);
+        rect.addEventListener("click", () => openStepPanel(step));
+        rect.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openStepPanel(step);
+          }
+        });
+        addStepBadge(svg, rect, step.id);
+        addStepHotspot(svg, rect, step);
+      });
+    }
+
+    function addStepBadge(svg, rect, id) {
+      const ns = "http://www.w3.org/2000/svg";
+      const x = Number(rect.getAttribute("x"));
+      const y = Number(rect.getAttribute("y"));
+      const group = document.createElementNS(ns, "g");
+      const bg = document.createElementNS(ns, "rect");
+      bg.setAttribute("class", "node-badge-bg");
+      bg.setAttribute("x", x + 9);
+      bg.setAttribute("y", y + 14);
+      bg.setAttribute("width", 42);
+      bg.setAttribute("height", 20);
+      bg.setAttribute("rx", 8);
+      const text = document.createElementNS(ns, "text");
+      text.setAttribute("class", "node-badge");
+      text.setAttribute("x", x + 30);
+      text.setAttribute("y", y + 28);
+      text.setAttribute("text-anchor", "middle");
+      text.textContent = id;
+      group.appendChild(bg);
+      group.appendChild(text);
+      rect.insertAdjacentElement("afterend", group);
+    }
+
+    function addStepHotspot(svg, rect, step) {
+      const ns = "http://www.w3.org/2000/svg";
+      const hotspot = document.createElementNS(ns, "rect");
+      hotspot.setAttribute("class", "node-hotspot");
+      hotspot.setAttribute("x", rect.getAttribute("x"));
+      hotspot.setAttribute("y", rect.getAttribute("y"));
+      hotspot.setAttribute("width", rect.getAttribute("width"));
+      hotspot.setAttribute("height", rect.getAttribute("height"));
+      hotspot.setAttribute("rx", rect.getAttribute("rx") || 8);
+      hotspot.setAttribute("tabindex", "0");
+      hotspot.setAttribute("role", "button");
+      hotspot.setAttribute("aria-label", `Open implementation guide for ${step.id} ${step.title}`);
+      hotspot.addEventListener("click", () => openStepPanel(step));
+      hotspot.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openStepPanel(step);
+        }
+      });
+      svg.appendChild(hotspot);
+    }
+
+    function openStepPanel(step) {
+      activeStep = step;
+      document.getElementById("step-panel").classList.add("is-open");
+      renderStepPanel();
+    }
+
+    function renderStepPanel() {
+      if (!activeStep) return;
+      document.getElementById("panel-kicker").textContent = `${activeStep.diagram} | ${activeStep.id} | ${activeStep.status}`;
+      document.getElementById("panel-title").textContent = activeStep.title;
+      const body = document.getElementById("panel-body");
+      if (activePanelMode === "executive") {
+        body.innerHTML = `
+          <h4>Purpose</h4><p>${activeStep.purpose}</p>
+          <h4>What To Build</h4><p>${activeStep.implementation}</p>
+          <h4>Services / Stack</h4><div class="stack-list">${activeStep.services.map((s) => `<span>${s}</span>`).join("")}</div>
+          <h4>Inputs</h4><p>${activeStep.inputs}</p>
+          <h4>Outputs</h4><p>${activeStep.outputs}</p>
+          <a class="doc-link" href="${activeStep.doc}" target="_blank" rel="noopener">View implementation guide</a>
+        `;
+      } else if (activePanelMode === "implementation") {
+        body.innerHTML = `
+          <h4>Implementation</h4><p>${activeStep.implementation}</p>
+          <h4>Setup Checklist</h4><ul>${activeStep.checklist.map((item) => `<li>${item}</li>`).join("")}</ul>
+          <h4>Services / Stack</h4><div class="stack-list">${activeStep.services.map((s) => `<span>${s}</span>`).join("")}</div>
+          <h4>Done Criteria</h4><p>${activeStep.outputs}</p>
+          <a class="doc-link" href="${activeStep.doc}" target="_blank" rel="noopener">Open detailed doc</a>
+        `;
+      } else {
+        body.innerHTML = `
+          <h4>Security Controls</h4><p>${activeStep.security}</p>
+          <h4>Monitoring / Audit</h4><p>${activeStep.monitoring}</p>
+          <h4>Risk Checks</h4><ul>
+            <li>Does this step enforce tenant isolation?</li>
+            <li>Can a denied permission path be tested?</li>
+            <li>Does it emit enough audit data to reconstruct the decision?</li>
+            <li>Does the user see stale, missing, or partial evidence?</li>
+          </ul>
+          <a class="doc-link" href="${activeStep.doc}" target="_blank" rel="noopener">Open controls in doc</a>
+        `;
+      }
+    }
+
+    document.getElementById("panel-close").addEventListener("click", () => {
+      document.getElementById("step-panel").classList.remove("is-open");
+    });
+
+    document.querySelectorAll(".mode-switch button").forEach((button) => {
+      button.addEventListener("click", () => {
+        activePanelMode = button.dataset.mode;
+        document.querySelectorAll(".mode-switch button").forEach((other) => {
+          other.classList.toggle("is-active", other === button);
+        });
+        renderStepPanel();
+      });
+    });
+  </script>
+</body>
+</html>

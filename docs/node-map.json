@@ -1,0 +1,93 @@
+{
+  "HL-02": {
+    "label": "Quatta App",
+    "diagram": "01 Core Platform",
+    "doc": "docs/flows/01-core-platform.md#hl-01-user-request",
+    "stack": ["Python", "FastAPI", "Cloud Run", "OpenTelemetry"],
+    "status": "Designed"
+  },
+  "HL-03": {
+    "label": "Auth / RBAC",
+    "diagram": "01 Core Platform",
+    "doc": "docs/flows/01-core-platform.md#hl-03-auth--rbac",
+    "stack": ["Microsoft Entra ID", "FastAPI", "PostgreSQL"],
+    "status": "Designed"
+  },
+  "HL-04": {
+    "label": "AI Gateway",
+    "diagram": "01 Core Platform",
+    "doc": "docs/flows/01-core-platform.md#hl-04-ai-gateway",
+    "stack": ["FastAPI", "Vertex AI Gemini", "OpenAI optional", "Azure OpenAI optional"],
+    "status": "Designed"
+  },
+  "HL-05": {
+    "label": "Connector Modules",
+    "diagram": "02 Data Access",
+    "doc": "docs/flows/02-data-access.md#connector-pattern",
+    "stack": ["Python", "Secret Manager", "PostgreSQL", "OpenTelemetry"],
+    "status": "Designed"
+  },
+  "CON-04": {
+    "label": "Optional TTL Cache",
+    "diagram": "02 Data Access",
+    "doc": "docs/flows/02-data-access.md#con-04-optional-ttl-cache",
+    "stack": ["PostgreSQL", "FastAPI"],
+    "status": "Designed"
+  },
+  "CON-06": {
+    "label": "Freshness + Health",
+    "diagram": "02 Data Access",
+    "doc": "docs/flows/02-data-access.md#con-06-freshness--health",
+    "stack": ["OpenTelemetry", "PostgreSQL", "Cloud Monitoring"],
+    "status": "Designed"
+  },
+  "RAG-04": {
+    "label": "Document AI",
+    "diagram": "03 Retrieval + RAG",
+    "doc": "docs/flows/03-retrieval-rag.md#document-rag",
+    "stack": ["Vertex AI Document AI", "Cloud Run worker", "PostgreSQL"],
+    "status": "Designed"
+  },
+  "RAG-07": {
+    "label": "pgvector",
+    "diagram": "03 Retrieval + RAG",
+    "doc": "docs/flows/03-retrieval-rag.md#document-rag",
+    "stack": ["PostgreSQL", "pgvector", "Vertex AI embeddings"],
+    "status": "Designed"
+  },
+  "RAG-08": {
+    "label": "Context Builder",
+    "diagram": "03 Retrieval + RAG",
+    "doc": "docs/flows/03-retrieval-rag.md#context-builder",
+    "stack": ["FastAPI", "PostgreSQL", "pgvector"],
+    "status": "Designed"
+  },
+  "INV-07": {
+    "label": "Reconcile + Context",
+    "diagram": "04 Inventory Agent",
+    "doc": "docs/flows/04-inventory-agent.md#reconciliation-rules",
+    "stack": ["Python", "PostgreSQL", "Context Builder"],
+    "status": "Designed"
+  },
+  "INV-10": {
+    "label": "Root Cause Summary",
+    "diagram": "04 Inventory Agent",
+    "doc": "docs/flows/04-inventory-agent.md#output-contract",
+    "stack": ["LangGraph", "Vertex AI Gemini", "AI Gateway"],
+    "status": "Designed"
+  },
+  "CLM-12": {
+    "label": "Human Review",
+    "diagram": "05 Claims Agent",
+    "doc": "docs/flows/05-claims-agent.md#ai-boundary",
+    "stack": ["Quatta App", "FastAPI", "PostgreSQL audit"],
+    "status": "Designed"
+  },
+  "CLM-13": {
+    "label": "Approved Send",
+    "diagram": "05 Claims Agent",
+    "doc": "docs/flows/05-claims-agent.md#workflow",
+    "stack": ["FastAPI", "Email/API connector", "PostgreSQL"],
+    "status": "Designed"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "quatta-ai",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "export:diagrams": "node scripts/export-diagrams.mjs",
+    "build:deck": "node scripts/build-share-deck.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "playwright": "^1.60.0",
+    "pptxgenjs": "^4.0.1"
+  }
+}
