@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quatta Implementation Guide</title>
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #617089;
+      --line: #ccd6e5;
+      --paper: #f6f8fb;
+      --panel: #ffffff;
+      --platform: #eef7f6;
+      --customer: #f4f0ff;
+      --ai: #fff5e8;
+      --security: #eef3fb;
+      --teal: #188b82;
+      --blue: #3267d6;
+      --amber: #c77700;
+      --shadow: 0 18px 48px rgba(26, 38, 64, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body { margin: 0; color: var(--ink); background: var(--paper); font-family: Inter, Segoe UI, Arial, sans-serif; letter-spacing: 0; }
+    .topbar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 64px; padding: 12px 28px; background: rgba(246, 248, 251, 0.94); border-bottom: 1px solid rgba(201, 211, 226, 0.8); backdrop-filter: blur(16px); }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 17px; }
+    .mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 8px; color: white; background: linear-gradient(135deg, var(--teal), var(--blue)); font-weight: 800; }
+    .nav { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+    .nav a, .doc-links a { color: #244fba; background: #eef3ff; border: 1px solid #cad8ff; border-radius: 8px; padding: 8px 10px; font-size: 12px; font-weight: 800; text-decoration: none; }
+    .nav a:hover, .doc-links a:hover { color: #173a94; background: #e4ecff; }
+    main { width: min(1440px, calc(100vw - 40px)); margin: 28px auto 58px; }
+    .hero { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 24px; align-items: stretch; margin-bottom: 24px; }
+    .panel, .hero-copy { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); }
+    .hero-copy, .section { padding: 24px; }
+    h1 { margin: 0 0 12px; font-size: clamp(32px, 4vw, 56px); line-height: 1; letter-spacing: 0; }
+    h2 { margin: 0; font-size: clamp(22px, 2vw, 32px); letter-spacing: 0; }
+    h3 { margin: 0 0 10px; font-size: 18px; letter-spacing: 0; }
+    p { margin: 0; color: var(--muted); line-height: 1.55; }
+    .hero-copy p { max-width: 830px; font-size: 17px; }
+    .decision-box { display: grid; gap: 10px; padding: 20px; }
+    .decision { display: grid; grid-template-columns: 92px 1fr; gap: 12px; align-items: start; padding: 12px; border: 1px solid #e2e8f2; border-radius: 8px; background: #fbfcff; }
+    .decision strong { color: var(--ink); font-size: 13px; }
+    .decision span { color: var(--muted); font-size: 13px; line-height: 1.45; }
+    .section { margin-top: 24px; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 18px; margin-bottom: 18px; }
+    .kicker { color: var(--muted); font-size: 12px; font-weight: 800; text-transform: uppercase; margin-bottom: 6px; }
+    .grid, .flow-grid { display: grid; gap: 14px; }
+    .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .flow-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .card { display: block; min-height: 168px; padding: 16px; border: 1px solid #dfe7f1; border-radius: 8px; background: white; color: inherit; text-decoration: none; transition: transform 140ms ease, box-shadow 140ms ease; }
+    a.card:hover { transform: translateY(-1px); box-shadow: 0 12px 30px rgba(26, 38, 64, 0.1); }
+    .card.platform { background: var(--platform); border-color: #b7ddd8; }
+    .card.customer { background: var(--customer); border-color: #d3c7fb; }
+    .card.ai { background: var(--ai); border-color: #f0d3a9; }
+    .card.security { background: var(--security); border-color: #c7d8f5; }
+    .card p, .card li { color: var(--muted); font-size: 13px; line-height: 1.45; }
+    ul { margin: 10px 0 0; padding-left: 18px; }
+    li + li { margin-top: 6px; }
+    .steps { display: grid; gap: 10px; counter-reset: step; }
+    .step { display: grid; grid-template-columns: 46px 1fr 168px; gap: 14px; align-items: center; padding: 14px; border: 1px solid #dfe7f1; border-radius: 8px; background: white; }
+    .step::before { counter-increment: step; content: counter(step); display: grid; place-items: center; width: 34px; height: 34px; border-radius: 8px; color: white; background: var(--teal); font-weight: 800; }
+    .step strong { display: block; margin-bottom: 4px; font-size: 15px; }
+    .step span { color: var(--muted); font-size: 13px; line-height: 1.45; }
+    .tag { justify-self: end; padding: 8px 10px; border-radius: 8px; background: #f3f6fb; color: var(--muted); font-size: 12px; font-weight: 800; text-align: center; }
+    .matrix { width: 100%; border-collapse: collapse; overflow: hidden; border: 1px solid #dfe7f1; border-radius: 8px; background: white; font-size: 13px; }
+    .matrix th, .matrix td { padding: 12px; border-bottom: 1px solid #e8eef6; text-align: left; vertical-align: top; }
+    .matrix th { background: #f3f6fb; color: #3a4860; font-size: 12px; text-transform: uppercase; }
+    .matrix td { color: var(--muted); line-height: 1.45; }
+    .matrix tr:last-child td { border-bottom: 0; }
+    .doc-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    @media (max-width: 1100px) { .hero, .grid, .flow-grid { grid-template-columns: 1fr 1fr; } .step { grid-template-columns: 42px 1fr; } .tag { justify-self: start; grid-column: 2; } }
+    @media (max-width: 760px) { .topbar { align-items: flex-start; flex-direction: column; } .hero, .grid, .flow-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><div class="mark">Q</div><div>Quatta Implementation Guide</div></div>
+    <nav class="nav" aria-label="Implementation navigation"><a href="quatta-architecture-visuals.html">Flowcharts</a><a href="#build-plan">Build Plan</a><a href="#services">Services</a><a href="#flow-docs">Flow Docs</a><a href="#roadmap">Roadmap</a></nav>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <h1>Build guide for the Quatta AI layer</h1>
+        <p>This page connects the architecture flowcharts to concrete setup work. It defines what to build, which services to use, when to use MCP, RAG, Vertex AI, Document AI and LangGraph, and what a production-ready customer pilot must prove.</p>
+        <div class="doc-links"><a href="docs/implementation/00-implementation-overview.md">Full overview doc</a><a href="docs/implementation/06-governance-security-monitoring.md">Governance doc</a><a href="docs/implementation/07-delivery-roadmap.md">Roadmap doc</a></div>
+      </div>
+      <aside class="panel decision-box" aria-label="Key implementation decisions">
+        <div class="decision"><strong>MCP</strong><span>Use for standardized agent tools with schemas, permission checks and audit logs. Keep connector logic reusable outside MCP.</span></div>
+        <div class="decision"><strong>RAG</strong><span>Use when answers depend on contracts, SOPs, claims evidence, PDFs, scans or policies. Structured ERP/WMS data should stay structured.</span></div>
+        <div class="decision"><strong>Vertex AI</strong><span>Use Gemini as the default enterprise model provider on GCP. Keep an OpenAI/Azure OpenAI provider adapter for customer preference.</span></div>
+        <div class="decision"><strong>Human gates</strong><span>Agents recommend and draft. Humans approve claim sending, operational corrections and high-risk actions.</span></div>
+      </aside>
+    </section>
+    <section class="panel section" id="build-plan"><div class="section-head"><div><div class="kicker">Implementation sequence</div><h2>Build the platform in this order</h2></div></div><div class="steps"><div class="step"><div><strong>Platform skeleton</strong><span>FastAPI on Cloud Run, PostgreSQL, health endpoints, Entra token validation and OpenTelemetry.</span></div><div class="tag">Foundation</div></div><div class="step"><div><strong>Read-only connectors</strong><span>ERP, WMS, SQL, files, SharePoint, APIs and documents through normalized connector contracts.</span></div><div class="tag">Data access</div></div><div class="step"><div><strong>Retrieval and RAG</strong><span>Structured SQL/API retrieval plus Document AI OCR, chunking, embeddings, pgvector and Context Builder.</span></div><div class="tag">Context</div></div><div class="step"><div><strong>AI gateway</strong><span>Model routing, prompt policy, data minimization, safety checks, validation and provider abstraction.</span></div><div class="tag">Control plane</div></div><div class="step"><div><strong>Inventory Agent MVP</strong><span>LangGraph workflow for stock variance analysis, reconciliation, confidence, citations and recommended actions.</span></div><div class="tag">Use case 1</div></div><div class="step"><div><strong>Claims Agent MVP</strong><span>Eligibility, liability, evidence collection, draft claim email, human review and status tracking.</span></div><div class="tag">Use case 2</div></div></div></section>
+    <section class="panel section" id="services"><div class="section-head"><div><div class="kicker">Stack decisions</div><h2>Services and when to use them</h2></div></div><table class="matrix"><thead><tr><th>Service</th><th>Use it for</th><th>Critical setup detail</th></tr></thead><tbody><tr><td>FastAPI</td><td>Quatta API, AI Gateway, connector endpoints and agent endpoints.</td><td>Use typed request/response models and structured error contracts.</td></tr><tr><td>Cloud Run</td><td>Stateless backend hosting and worker-style ingestion services.</td><td>Separate runtime service accounts by API, ingestion and export workloads.</td></tr><tr><td>Microsoft Entra ID</td><td>User authentication and enterprise group/app-role mapping.</td><td>Map Entra identity to Quatta tenant, role, site, customer and item permissions.</td></tr><tr><td>PostgreSQL</td><td>Audit, config, normalized metadata, cache, human review state.</td><td>Enforce tenant filters in every table and query path.</td></tr><tr><td>pgvector</td><td>Vector index for SOPs, contracts, evidence and document chunks.</td><td>Store tenant, ACL, document version and source timestamp with every chunk.</td></tr><tr><td>Vertex AI Gemini</td><td>Primary model inference for grounded answers and agent reasoning.</td><td>Route all model calls through the AI Gateway, never directly from tools.</td></tr><tr><td>Document AI</td><td>OCR for scans, PDFs, contracts, PODs and claims evidence.</td><td>Preserve document ID, version, ACL and source timestamp through indexing.</td></tr><tr><td>LangGraph</td><td>Multi-step workflows with branching, retries and human checkpoints.</td><td>Persist state and audit every node execution.</td></tr><tr><td>MCP</td><td>Agent-callable connector tools with discoverable schemas.</td><td>Use read-only tools by default and enforce tool policy per tenant and role.</td></tr><tr><td>OpenTelemetry</td><td>Trace requests, connectors, retrieval, model calls and human review.</td><td>Track latency, errors, connector health, retrieval quality and model cost.</td></tr></tbody></table></section>
+    <section class="panel section" id="flow-docs"><div class="section-head"><div><div class="kicker">Clickable flowchart companion</div><h2>Implementation docs per flowchart</h2></div></div><div class="flow-grid"><a class="card platform" href="docs/implementation/01-high-level-platform.md"><h3>01 High-Level Platform</h3><p>Cloud Run, FastAPI, Entra ID, AI Gateway, PostgreSQL audit, OpenTelemetry and tenant isolation.</p></a><a class="card customer" href="docs/implementation/02-connector-layer.md"><h3>02 Connector Layer</h3><p>Read-only adapters, source credentials, caching, normalized output, connector health and MCP tool shape.</p></a><a class="card platform" href="docs/implementation/03-retrieval-rag.md"><h3>03 Retrieval + RAG</h3><p>Structured retrieval, Document AI, chunking, embeddings, pgvector, metadata filters and context building.</p></a><a class="card ai" href="docs/implementation/04-inventory-agent.md"><h3>04 Inventory Agent</h3><p>Stock variance workflow, ERP/WMS reconciliation, pattern analysis, financial impact and recommendations.</p></a><a class="card ai" href="docs/implementation/05-claims-agent.md"><h3>05 Claims Agent</h3><p>Claim eligibility, liability calculation, evidence summary, draft email, human review and approved send.</p></a></div></section>
+    <section class="panel section" id="roadmap"><div class="section-head"><div><div class="kicker">Pilot readiness</div><h2>What must be true before a customer pilot</h2></div></div><div class="grid"><div class="card security"><h3>Access control</h3><ul><li>Entra sign-in works.</li><li>Tenant and role filters pass tests.</li><li>No cross-tenant vector retrieval.</li></ul></div><div class="card customer"><h3>Source confidence</h3><ul><li>At least one structured source connected.</li><li>At least one document source indexed.</li><li>Freshness warnings are visible.</li></ul></div><div class="card ai"><h3>Agent quality</h3><ul><li>Known cases pass evaluation.</li><li>Low confidence escalates.</li><li>Answers include citations.</li></ul></div><div class="card platform"><h3>Operations</h3><ul><li>Audit reconstructs every answer.</li><li>Dashboards and alerts exist.</li><li>Runbooks are ready.</li></ul></div></div></section>
+  </main>
+</body>
+</html>
